@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.0.0
+MinimumVisualStudioVersion = 10.0.0.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoTHubManager", "IoTHubManager/IoTHubManager.csproj", "{BAE253D0-6144-4C22-B37F-E3288D341EEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D8B45A1C-794F-432C-8ED3-21943A89217D}"
+ProjectSection(SolutionItems) = preProject
+	docs\CODE_OF_CONDUCT.md = docs\CODE_OF_CONDUCT.md
+	docs\CODEOWNERS = docs\CODEOWNERS
+	docs\CONTRIBUTING.md = docs\CONTRIBUTING.md
+	docs\ISSUE_TEMPLATE.md = docs\ISSUE_TEMPLATE.md
+	docs\PULL_REQUEST_TEMPLATE.md = docs\PULL_REQUEST_TEMPLATE.md
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{1968E3EB-88DD-4CF5-A56F-B3C33699F78A}"
+ProjectSection(SolutionItems) = preProject
+	scripts\build = scripts\build
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{12F978DA-1CFF-48A5-AACE-CEA1255FE5D6}"
+ProjectSection(SolutionItems) = preProject
+	scripts\git\fix-perms.sh = scripts\git\fix-perms.sh
+	scripts\git\pre-commit.sh = scripts\git\pre-commit.sh
+	scripts\git\setup = scripts\git\setup
+	scripts\git\setup.cmd = scripts\git\setup.cmd
+	scripts\git\pre-commit-runner.sh = scripts\git\pre-commit-runner.sh
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BAE253D0-6144-4C22-B37F-E3288D341EEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAE253D0-6144-4C22-B37F-E3288D341EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAE253D0-6144-4C22-B37F-E3288D341EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAE253D0-6144-4C22-B37F-E3288D341EEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{12F978DA-1CFF-48A5-AACE-CEA1255FE5D6} = {1968E3EB-88DD-4CF5-A56F-B3C33699F78A}
+	EndGlobalSection
+EndGlobal
