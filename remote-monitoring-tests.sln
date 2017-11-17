@@ -17,6 +17,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{1968E3EB-88DD-4CF5-A56F-B3C33699F78A}"
 ProjectSection(SolutionItems) = preProject
 	scripts\build = scripts\build
+	scripts\iothubmanager.sh = scripts\iothubmanager.sh
+	scripts\env.list = scripts\env.list
+	scripts\devicesimulation.sh = scripts\devicesimulation.sh
+	scripts\pcsconfig.sh = scripts\pcsconfig.sh
+	scripts\storageadapter.sh = scripts\storageadapter.sh
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{12F978DA-1CFF-48A5-AACE-CEA1255FE5D6}"
@@ -26,6 +31,16 @@ ProjectSection(SolutionItems) = preProject
 	scripts\git\setup = scripts\git\setup
 	scripts\git\setup.cmd = scripts\git\setup.cmd
 	scripts\git\pre-commit-runner.sh = scripts\git\pre-commit-runner.sh
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{1DC804C4-AFB0-4E99-9141-ABB14D4020C9}"
+ProjectSection(SolutionItems) = preProject
+	.gitattributes = .gitattributes
+	.gitignore = .gitignore
+	.travis.yml = .travis.yml
+	LICENSE = LICENSE
+	README.md = README.md
+	remote-monitoring-tests.sln.DotSettings = remote-monitoring-tests.sln.DotSettings
 EndProjectSection
 EndProject
 Global
@@ -44,5 +59,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{12F978DA-1CFF-48A5-AACE-CEA1255FE5D6} = {1968E3EB-88DD-4CF5-A56F-B3C33699F78A}
+		{D8B45A1C-794F-432C-8ED3-21943A89217D} = {1DC804C4-AFB0-4E99-9141-ABB14D4020C9}
+		{1968E3EB-88DD-4CF5-A56F-B3C33699F78A} = {1DC804C4-AFB0-4E99-9141-ABB14D4020C9}
 	EndGlobalSection
 EndGlobal

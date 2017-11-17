@@ -7,3 +7,7 @@
 *.sh text eol=lf
 scripts/build text eol=lf
 scripts/git/setup text eol=lf
+scripts/devicesimulation.sh text eol=lf
+scripts/iothubmanager.sh text eol=lf
+scripts/pcsconfig.sh text eol=lf
+scripts/storageadapter.sh text eol=lf
