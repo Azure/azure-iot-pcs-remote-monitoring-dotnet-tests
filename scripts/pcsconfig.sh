@@ -18,10 +18,16 @@ exit_if_running() {
     fi
 }
 
+create_network() {
+    set +e
+    docker network create integrationtests 2> /dev/null
+    set -e
+}
+
 start() {
     docker pull $DOCKER_IMAGE
     echo "Starting '$DOCKER_IMAGE'"
-    docker run --detach --network="bridge" -p 127.0.0.1:$DOCKER_PORT:$DOCKER_PORT \
+    docker run --detach --network="integrationtests" -p 127.0.0.1:$DOCKER_PORT:$DOCKER_PORT \
         --env-file $APP_HOME/scripts/env.list --rm --name $DOCKER_NAME $DOCKER_IMAGE
 }
 
@@ -30,8 +36,8 @@ stop() {
     docker rm -f $DOCKER_NAME
 }
 
-
 if [[ "$1" == "start" ]]; then
+    create_network
     exit_if_running
     start
     exit 0
