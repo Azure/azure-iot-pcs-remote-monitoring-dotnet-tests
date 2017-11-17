@@ -3,4 +3,11 @@
 # Note: Windows Bash doesn't support shebang extra params
 set -e
 
+APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )/"
+cd $APP_HOME
+
+source "$APP_HOME/scripts/.functions.sh"
+
+./IoTHubManager/run.sh "IoT Hub Manager tests"
+
 set +e

@@ -17,6 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{1968E3EB-88DD-4CF5-A56F-B3C33699F78A}"
 ProjectSection(SolutionItems) = preProject
 	scripts\build = scripts\build
+	scripts\.functions.sh = scripts\.functions.sh
 	scripts\iothubmanager.sh = scripts\iothubmanager.sh
 	scripts\env.list = scripts\env.list
 	scripts\devicesimulation.sh = scripts\devicesimulation.sh
