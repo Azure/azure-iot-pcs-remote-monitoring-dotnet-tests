@@ -11,5 +11,6 @@ scripts/devicesimulation.sh text eol=lf
 scripts/iothubmanager.sh text eol=lf
 scripts/pcsconfig.sh text eol=lf
 scripts/storageadapter.sh text eol=lf
-
+scripts/telemetry.sh text eol=lf
 IoTHubManager/run.sh text eol=lf
+PcsConfig/run.sh text eol=lf

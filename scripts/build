@@ -10,4 +10,6 @@ source "$APP_HOME/scripts/.functions.sh"
 
 ./IoTHubManager/run.sh "IoT Hub Manager tests"
 
+./PcsConfig/run.sh "Pcs Config tests"
+
 set +e

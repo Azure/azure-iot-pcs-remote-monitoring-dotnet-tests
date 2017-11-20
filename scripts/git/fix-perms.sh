@@ -17,7 +17,9 @@ chmod ugo+x ./scripts/devicesimulation.sh
 chmod ugo+x ./scripts/iothubmanager.sh
 chmod ugo+x ./scripts/pcsconfig.sh
 chmod ugo+x ./scripts/storageadapter.sh
+chmod ugo+x ./scripts/telemetry.sh
 chmod ugo+x ./IoTHubManager/run.sh
+chmod ugo+x ./PcsConfig/run.sh
 
 git update-index --chmod=+x ./scripts/build
 git update-index --chmod=+x ./scripts/git/setup
@@ -26,6 +28,8 @@ git update-index --chmod=+x ./scripts/devicesimulation.sh
 git update-index --chmod=+x ./scripts/iothubmanager.sh
 git update-index --chmod=+x ./scripts/pcsconfig.sh
 git update-index --chmod=+x ./scripts/storageadapter.sh
+git update-index --chmod=+x ./scripts/telemetry.sh
 git update-index --chmod=+x ./IoTHubManager/run.sh
+git update-index --chmod=+x ./PcsConfig/run.sh
 
 set +e
