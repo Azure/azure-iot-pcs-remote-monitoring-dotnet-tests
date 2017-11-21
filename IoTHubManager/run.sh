@@ -5,20 +5,26 @@ set -e
 
 TEST_SUITE=$1
 
+TEST_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )/"
-cd $APP_HOME
 
 source "$APP_HOME/scripts/.functions.sh"
 
 start_containers() {
     header2 "$TEST_SUITE - Starting services..."
+
+    cd $APP_HOME
     ./scripts/storageadapter.sh start
     ./scripts/iothubmanager.sh start
     ./scripts/devicesimulation.sh start
+    docker ps -a
 }
 
 stop_containers() {
     header2 "$TEST_SUITE - Stopping services..."
+
+    cd $APP_HOME
+    docker ps -a
     ./scripts/storageadapter.sh stop
     ./scripts/iothubmanager.sh stop
     ./scripts/devicesimulation.sh stop
@@ -26,13 +32,16 @@ stop_containers() {
 
 run_tests() {
     header2 "$TEST_SUITE - Downloading dependencies..."
+
+    cd $APP_HOME
     dotnet restore
 
     header2 "$TEST_SUITE - Compiling tests..."
     dotnet build --configuration Release
 
     header2 "$TEST_SUITE - Running tests..."
-    dotnet test --configuration Release IoTHubManager/IoTHubManager.csproj
+    cd $TEST_HOME
+    find . -name *.csproj | xargs dotnet test --configuration Release
 }
 
 header "Running $TEST_SUITE"

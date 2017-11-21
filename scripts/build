@@ -8,6 +8,10 @@ cd $APP_HOME
 
 source "$APP_HOME/scripts/.functions.sh"
 
+if [[ "$1" != "" ]]; then
+    export DOCKER_TAG=testing
+fi
+
 ./IoTHubManager/run.sh "IoT Hub Manager tests"
 
 ./PcsConfig/run.sh "Pcs Config tests"
