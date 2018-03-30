@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xunit.Abstractions;
 
-namespace WebService.Test.helpers.Http
+namespace Helpers.Http
 {
     public interface IHttpClient
     {

@@ -17,6 +17,7 @@ start_containers() {
     ./scripts/storageadapter.sh start
     ./scripts/pcsconfig.sh start
     ./scripts/telemetry.sh start
+    ./scripts/devicesimulation.sh start
     docker ps -a
 }
 
@@ -28,6 +29,7 @@ stop_containers() {
     ./scripts/storageadapter.sh stop
     ./scripts/pcsconfig.sh stop
     ./scripts/telemetry.sh stop
+    ./scripts/devicesimulation.sh stop
 }
 
 run_tests() {
@@ -50,6 +52,7 @@ check_dependency_docker
 check_dependency_dotnet
 
 start_containers
+
 run_tests
 stop_containers
 

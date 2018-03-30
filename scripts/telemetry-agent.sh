@@ -7,9 +7,9 @@ if [[ "$DOCKER_TAG" == "" ]]; then
     export DOCKER_TAG=testing
 fi
 
-DOCKER_IMAGE="azureiotpcs/device-simulation-dotnet:$DOCKER_TAG"
-DOCKER_PORT=9003
-DOCKER_NAME="device-simulation"
+DOCKER_IMAGE="azureiotpcs/telemetry-agent-dotnet:$DOCKER_TAG"
+DOCKER_PORT=9023
+DOCKER_NAME="telemetry-agent"
 DOCKER_NETWOK="integrationtests"
 
 APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )/"
@@ -19,8 +19,8 @@ source "$APP_HOME/scripts/.functions.sh"
 
 check_env_variables()
 {
-    if [[ ! -n "${PCS_IOTHUB_CONNSTRING}" ]]; then
-        error "PCS_IOTHUB_CONNSTRING is not set"
+    if [[ ! -n "${PCS_TELEMETRY_DOCUMENTDB_CONNSTRING}" ]]; then
+        error "PCS_TELEMETRY_DOCUMENTDB_CONNSTRING is not set"
         exit -1
     fi
 
@@ -40,6 +40,7 @@ fail_if_not_running() {
     ISUP=$(docker ps | grep $DOCKER_NAME | wc -l | tr -d '[:space:]')
     if [[ "$ISUP" == "0" ]]; then
         error "'$DOCKER_IMAGE' failed to start or crashed"
+        docker logs $DOCKER_NAME
         exit -1
     fi
 }

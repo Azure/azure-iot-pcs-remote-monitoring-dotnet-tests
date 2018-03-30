@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
-namespace WebService.Test.helpers.Http
+namespace Helpers.Http
 {
     public class HttpRequestOptions
     {

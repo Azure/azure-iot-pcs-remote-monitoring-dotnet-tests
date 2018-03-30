@@ -17,6 +17,16 @@ cd $APP_HOME
 
 source "$APP_HOME/scripts/.functions.sh"
 
+check_env_variables()
+{
+    if [[ ! -n "${PCS_TELEMETRY_DOCUMENTDB_CONNSTRING}" ]]; then
+        error "PCS_TELEMETRY_DOCUMENTDB_CONNSTRING is not set"
+        exit -1
+    fi
+
+    header3 "Connection strings set in environment variables"
+}
+
 exit_if_running() {
     ISUP=$(curl -ks http://127.0.0.1:$DOCKER_PORT/v1/status | grep -i "{" | wc -l | tr -d '[:space:]')
     if [[ "$ISUP" != "0" ]]; then
@@ -30,6 +40,7 @@ fail_if_not_running() {
     ISUP=$(docker ps | grep $DOCKER_NAME | wc -l | tr -d '[:space:]')
     if [[ "$ISUP" == "0" ]]; then
         error "'$DOCKER_IMAGE' failed to start or crashed"
+        docker logs $DOCKER_NAME
         exit -1
     fi
 }
@@ -58,6 +69,7 @@ stop() {
 
 if [[ "$1" == "start" ]]; then
     exit_if_running
+    check_env_variables
     create_network
     start
     exit 0

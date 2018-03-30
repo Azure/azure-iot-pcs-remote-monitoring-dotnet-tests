@@ -12,8 +12,14 @@ if [[ "$1" != "" ]]; then
     export DOCKER_TAG=testing
 fi
 
-./IoTHubManager/run.sh "IoT Hub Manager tests"
+echo "The repo name is: " $2
+
+./StorageAdapter/run.sh "Storage Adapter Tests"
 
 ./PcsConfig/run.sh "Pcs Config tests"
+
+./IoTHubManager/run.sh "IoT Hub Manager tests"
+
+
 
 set +e

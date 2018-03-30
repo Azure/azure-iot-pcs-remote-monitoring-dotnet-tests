@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace WebService.Test.helpers.Http
+namespace Helpers.Http
 {
     public interface IHttpRequest
     {

@@ -3,11 +3,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Newtonsoft.Json;
+using Helpers.Http;
 using Newtonsoft.Json.Linq;
-using WebService.Test.helpers.Http;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace PcsConfig
 {
@@ -21,6 +19,22 @@ namespace PcsConfig
         public SeedDataTest()
         {
             this.httpClient = new HttpClient();
+        }
+
+        /// <summary>
+        /// Integration test using a real HTTP instance.
+        /// Test that the service starts normally and returns ok status
+        /// </summary>
+        [Fact]
+        public void Should_Return_OK_Status()
+        {
+            // Act
+            var request = new HttpRequest(CONFIG_ADDRESS + "/status");
+            request.AddHeader("X-Foo", "Bar");
+            var response = this.httpClient.GetAsync(request).Result;
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         /// <summary>
@@ -70,19 +84,21 @@ namespace PcsConfig
             Assert.True(jsonResponse.HasValues);
 
             JArray items = (JArray) jsonResponse["Items"];
-            Assert.True(items.Count == 5);
+            //TODO: Make it equal to 5 once fresh storage is created
+            //Since we are using same storage account for now this number should be great or equal to 5
+            Assert.True(items.Count >= 5);
 
-            List<string> ruleIds = new List<string>();
+            List<string> groupIds = new List<string>();
             foreach (var rule in items)
             {
-                ruleIds.Add(rule["Id"].ToString());
+                groupIds.Add(rule["GroupId"].ToString());
             }
 
-            Assert.True(ruleIds.Contains("default_Chiller_Pressure_High"));
-            Assert.True(ruleIds.Contains("default_Prototyping_Temperature_High"));
-            Assert.True(ruleIds.Contains("default_Elevator_Vibration_Stopped"));
-            Assert.True(ruleIds.Contains("default_Truck_Temperature_High"));
-            Assert.True(ruleIds.Contains("default_Engine_Fuel_Empty"));
+            Assert.Contains("default_Chillers", groupIds);
+            Assert.Contains("default_PrototypingDevices", groupIds);
+            Assert.Contains("default_Engines", groupIds);
+            Assert.Contains("default_Trucks", groupIds);
+            Assert.Contains("default_Elevators", groupIds);
         }
 
         /// <summary>
@@ -109,8 +125,9 @@ namespace PcsConfig
 
             Assert.True(jsonResponse.HasValues);
 
-            JArray devices = (JArray)jsonResponse["DeviceTypes"];
-            Assert.True(devices.Count == 10);
+            JArray items = (JArray)jsonResponse["Items"];
+            JToken deviceModels = items[0]["DeviceModels"];
+            Assert.True(deviceModels.Count() == 10);
         }
     }
 }

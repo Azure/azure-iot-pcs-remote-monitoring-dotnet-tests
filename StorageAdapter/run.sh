@@ -15,9 +15,6 @@ start_containers() {
 
     cd $APP_HOME
     ./scripts/storageadapter.sh start
-    ./scripts/iothubmanager.sh start
-    ./scripts/devicesimulation.sh start
-    ./scripts/pcsconfig.sh start
     docker ps -a
 }
 
@@ -27,9 +24,6 @@ stop_containers() {
     cd $APP_HOME
     docker ps -a
     ./scripts/storageadapter.sh stop
-    ./scripts/iothubmanager.sh stop
-    ./scripts/devicesimulation.sh stop
-    ./scripts/pcsconfig.sh stop
 }
 
 run_tests() {
@@ -44,8 +38,6 @@ run_tests() {
     header2 "$TEST_SUITE - Running tests..."
     cd $TEST_HOME
     find . -name *.csproj | xargs dotnet test --configuration Release
-
-    docker logs "iothub-manager"
 }
 
 header "Running $TEST_SUITE"
@@ -59,5 +51,3 @@ run_tests
 stop_containers
 
 set +e
-
-

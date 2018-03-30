@@ -17,6 +17,16 @@ cd $APP_HOME
 
 source "$APP_HOME/scripts/.functions.sh"
 
+check_env_variables()
+{
+    if [[ ! -n "${PCS_IOTHUB_CONNSTRING}" ]]; then
+        error "PCS_IOTHUB_CONNSTRING is not set"
+        exit -1
+    fi
+
+    header3 "Connection strings set in environment variables"
+}
+
 exit_if_running() {
     ISUP=$(curl -ks http://127.0.0.1:$DOCKER_PORT/v1/status | grep -i "{" | wc -l | tr -d '[:space:]')
     if [[ "$ISUP" != "0" ]]; then
@@ -57,8 +67,9 @@ stop() {
 }
 
 if [[ "$1" == "start" ]]; then
-    create_network
     exit_if_running
+    check_env_variables
+    create_network
     start
     exit 0
 fi
