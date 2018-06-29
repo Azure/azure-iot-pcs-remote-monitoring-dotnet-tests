@@ -3,20 +3,23 @@
 # Note: Windows Bash doesn't support shebang extra params
 set -e
 
+APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )/"
+cd $APP_HOME
+
 start() {
-    ./pcsconfig.sh start
-    ./storageadapter.sh start
-    ./devicesimulation.sh start
-    ./telemetry.sh start
-    ./iothubmanager.sh start
+    ./scripts/pcsconfig.sh start
+    ./scripts/storageadapter.sh start
+    ./scripts/devicesimulation.sh start
+    ./scripts/telemetry.sh start
+    ./scripts/iothubmanager.sh start
 }
 
 stop() {
-    ./pcsconfig.sh stop
-    ./storageadapter.sh stop
-    ./devicesimulation.sh stop
-    ./telemetry.sh stop
-    ./iothubmanager.sh stop
+    ./scripts/pcsconfig.sh stop
+    ./scripts/storageadapter.sh stop
+    ./scripts/devicesimulation.sh stop
+    ./scripts/telemetry.sh stop
+    ./scripts/iothubmanager.sh stop
 }
 
 if [[ "$1" == "start" ]]; then
