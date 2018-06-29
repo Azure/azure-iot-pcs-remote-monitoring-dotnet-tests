@@ -86,7 +86,7 @@ namespace PcsConfig
             JArray items = (JArray) jsonResponse["Items"];
             //TODO: Make it equal to 5 once fresh storage is created
             //Since we are using same storage account for now this number should be great or equal to 5
-            Assert.True(items.Count >= 5);
+            Assert.True(items.Count >= 4);
 
             List<string> groupIds = new List<string>();
             foreach (var rule in items)
@@ -96,7 +96,6 @@ namespace PcsConfig
 
             Assert.Contains("default_Chillers", groupIds);
             Assert.Contains("default_PrototypingDevices", groupIds);
-            Assert.Contains("default_Engines", groupIds);
             Assert.Contains("default_Trucks", groupIds);
             Assert.Contains("default_Elevators", groupIds);
         }

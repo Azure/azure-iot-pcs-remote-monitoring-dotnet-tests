@@ -8,6 +8,34 @@ Azure IoT Remote Monitoring Tests
 This repository contains a set of functional tests periodically executed
 on Microsoft Azure IoT Remote Monitoring solution.
 
+Dependencies
+============
+
+The integration tests solution depends on all the environment variables set on the machine. The list of variables are in [env.list](scripts/env.list) file
+
+How to run the integration tests
+===========================
+
+## Build and Run from the command line
+
+The [scripts](scripts) folder contains scripts for many frequent tasks:
+
+* `build`: compiles all the project and runs all the integration tests projects that are listed in [build](scripts/build) script file
+
+## Running the integration tests with Visual Studio
+
+### Prerequisite
+
+All the containers need to be started before the tests can be run/debug in visual studio
+
+* `container.sh start`: starts all the containers.
+* `container.sh stop`: stops all the containers.
+
+### Build and run tests
+
+* `Ctrl+Shift+B`: builds solution
+* `Run All`: from the `Test` menu select `Windows-->Test Explorer`. Click `Run All` to run all the tests 
+
 
 [build-badge]: https://img.shields.io/travis/Azure/azure-iot-pcs-remote-monitoring-dotnet-tests.svg
 [build-url]: https://travis-ci.org/Azure/azure-iot-pcs-remote-monitoring-dotnet-tests
