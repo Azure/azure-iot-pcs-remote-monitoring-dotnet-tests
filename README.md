@@ -26,10 +26,17 @@ The [scripts](scripts) folder contains scripts for many frequent tasks:
 
 ### Prerequisite
 
-All the containers need to be started before the tests can be run/debug in visual studio
+All the containers need to be started before the tests can be run/debug in Visual Studio.
 
-* `container.sh start`: starts all the containers.
-* `container.sh stop`: stops all the containers.
+* navigate to the `scripts` folder
+* `<name-of-service>.sh start`: starts all the containers.
+* `<name-of-service>.sh stop`: stops all the containers.
+
+Ex:
+```
+cd scripts
+./pcsconfig.sh start
+```
 
 ### Build and run tests
 
