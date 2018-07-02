@@ -12,8 +12,8 @@
 :: Note: use this value for both environment variables below
 ::
 :: Example:
-:: PCS_IOTHUBREACT_ACCESS_CONNSTRING=HostName=iothub-test123.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=12345=
-:: PCS_IOTHUB_CONNSTRING=HostName=iothub-test123.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=12345=
+:: PCS_IOTHUBREACT_ACCESS_CONNSTRING=HostName "iothub-test123.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=12345="
+:: PCS_IOTHUB_CONNSTRING=HostName "iothub-test123.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=12345="
 :: -----------------------------------------------------------------------------
 SETX PCS_IOTHUBREACT_ACCESS_CONNSTRING ""
 SETX PCS_IOTHUB_CONNSTRING ""
@@ -23,9 +23,9 @@ SETX PCS_IOTHUB_CONNSTRING ""
 :: {Your IoT Hub} > Endpoints > events
 ::
 :: Example:
-:: PCS_IOTHUBREACT_HUB_NAME=iothub-test123
-:: PCS_IOTHUBREACT_HUB_ENDPOINT=Endpoint=sb://iothub-foo-iothub-bar-12345-12345.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=12345=
-:: PCS_IOTHUBREACT_HUB_PARTITIONS=4
+:: PCS_IOTHUBREACT_HUB_NAME "iothub-test123"
+:: PCS_IOTHUBREACT_HUB_ENDPOINT "Endpoint=sb://iothub-foo-iothub-bar-12345-12345.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=12345="
+:: PCS_IOTHUBREACT_HUB_PARTITIONS "4"
 :: -----------------------------------------------------------------------------
 SETX PCS_IOTHUBREACT_HUB_NAME ""
 SETX PCS_IOTHUBREACT_HUB_ENDPOINT ""
@@ -36,8 +36,8 @@ SETX PCS_IOTHUBREACT_HUB_PARTITIONS ""
 :: {Your EventHub} > Shared access policies > RootManageSharedAccessKey
 ::
 :: Example:
-:: PCS_EVENTHUB_CONNSTRING=Endpoint=sb://eventhub-foo-eventhub-bar-12345-12345.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=12345=
-:: PCS_EVENTHUB_NAME=eventhub-test123
+:: PCS_EVENTHUB_CONNSTRING "Endpoint=sb://eventhub-foo-eventhub-bar-12345-12345.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=12345="
+:: PCS_EVENTHUB_NAME "eventhub-test123"
 :: -----------------------------------------------------------------------------
 SETX PCS_EVENTHUB_CONNSTRING ""
 SETX PCS_EVENTHUB_NAME ""
@@ -47,10 +47,10 @@ SETX PCS_EVENTHUB_NAME ""
 :: {Your storage account} > Access keys
 ::
 :: Example: 
-:: PCS_IOTHUBREACT_AZUREBLOB_ACCOUNT=storagetest123
-:: PCS_IOTHUBREACT_AZUREBLOB_KEY=12345...6789==
-:: PCS_ASA_DATA_AZUREBLOB_ACCOUNT=storagetest123
-:: PCS_ASA_DATA_AZUREBLOB_KEY=12345...6789==
+:: PCS_IOTHUBREACT_AZUREBLOB_ACCOUNT "storagetest123"
+:: PCS_IOTHUBREACT_AZUREBLOB_KEY "12345...6789=="
+:: PCS_ASA_DATA_AZUREBLOB_ACCOUNT "storagetest123"
+:: PCS_ASA_DATA_AZUREBLOB_KEY "12345...6789=="
 :: -----------------------------------------------------------------------------
 SETX PCS_IOTHUBREACT_AZUREBLOB_ACCOUNT ""
 SETX PCS_IOTHUBREACT_AZUREBLOB_KEY ""
@@ -63,8 +63,8 @@ SETX PCS_ASA_DATA_AZUREBLOB_KEY ""
 :: in the URI after the "blob." (eg. `core.windows.net`)
 ::
 :: Example:
-:: PCS_IOTHUBREACT_AZUREBLOB_ENDPOINT_SUFFIX=core.windows.net
-:: PCS_ASA_DATA_AZUREBLOB_ENDPOINT_SUFFIX=core.windows.net
+:: PCS_IOTHUBREACT_AZUREBLOB_ENDPOINT_SUFFIX "core.windows.net"
+:: PCS_ASA_DATA_AZUREBLOB_ENDPOINT_SUFFIX "core.windows.net"
 :: -----------------------------------------------------------------------------
 SETX PCS_IOTHUBREACT_AZUREBLOB_ENDPOINT_SUFFIX ""
 SETX PCS_ASA_DATA_AZUREBLOB_ENDPOINT_SUFFIX ""
@@ -75,8 +75,8 @@ SETX PCS_ASA_DATA_AZUREBLOB_ENDPOINT_SUFFIX ""
 :: Note: use this value for all 3 environment variables below
 ::
 :: Example:
-:: PCS_STORAGEADAPTER_DOCUMENTDB_CONNSTRING=AccountEndpoint=https://documentdb-test123.documents.azure.com:443/;AccountKey=12345==;
-:: PCS_TELEMETRY_DOCUMENTDB_CONNSTRING=AccountEndpoint=https://documentdb-test123.documents.azure.com:443/;AccountKey=12345==;
+:: PCS_STORAGEADAPTER_DOCUMENTDB_CONNSTRING=AccountEndpoint "https://documentdb-test123.documents.azure.com:443/;AccountKey=12345==;"
+:: PCS_TELEMETRY_DOCUMENTDB_CONNSTRING=AccountEndpoint "https://documentdb-test123.documents.azure.com:443/;AccountKey=12345==;"
 :: -----------------------------------------------------------------------------
 SETX PCS_STORAGEADAPTER_DOCUMENTDB_CONNSTRING ""
 SETX PCS_TELEMETRY_DOCUMENTDB_CONNSTRING ""
