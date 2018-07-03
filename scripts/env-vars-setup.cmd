@@ -87,7 +87,7 @@ SETX PCS_TELEMETRY_DOCUMENTDB_CONNSTRING ""
 SETX PCS_AUTH_REQUIRED "false"
 
 :: -----------------------------------------------------------------------------
-:: Bing maps key
+:: Azure maps key
 :: -----------------------------------------------------------------------------
 SETX PCS_AZUREMAPS_KEY "static"
 
