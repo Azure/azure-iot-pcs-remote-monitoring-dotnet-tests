@@ -87,8 +87,7 @@ SETX PCS_TELEMETRY_DOCUMENTDB_CONNSTRING ""
 SETX PCS_AUTH_REQUIRED "false"
 
 :: -----------------------------------------------------------------------------
-:: To add a bing map key, please follow the directions here:
-:: https://msdn.microsoft.com/library/ff428642.aspx
+:: Bing maps key
 :: -----------------------------------------------------------------------------
 SETX PCS_AZUREMAPS_KEY "static"
 
