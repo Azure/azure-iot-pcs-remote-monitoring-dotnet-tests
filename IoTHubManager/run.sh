@@ -42,6 +42,7 @@ run_tests() {
 
     header2 "$TEST_SUITE - Running tests..."
     cd $TEST_HOME
+    
     find . -name *.csproj | xargs dotnet test --configuration Release
 
     docker logs "iothub-manager"
