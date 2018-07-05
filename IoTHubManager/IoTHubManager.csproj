@@ -22,7 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="devices\Device_Template_Auto_Generated_Auth.json">
+    <None Update="resources\devices\Device_Template_Auto_Generated_Auth.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\devices\Device_Template_Symmetric_Auth.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\devices\Device_Template_X509_Auth.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
