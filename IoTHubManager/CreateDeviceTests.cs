@@ -43,17 +43,14 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-
-            var authentication = createdDevice["Authentication"];
             var createdDeviceId = createdDevice["Id"].ToString();
+            var authentication = createdDevice["Authentication"];
+            string primaryKey = authentication["PrimaryKey"].ToString(),
+                   secondaryKey = authentication["SecondaryKey"].ToString();
 
             Assert.False(string.IsNullOrEmpty(createdDeviceId));
             Assert.Equal("false", createdDevice["IsSimulated"]);
             Assert.Equal("true", createdDevice["Enabled"]);
-
-            string primaryKey = authentication["PrimaryKey"].ToString(),
-                   secondaryKey = authentication["SecondaryKey"].ToString();
-
             Assert.Equal(0, authentication["AuthenticationType"]);
             Assert.False(string.IsNullOrEmpty(primaryKey));
             Assert.False(string.IsNullOrEmpty(secondaryKey));
@@ -119,10 +116,8 @@ namespace IoTHubManager
             //Assert Authentication
             var authentication = createdDevice["Authentication"];
             Assert.Equal(0, authentication["AuthenticationType"]);
-
             string createdPrimaryKey = authentication["PrimaryKey"].ToString(),
                    createdSecondaryKey = authentication["SecondaryKey"].ToString();
-
             Assert.Equal(primaryKey, createdPrimaryKey);
             Assert.Equal(secondaryKey, createdSecondaryKey);
 
@@ -155,15 +150,11 @@ namespace IoTHubManager
 
             //Assert Authentication
             var authentication = createdDevice["Authentication"];
-            Assert.Equal(0, authentication["AuthenticationType"]);
-
             string createdPrimaryKey = authentication["PrimaryKey"].ToString(),
                    createdSecondaryKey = authentication["SecondaryKey"].ToString();
-
+            Assert.Equal(0, authentication["AuthenticationType"]);
             Assert.Equal(primaryKey, createdPrimaryKey);
             Assert.Equal(secondaryKey, createdSecondaryKey);
-
-            //Assert other properties
             Assert.Equal("false", createdDevice["IsSimulated"]);
             Assert.Equal("true", createdDevice["Enabled"]);
             
