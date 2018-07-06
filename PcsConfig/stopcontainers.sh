@@ -7,7 +7,6 @@ TEST_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )/"
 
 stop_containers() {
-    header2 "$TEST_SUITE - Stopping services..."
 
     cd $APP_HOME
     docker ps -a
