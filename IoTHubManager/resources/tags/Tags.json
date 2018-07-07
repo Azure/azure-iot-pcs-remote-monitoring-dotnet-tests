@@ -1,0 +1,14 @@
+﻿{
+	"JobId": "LocationTags-{JobId}",
+	"MaxExecutionTimeInSeconds": 0,
+	"QueryCondition": "deviceId in ['{DeviceId}','{FaultyDeviceId}']",
+	"UpdateTwin": 
+			{
+				"Tags": 
+						{
+							"IsSimulated": "Y",
+							"Building": "25",
+							"wing": "North"
+						}
+			}
+}

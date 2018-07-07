@@ -9,66 +9,78 @@ using Newtonsoft.Json.Linq;
 
 namespace IoTHubManager
 {
-    class CreateJobsTest
+    public class CreateJobsTest
     {
         private readonly IHttpClient httpClient;
-        private int simulatedDeviceCount = 0;
-        private int simulatedFaultyDeviceCount = 0;
+        private readonly string simulatedDeviceId;
+        private readonly string simulatedFaultyDeviceId;
 
         public CreateJobsTest()
         {
             this.httpClient = new HttpClient();
-            createSimulatedDevice();
+            SimulatedDevices simulatedDevices = new SimulatedDevices();
+            simulatedDeviceId = Constants.SIMULATED_DEVICE + "." + simulatedDevices.healthyDeviceNo.ToString();
+            simulatedFaultyDeviceId = Constants.SIMULATED_FAULTY_DEVICE + "." + simulatedDevices.faultyDeviceNo.ToString();
         }
 
-        
-
-
-
-
-
-        private void createSimulatedDevice()
+        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        public void Creates_Tags_Failson_InCorrectORMissingTags()
         {
-            var devices = getSimulatedDevices();
-            var deviceModels = devices["DeviceModels"];
+            var tagJobResponse = CreateTags();
+            Assert.Equal(HttpStatusCode.OK, tagJobResponse.StatusCode);
 
-            foreach (JObject device in deviceModels)
-            {
-                if (device["Id"].ToString() == Constants.SIMULATED_DEVICE)
-                {
-                    simulatedDeviceCount = device["Count"].ToObject<int>();
-                    device["Count"] = (simulatedDeviceCount + 1).ToString();
-                }
-                if (device["Id"].ToString() == Constants.SIMULATED_FAULTY_DEVICE)
-                {
-                    simulatedFaultyDeviceCount = device["Count"].ToObject<int>();
-                    device["Count"] = (simulatedFaultyDeviceCount + 1).ToString();
-                }
-            }
-            putSimulatedDevices(devices);
+            var tagJob = JObject.Parse(tagJobResponse.Content);
+            Assert.Equal<int>(4, tagJob["status"].ToObject<int>());
+            Assert.Equal<int>(7, tagJob["Type"].ToObject<int>());
 
+            var tagJobStatus = getTagJobStatus(tagJob["JobId"].ToString());
+            Assert.Equal<int>(4, tagJob["status"].ToObject<int>());
+            Assert.Equal<int>(3, tagJob["Type"].ToObject<int>());
+            Assert.Equal<int>(2, tagJob["ResultStatistics"]["DeviceCount"].ToObject<int>());
         }
 
-        private void putSimulatedDevices(JObject devices)
+        private JObject getTagJobStatus(string JobId)
         {
-            var request = new HttpRequest(Constants.DEVICE_SIMULATION_ADDRESS + Constants.SIMULATION_PATH);
-            request.SetContent(devices);
-            IHttpResponse response = this.httpClient.PutAsync(request).Result;
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            IHttpResponse jobStatusResponse = Request(JobId, null);
+            Assert.Equal(HttpStatusCode.OK, jobStatusResponse.StatusCode);
+            return JObject.Parse(jobStatusResponse.Content);
         }
 
-        private JObject getSimulatedDevices()
+        private IHttpResponse CreateTags()
         {
-            var request = new HttpRequest(Constants.DEVICE_SIMULATION_ADDRESS + Constants.SIMULATION_PATH);
-            IHttpResponse response = this.httpClient.GetAsync(request).Result;
-            return JObject.Parse(response.Content);
+            var TAGS = System.IO.File.ReadAllText(Constants.PATH.TAGS_FILE);
+            string jobId = Guid.NewGuid().ToString();
+
+            TAGS = TAGS.Replace("{JobId}", jobId)
+                       .Replace("{DeviceId}", simulatedDeviceId)
+                       .Replace("{FaultyDeviceId}", simulatedFaultyDeviceId);
+            return Request(TAGS);
         }
 
-        private IHttpResponse request(string content)
+       
+
+        private IHttpResponse Request(string content)
         {
-            var request = new HttpRequest(Constants.IOTHUB_ADDRESS + Constants.DEVICE_PATH);
+            var request = new HttpRequest(Constants.Urls.IOTHUB_ADDRESS + Constants.Urls.JOBS_PATH);
             request.SetContent(content);
             return this.httpClient.PostAsync(request).Result;
         }
+
+        private IHttpResponse Request(string path, string query)
+        {
+            string uri = Constants.Urls.IOTHUB_ADDRESS + Constants.Urls.JOBS_PATH;
+            if (!String.IsNullOrEmpty(path))
+            {
+                uri += path;
+            }
+            if (!String.IsNullOrEmpty(query))
+            {
+                uri += query;
+            }
+            var request = new HttpRequest(uri);
+            return this.httpClient.GetAsync(request).Result;
+        }
     }
+
+
 }
