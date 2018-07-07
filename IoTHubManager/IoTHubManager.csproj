@@ -31,6 +31,9 @@
     <None Update="resources\devices\Device_Template_X509_Auth.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+        <None Update="resources\tags\Tags.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
  
 </Project>
