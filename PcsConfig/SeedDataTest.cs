@@ -47,7 +47,7 @@ namespace PcsConfig
         {
             // Arrange
             // wait for config to run seed data
-            // System.Threading.Thread.Sleep(60000);
+            System.Threading.Thread.Sleep(60000);
 
             // Act
             var request = new HttpRequest(CONFIG_ADDRESS + "/devicegroups");
@@ -68,7 +68,7 @@ namespace PcsConfig
         {
             // Arrange
             // wait for config to run seed data
-            // System.Threading.Thread.Sleep(60000);
+            System.Threading.Thread.Sleep(60000);
 
             // Act
             var request = new HttpRequest(TELEMETRY_ADDRESS + "/rules");
@@ -110,7 +110,7 @@ namespace PcsConfig
         {
             // Arrange
             // wait for config to run seed data
-            // System.Threading.Thread.Sleep(60000);
+            System.Threading.Thread.Sleep(60000);
 
             // Act
             var request = new HttpRequest(SIMULATION_ADDRESS + "/simulations");
