@@ -50,7 +50,7 @@ namespace IoTHubManager
 
 
         //keys that should be replaced in the above defined JSON files.
-        public class TemplateKeys
+        public class Keys
         {
             //Device and Jobs
             public const string DEVICE_ID = "{DeviceId}";
@@ -63,6 +63,12 @@ namespace IoTHubManager
             public const string PRIMARY_TH = "{PrimaryThumbprint}";         //X.509
             public const string SECONDARY_TH = "{SecondaryThumbprint}";     //X.509
 
+        }
+
+        public class Auth
+        {
+            public const int SYMMETRIC = 0;
+            public const int X509 = 1;
         }
 
 
