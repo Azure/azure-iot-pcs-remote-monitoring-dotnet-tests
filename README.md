@@ -16,6 +16,8 @@ The integration tests solution depends on all the environment variables set on t
 How to run the integration tests
 ===========================
 
+Note: If using Windows, Git Bash is recommended.
+
 ## Build and Run from the command line
 
 The [scripts](scripts) folder contains scripts for many frequent tasks:
