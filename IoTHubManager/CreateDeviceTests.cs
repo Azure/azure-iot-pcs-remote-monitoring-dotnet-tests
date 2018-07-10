@@ -45,17 +45,14 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-
             var authentication = createdDevice["Authentication"];
-            var createdDeviceId = createdDevice["Id"].ToString();
+            string createdDeviceId = createdDevice["Id"].ToString(),
+                   primaryKey = authentication["PrimaryKey"].ToString(),
+                   secondaryKey = authentication["SecondaryKey"].ToString();
 
             Assert.False(string.IsNullOrEmpty(createdDeviceId));
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
-
-            string primaryKey = authentication["PrimaryKey"].ToString(),
-                   secondaryKey = authentication["SecondaryKey"].ToString();
-
             Assert.Equal(0, authentication["AuthenticationType"]);
             Assert.False(string.IsNullOrEmpty(primaryKey));
             Assert.False(string.IsNullOrEmpty(secondaryKey));
@@ -74,25 +71,17 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-
-            //Assert Device ID
-            string createdDeviceId = createdDevice["Id"].ToString();
-            Assert.Equal(createdDeviceId, id);
-
-            //Assert Authentication
             var authentication = createdDevice["Authentication"];
-            Assert.Equal(0, authentication["AuthenticationType"]);
-
-            string primaryKey = authentication["PrimaryKey"].ToString(),
+            string createdDeviceId = createdDevice["Id"].ToString(),
+                   primaryKey = authentication["PrimaryKey"].ToString(),
                    secondaryKey = authentication["SecondaryKey"].ToString();
 
+            Assert.Equal(createdDeviceId, id);
+            Assert.Equal(0, authentication["AuthenticationType"]);
             Assert.False(string.IsNullOrEmpty(primaryKey));
             Assert.False(string.IsNullOrEmpty(secondaryKey));
-
-            //Assert other properties
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
-            
         }
 
 
@@ -109,29 +98,21 @@ namespace IoTHubManager
                                                           .Replace("{SecondaryKey}",secondaryKey);
             var response = Request.Post(device);
 
-            // Asserts
+
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-
-            //Assert Device ID is NOT empty
-            string createdDeviceId = createdDevice["Id"].ToString();
-            Assert.Equal(createdDeviceId, id);
-
-            //Assert Authentication
             var authentication = createdDevice["Authentication"];
-            Assert.Equal(0, authentication["AuthenticationType"]);
-
-            string createdPrimaryKey = authentication["PrimaryKey"].ToString(),
+            string createdDeviceId = createdDevice["Id"].ToString(),
+                   createdPrimaryKey = authentication["PrimaryKey"].ToString(),
                    createdSecondaryKey = authentication["SecondaryKey"].ToString();
 
+            Assert.Equal(createdDeviceId, id);
+            Assert.Equal(0, authentication["AuthenticationType"]);
             Assert.Equal(primaryKey, createdPrimaryKey);
             Assert.Equal(secondaryKey, createdSecondaryKey);
-
-            //Assert other properties
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
-            
         }
 
 
@@ -140,7 +121,7 @@ namespace IoTHubManager
         {
             string primaryKey = Guid.NewGuid().ToString("N"),
                    secondaryKey = Guid.NewGuid().ToString("N");
-           
+
             string device = DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.TemplateKeys.DEVICE_ID, "")
                                                           .Replace("{PrimaryKey}",primaryKey)
                                                           .Replace("{SecondaryKey}",secondaryKey);
@@ -150,22 +131,15 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-
-            //Assert Device ID is NOT empty
-            string createdDeviceId = createdDevice["Id"].ToString();
-            Assert.False(string.IsNullOrEmpty(createdDeviceId));
-
-            //Assert Authentication
             var authentication = createdDevice["Authentication"];
+            string createdDeviceId = createdDevice["Id"].ToString(),
+                   createdPrimaryKey = authentication["PrimaryKey"].ToString(),
+                   createdSecondaryKey = authentication["SecondaryKey"].ToString(); 
+            
+            Assert.False(string.IsNullOrEmpty(createdDeviceId));
             Assert.Equal(0, authentication["AuthenticationType"]);
-
-            string createdPrimaryKey = authentication["PrimaryKey"].ToString(),
-                   createdSecondaryKey = authentication["SecondaryKey"].ToString();
-
             Assert.Equal(primaryKey, createdPrimaryKey);
             Assert.Equal(secondaryKey, createdSecondaryKey);
-
-            //Assert other properties
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
             
@@ -186,27 +160,17 @@ namespace IoTHubManager
 
             //Assert Request success (200 OK)
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            //Parsing JSON
+
             var createdDevice = JObject.Parse(response.Content);
-
-
-            //Assert Device ID is NOT empty
-            string createdDeviceId = createdDevice["Id"].ToString();
-            Assert.Equal(createdDeviceId, id);
-
-
-            //Assert Authentication
             var authentication = createdDevice["Authentication"];
-            Assert.Equal(1, authentication["AuthenticationType"]);
-
-            string createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString(),
+            string createdDeviceId = createdDevice["Id"].ToString(),
+                   createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString(),
                    createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
 
+            Assert.Equal(createdDeviceId, id);
+            Assert.Equal(1, authentication["AuthenticationType"]);
             Assert.Equal(primaryThumbprint, createdPrimaryThumbprint);
             Assert.Equal(secondaryThumbprint, createdSecondaryThumbprint);
-
-
-            //Assert other properties
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
             
@@ -224,34 +188,20 @@ namespace IoTHubManager
                                                      .Replace(Constants.TemplateKeys.SECONDARY_TH,secondaryThumbprint);
             var response = Request.Post(device);
             
-
-            // Asserts
-            //Assert Request success (200 OK)
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            //Parsing JSON
+
             var createdDevice = JObject.Parse(response.Content);
-
-
-            //Assert Device ID is NOT empty
-            string createdDeviceId = createdDevice["Id"].ToString();
-            Assert.False(string.IsNullOrEmpty(createdDeviceId));
-
-
-            //Assert Authentication
             var authentication = createdDevice["Authentication"];
-            Assert.Equal(1, authentication["AuthenticationType"]);
-
-            string createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString(),
+            string createdDeviceId = createdDevice["Id"].ToString(),
+                   createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString(),
                    createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
 
+            Assert.False(string.IsNullOrEmpty(createdDeviceId));
+            Assert.Equal(1, authentication["AuthenticationType"]);
             Assert.Equal(primaryThumbprint, createdPrimaryThumbprint);
             Assert.Equal(secondaryThumbprint, createdSecondaryThumbprint);
-
-
-            //Assert other properties
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
-            
         }
 
         /*
