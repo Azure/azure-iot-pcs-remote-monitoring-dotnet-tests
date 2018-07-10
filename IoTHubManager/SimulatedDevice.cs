@@ -19,6 +19,8 @@ namespace IoTHubManager
         internal int healthyDeviceNo = 0;
         internal int faultyDeviceNo = 0;
 
+        private HttpRequestWrapper Request;
+
         internal static Simulation GetSimulation()
         {
             if (simulation != null)
@@ -30,7 +32,7 @@ namespace IoTHubManager
 
         private Simulation()
         {
-            this.httpClient = new HttpClient();
+            this.Request = new HttpRequestWrapper(Constants.Urls.DEVICE_SIMULATION_ADDRESS, Constants.Urls.SIMULATION_PATH);
 
             if (!CheckSimulationExists())
             {
@@ -43,12 +45,13 @@ namespace IoTHubManager
 
         private void CreateSimulation()
         {
-            var request = new HttpRequest(Constants.Urls.DEVICE_SIMULATION_ADDRESS + Constants.Urls.SIMULATION_PATH);
-            request.SetContent(System.IO.File.ReadAllText(Constants.Path.SIMULATION_FILE));
-            IHttpResponse response = this.httpClient.PostAsync(request).Result;
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            var simulation = JObject.Parse(response.Content);
-            ETag = simulation["Etag"].ToString();
+            IHttpResponse response = Request.Post(System.IO.File.ReadAllText(Constants.Path.SIMULATION_FILE));
+
+            if (HttpStatusCode.OK != response.StatusCode)
+            {
+                throw new Exception("Error while creating simulated devices. Request to device simulation service failed with " + response.StatusCode + " status code.");
+            }
+            
         }
 
         private bool CheckSimulationExists()
@@ -57,7 +60,7 @@ namespace IoTHubManager
             {
                 GetSimulatedDevices();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -90,8 +93,12 @@ namespace IoTHubManager
         {
             var request = new HttpRequest(Constants.Urls.DEVICE_SIMULATION_ADDRESS + Constants.Urls.SIMULATION_PATH);
             request.SetContent(devices);
-            IHttpResponse response = this.httpClient.PutAsync(request).Result;
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            IHttpResponse response = Request.Put(devices);
+
+            if (HttpStatusCode.OK != response.StatusCode)
+            {
+                throw new Exception("Create simulated device failure. Request to device simulation service failed with " + response.StatusCode + " status code.");
+            }
         }
 
 
@@ -100,7 +107,12 @@ namespace IoTHubManager
         {
             var request = new HttpRequest(Constants.Urls.DEVICE_SIMULATION_ADDRESS + Constants.Urls.SIMULATION_PATH);
             IHttpResponse response = this.httpClient.GetAsync(request).Result;
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            if (HttpStatusCode.OK != response.StatusCode)
+            {
+                throw new Exception("Couldn't fetch simulated devices. Request to device simulation service failed with " + response.StatusCode + " status code.");
+            }
+
             return JObject.Parse(response.Content);
         }
     }
