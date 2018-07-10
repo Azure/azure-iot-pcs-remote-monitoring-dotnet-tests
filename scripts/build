@@ -20,6 +20,7 @@ echo "The repo name is: " $2
 
 ./IoTHubManager/run.sh "IoT Hub Manager tests"
 
+./ASAManager/run.sh "ASA Manager tests"
 
 
 set +e

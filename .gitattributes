@@ -7,6 +7,7 @@
 *.sh text eol=lf
 scripts/build text eol=lf
 scripts/git/setup text eol=lf
+scripts/asamanager.sh text eol=lf
 scripts/devicesimulation.sh text eol=lf
 scripts/iothubmanager.sh text eol=lf
 scripts/pcsconfig.sh text eol=lf
@@ -15,3 +16,4 @@ scripts/telemetry.sh text eol=lf
 StorageAdapter/run.sh text eol=lf
 IoTHubManager/run.sh text eol=lf
 PcsConfig/run.sh text eol=lf
+ASAManager/run.sh text eol=lf
