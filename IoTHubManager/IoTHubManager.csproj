@@ -31,9 +31,21 @@
     <None Update="resources\devices\Device_Template_X509_Auth.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-        <None Update="resources\tags\Tags.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="resources\jobs\Method_Elevator_FrimwareUpdate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="resources\jobs\Tags.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\jobs\Simulation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\jobs\Method_Chiller_Reboot.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\jobs\Method_Elevator_FrimwareUpdate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>  
   </ItemGroup>
  
 </Project>
