@@ -15,7 +15,7 @@ namespace IoTHubManager
         private readonly string simulatedFaultyDeviceId;
 
         /**
-         * Initialises simulated devices usewd for the tests
+         * Initialises simulated devices used for the tests
          */
         public CreateJobsTest()
         {

@@ -91,8 +91,6 @@ namespace IoTHubManager
 
         private void PutSimulatedDevices(JObject devices)
         {
-            var request = new HttpRequest(Constants.Urls.DEVICE_SIMULATION_ADDRESS + Constants.Urls.SIMULATION_PATH);
-            request.SetContent(devices);
             IHttpResponse response = Request.Put(devices);
 
             if (HttpStatusCode.OK != response.StatusCode)
@@ -105,8 +103,8 @@ namespace IoTHubManager
 
         public JObject GetSimulatedDevices()
         {
-            var request = new HttpRequest(Constants.Urls.DEVICE_SIMULATION_ADDRESS + Constants.Urls.SIMULATION_PATH);
-            IHttpResponse response = this.httpClient.GetAsync(request).Result;
+            
+            IHttpResponse response = Request.Get();
 
             if (HttpStatusCode.OK != response.StatusCode)
             {
