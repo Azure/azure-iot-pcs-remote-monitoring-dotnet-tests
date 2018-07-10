@@ -116,9 +116,9 @@ namespace IoTHubManager
             var TAGS = System.IO.File.ReadAllText(Constants.Path.TAGS_FILE);
             string jobId = Guid.NewGuid().ToString();
 
-            TAGS = TAGS.Replace(Constants.TemplateKeys.JOB_ID, jobId)
-                       .Replace(Constants.TemplateKeys.DEVICE_ID, simulatedDeviceId)
-                       .Replace(Constants.TemplateKeys.FAULTY_DEVICE_ID, simulatedFaultyDeviceId);
+            TAGS = TAGS.Replace(Constants.Keys.JOB_ID, jobId)
+                       .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId)
+                       .Replace(Constants.Keys.FAULTY_DEVICE_ID, simulatedFaultyDeviceId);
             return Request.Post(TAGS);
         }
 
@@ -130,8 +130,8 @@ namespace IoTHubManager
             var METHODS = System.IO.File.ReadAllText(methodFile);
             string jobId = Guid.NewGuid().ToString();
             
-            METHODS = METHODS.Replace(Constants.TemplateKeys.JOB_ID, jobId)
-                             .Replace(Constants.TemplateKeys.DEVICE_ID, simulatedDeviceId);
+            METHODS = METHODS.Replace(Constants.Keys.JOB_ID, jobId)
+                             .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
             return Request.Post(METHODS);
         }
 
@@ -143,8 +143,8 @@ namespace IoTHubManager
             var CONFIG = System.IO.File.ReadAllText(Constants.Path.RECONFIGURE_DEVICE_FILE);
             string jobId = Guid.NewGuid().ToString();
 
-            CONFIG = CONFIG.Replace(Constants.TemplateKeys.JOB_ID, jobId)
-                           .Replace(Constants.TemplateKeys.DEVICE_ID, simulatedDeviceId);
+            CONFIG = CONFIG.Replace(Constants.Keys.JOB_ID, jobId)
+                           .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
             return Request.Post(CONFIG);
         }
 
