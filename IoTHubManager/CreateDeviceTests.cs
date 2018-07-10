@@ -12,16 +12,18 @@ namespace IoTHubManager
 {
     public class CreateDeviceTest
     {
-        private readonly IHttpClient httpClient;
-        private const string IOTHUB_ADDRESS = "http://localhost:9002/v1";
         private const string DEVICES_DIR = "./resources/devices/";
+
+        internal HttpRequestWrapper Request;
+
         private string DEVICE_TEMPLATE_AUTO_GEN_AUTH, 
                        DEVICE_TEMPLATE_SYMMETRIC_AUTH,
                        DEVICE_TEMPLATE_X509_AUTH;
 
         public CreateDeviceTest()
         {
-            this.httpClient = new HttpClient();
+            this.Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.DEVICE_PATH);
+
             DEVICE_TEMPLATE_AUTO_GEN_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_AUTO_GEN_AUTH);
             DEVICE_TEMPLATE_SYMMETRIC_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_SYMMETRIC_AUTH);
             DEVICE_TEMPLATE_X509_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_X509_AUTH);
@@ -37,7 +39,7 @@ namespace IoTHubManager
         {
             // DeviceId must be empty to be auto generated.
             var device = DEVICE_TEMPLATE_AUTO_GEN_AUTH.Replace(Constants.TemplateKeys.DEVICE_ID, "");
-            var response = this.request(device);
+            var response = Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -66,7 +68,7 @@ namespace IoTHubManager
             // DeviceId must be empty to be auto generated.
             string id = Guid.NewGuid().ToString();
             var device = DEVICE_TEMPLATE_AUTO_GEN_AUTH.Replace(Constants.TemplateKeys.DEVICE_ID, id);
-            var response = this.request(device);
+            var response = Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -105,7 +107,7 @@ namespace IoTHubManager
             string device = DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.TemplateKeys.DEVICE_ID, id)
                                                           .Replace("{PrimaryKey}",primaryKey)
                                                           .Replace("{SecondaryKey}",secondaryKey);
-            var response = this.request(device);
+            var response = Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -142,7 +144,7 @@ namespace IoTHubManager
             string device = DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.TemplateKeys.DEVICE_ID, "")
                                                           .Replace("{PrimaryKey}",primaryKey)
                                                           .Replace("{SecondaryKey}",secondaryKey);
-            var response = this.request(device);
+            var response = Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -180,7 +182,7 @@ namespace IoTHubManager
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.TemplateKeys.DEVICE_ID, id)
                                                      .Replace(Constants.TemplateKeys.PRIMARY_TH, primaryThumbprint)
                                                      .Replace(Constants.TemplateKeys.SECONDARY_TH, secondaryThumbprint);
-            var response = this.request(device);
+            var response = Request.Post(device);
 
             //Assert Request success (200 OK)
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -220,7 +222,7 @@ namespace IoTHubManager
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.TemplateKeys.DEVICE_ID, "")
                                                      .Replace(Constants.TemplateKeys.PRIMARY_TH,primaryThumbprint)
                                                      .Replace(Constants.TemplateKeys.SECONDARY_TH,secondaryThumbprint);
-            var response = this.request(device);
+            var response = Request.Post(device);
             
 
             // Asserts
@@ -250,12 +252,6 @@ namespace IoTHubManager
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
             
-        }
-
-        private IHttpResponse request(string content) {
-            var request = new HttpRequest(Constants.Urls.IOTHUB_ADDRESS + Constants.Urls.DEVICE_PATH);
-            request.SetContent(content);
-            return this.httpClient.PostAsync(request).Result;
         }
 
         /*
