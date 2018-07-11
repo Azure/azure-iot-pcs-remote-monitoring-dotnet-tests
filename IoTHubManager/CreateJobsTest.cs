@@ -19,11 +19,13 @@ namespace IoTHubManager
          */
         public CreateJobsTest()
         {
+            Console.WriteLine("Running CreateJobsTest Tests");
             this.Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.JOBS_PATH);
-
+            Console.WriteLine("Running CreateJobsTest Tests :: HttpRequestWrapper initialzed");
             Simulation simulation = Simulation.GetSimulation();
             simulatedDeviceId = Constants.SimulatedDevices.SIMULATED_DEVICE + "." + simulation.healthyDeviceNo.ToString();
             simulatedFaultyDeviceId = Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE + "." + simulation.faultyDeviceNo.ToString();
+            Console.WriteLine("Starting CreateJobsTest Tests");
         }
 
 
@@ -35,7 +37,7 @@ namespace IoTHubManager
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void Creates_Tags_On_Simulated_Devices()
         {
-            
+            Console.WriteLine("Running 1st CreateJobsTest Tests");
             var tagJobResponse = CreateTags();
             Assert.Equal(HttpStatusCode.OK, tagJobResponse.StatusCode);
 
