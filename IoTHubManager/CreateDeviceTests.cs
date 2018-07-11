@@ -3,7 +3,7 @@
 using System.Net;
 using System;
 using System.Text;
-using Helpers.Http;
+using Helpers.Device.Http;
 using Xunit;
 using Newtonsoft.Json.Linq;
 
@@ -12,9 +12,8 @@ namespace IoTHubManager
     [Collection("IoTHub Manager Tests")]
     public class CreateDeviceTest
     {
-
-        internal HttpRequestWrapper Request;
-
+        private readonly HttpRequestWrapper Request;
+        //Device Templates
         private readonly string DEVICE_TEMPLATE_AUTO_GEN_AUTH;
         private readonly string DEVICE_TEMPLATE_SYMMETRIC_AUTH;
         private readonly string DEVICE_TEMPLATE_X509_AUTH;
@@ -56,8 +55,8 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-            Helpers.AssertCommonDeviceProperties(null, createdDevice);
-            Helpers.AssertSymmetricAuthentication(null, null, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(null, createdDevice);
+            Helpers.Device.AssertSymmetricAuthentication(null, null, createdDevice);
         }
 
         /**
@@ -79,8 +78,8 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-            Helpers.AssertCommonDeviceProperties(id, createdDevice);
-            Helpers.AssertSymmetricAuthentication(null, null, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(id, createdDevice);
+            Helpers.Device.AssertSymmetricAuthentication(null, null, createdDevice);
         }
 
         /**
@@ -106,8 +105,8 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-            Helpers.AssertCommonDeviceProperties(id, createdDevice);
-            Helpers.AssertSymmetricAuthentication(primaryKey, secondaryKey, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(id, createdDevice);
+            Helpers.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, createdDevice);
         }
 
         /**
@@ -133,8 +132,8 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-            Helpers.AssertCommonDeviceProperties(null, createdDevice);
-            Helpers.AssertSymmetricAuthentication(primaryKey, secondaryKey, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(null, createdDevice);
+            Helpers.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, createdDevice);
         }
 
         /**
@@ -147,8 +146,8 @@ namespace IoTHubManager
         {
             // Arrange
             string id = Guid.NewGuid().ToString();
-            string primaryThumbprint = Helpers.GenerateNewThumbPrint();
-            string secondaryThumbprint = Helpers.GenerateNewThumbPrint();
+            string primaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
+            string secondaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
 
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, id)
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
@@ -161,8 +160,8 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-            Helpers.AssertCommonDeviceProperties(id, createdDevice);
-            Helpers.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(id, createdDevice);
+            Helpers.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, createdDevice);
         }
 
         /**
@@ -174,8 +173,8 @@ namespace IoTHubManager
         public void DeviceCreated_IfEmptyIdandX509AuthPassed()
         {
             // Arrange
-            string primaryThumbprint = Helpers.GenerateNewThumbPrint();
-            string secondaryThumbprint = Helpers.GenerateNewThumbPrint();
+            string primaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
+            string secondaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
             // DeviceId must be empty to be auto generated.
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, "")
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
@@ -188,8 +187,8 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var createdDevice = JObject.Parse(response.Content);
-            Helpers.AssertCommonDeviceProperties(null, createdDevice);
-            Helpers.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(null, createdDevice);
+            Helpers.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, createdDevice);
         }
     }
 }
