@@ -2,7 +2,6 @@
 
 using System.Net;
 using System;
-using System.Security.Cryptography;
 using System.Text;
 using Helpers.Http;
 using Xunit;
@@ -10,6 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace IoTHubManager
 {
+    [Collection("IOTHUB-Manager")]
     public class CreateDeviceTest
     {
 
@@ -183,8 +183,8 @@ namespace IoTHubManager
         {
 
             string id = Guid.NewGuid().ToString(),
-                   primaryThumbprint = generateNewThumbPrint(),
-                   secondaryThumbprint = generateNewThumbPrint();
+                   primaryThumbprint = Helpers.GenerateNewThumbPrint(),
+                   secondaryThumbprint = Helpers.GenerateNewThumbPrint();
 
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, id)
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
@@ -220,8 +220,8 @@ namespace IoTHubManager
         public void Creates_Device_AutoGen_Id_and_Custom_X509_Auth()
         {
             // DeviceId must be empty to be auto generated.
-            string primaryThumbprint = generateNewThumbPrint(),
-                   secondaryThumbprint = generateNewThumbPrint();
+            string primaryThumbprint = Helpers.GenerateNewThumbPrint(),
+                   secondaryThumbprint = Helpers.GenerateNewThumbPrint();
            
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, "")
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
@@ -247,23 +247,6 @@ namespace IoTHubManager
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
         }
 
-        /*
-        Generates random SHA1 hash mimicing the X509 thumb print
-         */
-        private string generateNewThumbPrint(){
-           
-            string input = Guid.NewGuid().ToString();
-            SHA1Managed sha = new SHA1Managed();
 
-            var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
-            var stringBuilder = new StringBuilder(hash.Length * 2);
-
-            for (int i = 0; i < hash.Length; i++)
-            {
-                stringBuilder.Append(hash[i].ToString("X2"));
-            }
-
-            return stringBuilder.ToString();
-        }
     }
 }

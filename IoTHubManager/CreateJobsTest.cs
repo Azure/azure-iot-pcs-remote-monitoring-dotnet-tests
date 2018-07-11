@@ -1,5 +1,4 @@
-﻿ using System;
-using System.Threading;
+﻿using System;
 using System.Net;
 using Helpers.Http;
 using Xunit;
@@ -7,12 +6,13 @@ using Newtonsoft.Json.Linq;
 
 namespace IoTHubManager
 {
+    [Collection("IOTHUB-Manager")]
     public class CreateJobsTest
     {
         private readonly HttpRequestWrapper Request;
-
         private readonly string simulatedDeviceId;
         private readonly string simulatedFaultyDeviceId;
+
 
         /**
          * Initialises simulated devices used for the tests
@@ -25,6 +25,7 @@ namespace IoTHubManager
             simulatedDeviceId = Constants.SimulatedDevices.SIMULATED_DEVICE + "." + simulation.healthyDeviceNo.ToString();
             simulatedFaultyDeviceId = Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE + "." + simulation.faultyDeviceNo.ToString();
         }
+
 
         /**
          * Creates Job for tagging on devices and 
@@ -42,12 +43,13 @@ namespace IoTHubManager
             Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, tagJob["Status"].ToObject<int>());
             Assert.Equal<int>(Constants.Jobs.TAG_JOB, tagJob["Type"].ToObject<int>());
 
-            var tagJobStatus = ReTry_GetJobStatus(tagJob["JobId"].ToString());
+            var tagJobStatus = Helpers.ReTry_GetJobStatus(Request, tagJob["JobId"].ToString());
 
             Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, tagJobStatus["Status"].ToObject<int>());   //Assert to see if Last try yielded correct status.
             Assert.Equal<int>(Constants.Jobs.TAG_JOB, tagJobStatus["Type"].ToObject<int>());
 
         }
+
 
         /**
          * Creates Job for running methods on 
@@ -74,7 +76,7 @@ namespace IoTHubManager
             Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, methodJob["Status"].ToObject<int>());
             Assert.Equal<int>(Constants.Jobs.METHOD_JOB, methodJob["Type"].ToObject<int>());
 
-            var methodJobStatus = ReTry_GetJobStatus(methodJob["JobId"].ToString());
+            var methodJobStatus = Helpers.ReTry_GetJobStatus(Request, methodJob["JobId"].ToString());
 
             Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, methodJobStatus["Status"].ToObject<int>()); //Assert to see if Last try yielded correct status.
             Assert.Equal<int>(Constants.Jobs.METHOD_JOB, methodJobStatus["Type"].ToObject<int>());
@@ -98,7 +100,7 @@ namespace IoTHubManager
             Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, configJob["Status"].ToObject<int>());
             Assert.Equal<int>(Constants.Jobs.RECONFIGURE_JOB, configJob["Type"].ToObject<int>());
 
-            var configJobStatus = ReTry_GetJobStatus(configJob["JobId"].ToString());
+            var configJobStatus = Helpers.ReTry_GetJobStatus(Request, configJob["JobId"].ToString());
 
             Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, configJobStatus["Status"].ToObject<int>());   //Assert to see if Last try yielded correct status.
             Assert.Equal<int>(Constants.Jobs.RECONFIGURE_JOB, configJobStatus["Type"].ToObject<int>());
@@ -148,35 +150,5 @@ namespace IoTHubManager
             return Request.Post(CONFIG);
         }
 
-        //Helper methods for fetching (and retrying) the current Job Status.
-        /**
-         * Gets job status using job id.
-         */
-        private JObject GetJobStatus(string JobId)
-        {
-            IHttpResponse jobStatusResponse = Request.Get(JobId, null);
-            Assert.Equal(HttpStatusCode.OK, jobStatusResponse.StatusCode);
-            return JObject.Parse(jobStatusResponse.Content);
-        }
-
-        /**
-         * Monitor job status using polling (re-try) mechanism 
-         */
-        private JObject ReTry_GetJobStatus(string jobId)
-        {
-            var jobStatus = GetJobStatus(jobId);
-
-            for (int trials = 0; trials < Constants.Jobs.MAX_TRIALS; trials++)
-            {
-                if (Constants.Jobs.JOB_COMPLETED == jobStatus["Status"].ToObject<int>())
-                {
-                    break;
-                }
-                Thread.Sleep(Constants.Jobs.WAIT);
-                jobStatus = GetJobStatus(jobId);
-            }
-
-            return jobStatus;
-        }
     }
 }
