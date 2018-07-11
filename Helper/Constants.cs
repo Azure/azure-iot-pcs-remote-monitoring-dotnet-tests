@@ -5,10 +5,12 @@ namespace Helpers
     public class Constants
     {
         // Endpoints
-        public const string ASA_MANAGER_ADDRESS = "http://127.0.0.1:9024/v1";
         public const string CONFIG_ADDRESS = "http://127.0.0.1:9005/v1";
-        public const string IOT_HUB_ADDRESS = "http://127.0.0.1:9002/v1";
         public const string TELEMETRY_ADDRESS = "http://127.0.0.1:9004/v1";
+        public const string SIMULATION_ADDRESS = "http://127.0.0.1:9003/v1";
+        public const string STORAGE_ADAPTER_ADDRESS = "http://127.0.0.1:9022/v1";
+        public const string ASA_MANAGER_ADDRESS = "http://127.0.0.1:9024/v1";
+        public const string IOT_HUB_ADDRESS = "http://127.0.0.1:9002/v1";
 
         // Environment Variables
         public const string AZUREBLOB_ACCOUNT_ENV_VAR = "PCS_ASA_DATA_AZUREBLOB_ACCOUNT";

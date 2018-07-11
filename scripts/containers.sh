@@ -8,19 +8,19 @@ cd $APP_HOME
 source "$APP_HOME/scripts/.functions.sh"
 
 start() {
-    ./scripts/pcsconfig.sh start
     ./scripts/storageadapter.sh start
     ./scripts/devicesimulation.sh start
     ./scripts/telemetry.sh start
+    ./scripts/config.sh start
     ./scripts/iothubmanager.sh start
     ./scripts/asamanager.sh start
 }
 
 stop() {
-    ./scripts/pcsconfig.sh stop
     ./scripts/storageadapter.sh stop
     ./scripts/devicesimulation.sh stop
     ./scripts/telemetry.sh stop
+    ./scripts/config.sh stop
     ./scripts/iothubmanager.sh stop
     ./scripts/asamanager.sh stop
 }

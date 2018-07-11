@@ -17,7 +17,7 @@ start_containers() {
     ./scripts/storageadapter.sh start
     ./scripts/iothubmanager.sh start
     ./scripts/devicesimulation.sh start
-    ./scripts/pcsconfig.sh start
+    ./scripts/config.sh start
     docker ps -a
 }
 
@@ -29,7 +29,7 @@ stop_containers() {
     ./scripts/storageadapter.sh stop
     ./scripts/iothubmanager.sh stop
     ./scripts/devicesimulation.sh stop
-    ./scripts/pcsconfig.sh stop
+    ./scripts/config.sh stop
 }
 
 run_tests() {

@@ -16,7 +16,7 @@ echo "The repo name is: " $2
 
 ./StorageAdapter/run.sh "Storage Adapter tests"
 
-./PcsConfig/run.sh "Pcs Config tests"
+./Config/run.sh "Config tests"
 
 ./IoTHubManager/run.sh "IoT Hub Manager tests"
 

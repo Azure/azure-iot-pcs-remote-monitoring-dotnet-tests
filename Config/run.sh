@@ -15,9 +15,9 @@ start_containers() {
 
     cd $APP_HOME
     ./scripts/storageadapter.sh start
-    ./scripts/pcsconfig.sh start
     ./scripts/telemetry.sh start
     ./scripts/devicesimulation.sh start
+    ./scripts/config.sh start
     docker ps -a
 }
 
@@ -27,9 +27,9 @@ stop_containers() {
     cd $APP_HOME
     docker ps -a
     ./scripts/storageadapter.sh stop
-    ./scripts/pcsconfig.sh stop
     ./scripts/telemetry.sh stop
     ./scripts/devicesimulation.sh stop
+    ./scripts/config.sh stop
 }
 
 run_tests() {

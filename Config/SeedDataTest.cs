@@ -4,21 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Helpers.Http;
+using Helpers;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace PcsConfig
+namespace Config
 {
+    [Collection("Config Tests")]
     public class SeedDataTest
     {
         private readonly IHttpClient httpClient;
-        private const string CONFIG_ADDRESS = "http://127.0.0.1:9005/v1";
-        private const string TELEMETRY_ADDRESS = "http://127.0.0.1:9004/v1";
-        private const string SIMULATION_ADDRESS = "http://127.0.0.1:9003/v1";
+        private const int TIMEOUT_MS = 10000;
+        private bool seedComplete = false;
 
         public SeedDataTest()
         {
             this.httpClient = new HttpClient();
+            this.seedComplete = SeedData.WaitForSeedComplete();
         }
 
         /// <summary>
@@ -29,8 +31,8 @@ namespace PcsConfig
         public void Should_Return_OK_Status()
         {
             // Act
-            var request = new HttpRequest(CONFIG_ADDRESS + "/status");
-            request.AddHeader("X-Foo", "Bar");
+            var request = new HttpRequest(Constants.CONFIG_ADDRESS + "/status");
+            request.Options.Timeout = TIMEOUT_MS;
             var response = this.httpClient.GetAsync(request).Result;
 
             // Assert
@@ -42,16 +44,15 @@ namespace PcsConfig
         /// Bootstrap a real HTTP server and test that seed data
         /// is created.
         /// </summary>
-        [Fact, Trait("Type", "IntegrationTest")]
+        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void DeviceGroupsAreCreatedOnStartup()
         {
-            // Arrange
-            // wait for config to run seed data
-            System.Threading.Thread.Sleep(60000);
+
+            Assert.True(this.seedComplete, "Seed data failed.");
 
             // Act
-            var request = new HttpRequest(CONFIG_ADDRESS + "/devicegroups");
-            request.AddHeader("X-Foo", "Bar");
+            var request = new HttpRequest(Constants.CONFIG_ADDRESS + "/devicegroups");
+            request.Options.Timeout = TIMEOUT_MS;
             var response = this.httpClient.GetAsync(request).Result;
 
             // Assert
@@ -63,16 +64,17 @@ namespace PcsConfig
         /// Bootstrap a real HTTP server and test that seed data
         /// is created.
         /// </summary>
-        [Fact, Trait("Type", "IntegrationTest")]
+        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void RulesAreCreatedOnStartup()
         {
-            // Arrange
-            // wait for config to run seed data
-            System.Threading.Thread.Sleep(60000);
+
+            Assert.True(this.seedComplete, "Seed data failed.");
+
+            //Arrange
+            var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + "/rules");
+            request.Options.Timeout = TIMEOUT_MS;
 
             // Act
-            var request = new HttpRequest(TELEMETRY_ADDRESS + "/rules");
-            request.AddHeader("X-Foo", "Bar");
             var response = this.httpClient.GetAsync(request).Result;
 
             // Assert
@@ -80,10 +82,9 @@ namespace PcsConfig
 
             JObject jsonResponse = JObject.Parse(response.Content);
 
-
             Assert.True(jsonResponse.HasValues);
 
-            JArray items = (JArray) jsonResponse["Items"];
+            JArray items = (JArray)jsonResponse["Items"];
             //TODO: Make it equal to 5 once fresh storage is created
             //Since we are using same storage account for now this number should be great or equal to 5
             Assert.True(items.Count >= 4);
@@ -105,16 +106,14 @@ namespace PcsConfig
         /// Bootstrap a real HTTP server and test that seed data
         /// is created.
         /// </summary>
-        [Fact, Trait("Type", "IntegrationTest")]
+        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void SimulationIsCreatedOnStartup()
         {
-            // Arrange
-            // wait for config to run seed data
-            System.Threading.Thread.Sleep(60000);
+            Assert.True(this.seedComplete, "Seed data failed.");
 
             // Act
-            var request = new HttpRequest(SIMULATION_ADDRESS + "/simulations");
-            request.AddHeader("X-Foo", "Bar");
+            var request = new HttpRequest(Constants.SIMULATION_ADDRESS + "/simulations");
+            request.Options.Timeout = TIMEOUT_MS;
             var response = this.httpClient.GetAsync(request).Result;
 
             // Assert
