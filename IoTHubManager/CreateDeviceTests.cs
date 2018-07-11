@@ -49,14 +49,17 @@ namespace IoTHubManager
             var device = DEVICE_TEMPLATE_AUTO_GEN_AUTH.Replace(Constants.Keys.DEVICE_ID, "");
             var response = Request.Post(device);
 
+
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
 
             var createdDevice = JObject.Parse(response.Content);
             var authentication = createdDevice["Authentication"];
             string createdDeviceId = createdDevice["Id"].ToString(),
                    primaryKey = authentication["PrimaryKey"].ToString(),
                    secondaryKey = authentication["SecondaryKey"].ToString();
+
 
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
@@ -81,14 +84,17 @@ namespace IoTHubManager
             var device = DEVICE_TEMPLATE_AUTO_GEN_AUTH.Replace(Constants.Keys.DEVICE_ID, id);
             var response = Request.Post(device);
 
+
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
 
             var createdDevice = JObject.Parse(response.Content);
             var authentication = createdDevice["Authentication"];
             string createdDeviceId = createdDevice["Id"].ToString(),
                    primaryKey = authentication["PrimaryKey"].ToString(),
                    secondaryKey = authentication["SecondaryKey"].ToString();
+
 
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
@@ -118,14 +124,17 @@ namespace IoTHubManager
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
             var response = Request.Post(device);
 
+
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
 
             var createdDevice = JObject.Parse(response.Content);
             var authentication = createdDevice["Authentication"];
             string createdDeviceId = createdDevice["Id"].ToString(),
                    createdPrimaryKey = authentication["PrimaryKey"].ToString(),
                    createdSecondaryKey = authentication["SecondaryKey"].ToString();
+
 
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
