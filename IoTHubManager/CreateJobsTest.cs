@@ -34,56 +34,62 @@ namespace IoTHubManager
          * mechanism to verify job completion.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void Creates_Tags_On_Simulated_Devices()
+        public void DeviceDataUpdated_IfTagged()
         {
-            
-            var tagJobResponse = CreateTags();
-            Assert.Equal(HttpStatusCode.OK, tagJobResponse.StatusCode);
+            // Arrange
+            var tags = System.IO.File.ReadAllText(Constants.Path.TAGS_FILE);
 
-            var tagJob = JObject.Parse(tagJobResponse.Content);
+            string jobId = Guid.NewGuid().ToString();
+            tags = tags.Replace(Constants.Keys.JOB_ID, jobId)
+                       .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId)
+                       .Replace(Constants.Keys.FAULTY_DEVICE_ID, simulatedFaultyDeviceId);
 
-            Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, tagJob["Status"].ToObject<int>());
-            Assert.Equal<int>(Constants.Jobs.TAG_JOB, tagJob["Type"].ToObject<int>());
+            // Act
+            var response = Request.Post(tags);
 
-            var tagJobStatus = Helpers.ReTry_GetJobStatus(Request, tagJob["JobId"].ToString());
-
-            Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, tagJobStatus["Status"].ToObject<int>());   //Assert to see if Last try yielded correct status.
-            Assert.Equal<int>(Constants.Jobs.TAG_JOB, tagJobStatus["Type"].ToObject<int>());
-
+            // Asserts
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            // Assert job type and job status for completion.
+            Helpers.AssertJobwasCompletedSuccessfully(response.Content,
+                                                      Constants.Jobs.TAG_JOB,
+                                                      Request);
         }
 
 
-        /**
+        /*
          * Creates Job for running methods on 
          * devices and checks the job status 
          * using polling mechanism to verify 
          * job completion.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void Run_Method_On_Simulated_Devices()
+        public void DeviceActedUpon_IfMethodExecuted()
         {
             TestRunMethod(Constants.Path.REBOOT_METHOD_FILE);               //Method with NO Args
             TestRunMethod(Constants.Path.FIRMWAREUPDATE_METHOD_FILE);       //Method with Args
         }
 
-        /**
+        /*
          * Helper for (Run_Method_On_Simulated_Devices)
          */
         private void TestRunMethod(string methodFile)
         {
-            var methodJobResp = RunMethods(methodFile);
-            Assert.Equal(HttpStatusCode.OK, methodJobResp.StatusCode);
+            // Arrange
+            var methods = System.IO.File.ReadAllText(methodFile);
+            string jobId = Guid.NewGuid().ToString();
 
-            var methodJob = JObject.Parse(methodJobResp.Content);
+            methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
+                             .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
+            
+            // Act
+            var response = Request.Post(methods);
 
-            Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, methodJob["Status"].ToObject<int>());
-            Assert.Equal<int>(Constants.Jobs.METHOD_JOB, methodJob["Type"].ToObject<int>());
-
-            var methodJobStatus = Helpers.ReTry_GetJobStatus(Request, methodJob["JobId"].ToString());
-
-            Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, methodJobStatus["Status"].ToObject<int>()); //Assert to see if Last try yielded correct status.
-            Assert.Equal<int>(Constants.Jobs.METHOD_JOB, methodJobStatus["Type"].ToObject<int>());
-
+            // Asserts
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            // Assert job type and job status for completion.
+            Helpers.AssertJobwasCompletedSuccessfully(response.Content,
+                                                      Constants.Jobs.METHOD_JOB,
+                                                      Request);
         }
 
 
@@ -94,68 +100,25 @@ namespace IoTHubManager
          * job completion.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void ReConfigure_Simulated_Devices()
+        public void DeviceUpdated_IfReconfigured()
         {
-            var configJobResponse = ReconfigureDevice();
-            Assert.Equal(HttpStatusCode.OK, configJobResponse.StatusCode);
 
-            var configJob = JObject.Parse(configJobResponse.Content);
-
-            Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, configJob["Status"].ToObject<int>());
-            Assert.Equal<int>(Constants.Jobs.RECONFIGURE_JOB, configJob["Type"].ToObject<int>());
-
-            var configJobStatus = Helpers.ReTry_GetJobStatus(Request, configJob["JobId"].ToString());
-
-            Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, configJobStatus["Status"].ToObject<int>());   //Assert to see if Last try yielded correct status.
-            Assert.Equal<int>(Constants.Jobs.RECONFIGURE_JOB, configJobStatus["Type"].ToObject<int>());
-
-        }
-
-
-
-        //Helper methods
-        /**
-         * Creates tags by reading tags template and replacing the template keys.
-         */
-        private IHttpResponse CreateTags()
-        {
-            var TAGS = System.IO.File.ReadAllText(Constants.Path.TAGS_FILE);
+            // Arrange
+            var config = System.IO.File.ReadAllText(Constants.Path.RECONFIGURE_DEVICE_FILE);
             string jobId = Guid.NewGuid().ToString();
 
-            TAGS = TAGS.Replace(Constants.Keys.JOB_ID, jobId)
-                       .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId)
-                       .Replace(Constants.Keys.FAULTY_DEVICE_ID, simulatedFaultyDeviceId);
-
-            return Request.Post(TAGS);
-        }
-
-        /**
-         * Runs methods by reading the template and replacing the template keys.
-         */
-        private IHttpResponse RunMethods(string methodFile)
-        {
-            var METHODS = System.IO.File.ReadAllText(methodFile);
-            string jobId = Guid.NewGuid().ToString();
-            
-            METHODS = METHODS.Replace(Constants.Keys.JOB_ID, jobId)
-                             .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
-
-            return Request.Post(METHODS);
-        }
-
-        /**
-         * Reconfigure devices by reading the template and replacing the template keys.
-         */
-        private IHttpResponse ReconfigureDevice()
-        {
-            var CONFIG = System.IO.File.ReadAllText(Constants.Path.RECONFIGURE_DEVICE_FILE);
-            string jobId = Guid.NewGuid().ToString();
-
-            CONFIG = CONFIG.Replace(Constants.Keys.JOB_ID, jobId)
+            config = config.Replace(Constants.Keys.JOB_ID, jobId)
                            .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
 
-            return Request.Post(CONFIG);
-        }
+            // Act
+            var response = Request.Post(config);
 
+            // Asserts
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            // Assert job type and job status for completion.
+            Helpers.AssertJobwasCompletedSuccessfully(response.Content,
+                                                      Constants.Jobs.RECONFIGURE_JOB,
+                                                      Request);
+        }
     }
 }

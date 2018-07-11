@@ -37,7 +37,8 @@ namespace IoTHubManager
         /**
          * Gets job status using job id.
          */
-        private static JObject GetJobStatus(HttpRequestWrapper Request, string JobId)
+        private static JObject GetJobStatus(HttpRequestWrapper Request, 
+                                            string JobId)
         {
             IHttpResponse jobStatusResponse = Request.Get(JobId, null);
             Assert.Equal(HttpStatusCode.OK, jobStatusResponse.StatusCode);
@@ -47,7 +48,8 @@ namespace IoTHubManager
         /**
          * Monitor job status using polling (re-try) mechanism 
          */
-        internal static JObject ReTry_GetJobStatus(HttpRequestWrapper Request, string jobId)
+        internal static JObject GetJobStatuswithReTry(HttpRequestWrapper Request, 
+                                                      string jobId)
         {
             var jobStatus = GetJobStatus(Request, jobId);
 
@@ -62,6 +64,22 @@ namespace IoTHubManager
             }
 
             return jobStatus;
+        }
+
+        internal static void AssertJobwasCompletedSuccessfully(string content, 
+                                                                   int jobType, 
+                                                                   HttpRequestWrapper request)
+        {
+            // Check if job was submitted successfully.
+            var job = JObject.Parse(content);
+            Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, job["Status"].ToObject<int>());
+            Assert.Equal<int>(jobType, job["Type"].ToObject<int>());
+
+            // Get Job status by polling to verify if job was successful.
+            var tagJobStatus = GetJobStatuswithReTry(request, job["JobId"].ToString());
+            // Assert to see if Last try yielded correct status.
+            Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, tagJobStatus["Status"].ToObject<int>());
+            Assert.Equal<int>(jobType, tagJobStatus["Type"].ToObject<int>());
         }
     }
 }
