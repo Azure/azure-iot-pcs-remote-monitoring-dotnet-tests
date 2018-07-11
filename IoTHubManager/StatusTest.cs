@@ -6,6 +6,7 @@ using Xunit;
 
 namespace IoTHubManager
 {
+    [Collection("IoTHub Manager Tests")]
     public class StatusTest
     {
         private readonly IHttpClient httpClient;
