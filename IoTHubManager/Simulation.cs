@@ -71,7 +71,7 @@ namespace IoTHubManager
         {
             var devices = GetSimulatedDevices();
             var deviceModels = devices["DeviceModels"];
-
+ 
             foreach (JObject device in deviceModels)
             {
                 if (device["Id"].ToString() == Constants.SimulatedDevices.SIMULATED_DEVICE)
@@ -85,12 +85,14 @@ namespace IoTHubManager
                     device["Count"] = (faultyDeviceNo + 1).ToString();
                 }
             }
+
             PutSimulatedDevices(devices);
 
         }
 
         private void PutSimulatedDevices(JObject devices)
         {
+            
             IHttpResponse response = Request.Put(devices);
 
             if (HttpStatusCode.OK != response.StatusCode)
