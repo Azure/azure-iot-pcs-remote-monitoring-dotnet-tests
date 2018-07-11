@@ -22,6 +22,7 @@ namespace IoTHubManager
             this.Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.JOBS_PATH);
 
             Simulation simulation = Simulation.GetSimulation();
+
             simulatedDeviceId = Constants.SimulatedDevices.SIMULATED_DEVICE + "." + simulation.healthyDeviceNo.ToString();
             simulatedFaultyDeviceId = Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE + "." + simulation.faultyDeviceNo.ToString();
         }
@@ -40,6 +41,7 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, tagJobResponse.StatusCode);
 
             var tagJob = JObject.Parse(tagJobResponse.Content);
+
             Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, tagJob["Status"].ToObject<int>());
             Assert.Equal<int>(Constants.Jobs.TAG_JOB, tagJob["Type"].ToObject<int>());
 
@@ -73,6 +75,7 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, methodJobResp.StatusCode);
 
             var methodJob = JObject.Parse(methodJobResp.Content);
+
             Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, methodJob["Status"].ToObject<int>());
             Assert.Equal<int>(Constants.Jobs.METHOD_JOB, methodJob["Type"].ToObject<int>());
 
@@ -97,6 +100,7 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, configJobResponse.StatusCode);
 
             var configJob = JObject.Parse(configJobResponse.Content);
+
             Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, configJob["Status"].ToObject<int>());
             Assert.Equal<int>(Constants.Jobs.RECONFIGURE_JOB, configJob["Type"].ToObject<int>());
 
@@ -121,6 +125,7 @@ namespace IoTHubManager
             TAGS = TAGS.Replace(Constants.Keys.JOB_ID, jobId)
                        .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId)
                        .Replace(Constants.Keys.FAULTY_DEVICE_ID, simulatedFaultyDeviceId);
+
             return Request.Post(TAGS);
         }
 
@@ -134,6 +139,7 @@ namespace IoTHubManager
             
             METHODS = METHODS.Replace(Constants.Keys.JOB_ID, jobId)
                              .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
+
             return Request.Post(METHODS);
         }
 
@@ -147,6 +153,7 @@ namespace IoTHubManager
 
             CONFIG = CONFIG.Replace(Constants.Keys.JOB_ID, jobId)
                            .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
+
             return Request.Post(CONFIG);
         }
 
