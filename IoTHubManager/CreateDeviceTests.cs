@@ -141,7 +141,6 @@ namespace IoTHubManager
             Assert.Equal(secondaryKey, createdSecondaryKey);
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
-
         }
 
         /**
