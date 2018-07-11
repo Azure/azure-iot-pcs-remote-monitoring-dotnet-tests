@@ -66,20 +66,77 @@ namespace IoTHubManager
             return jobStatus;
         }
 
-        internal static void AssertJobwasCompletedSuccessfully(string content, 
-                                                                   int jobType, 
-                                                                   HttpRequestWrapper request)
+        //Helper method to verify if job was successful.
+        internal static void AssertJobwasCompletedSuccessfully(string content, int jobType, HttpRequestWrapper request)
         {
             // Check if job was submitted successfully.
             var job = JObject.Parse(content);
             Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, job["Status"].ToObject<int>());
             Assert.Equal<int>(jobType, job["Type"].ToObject<int>());
 
-            // Get Job status by polling to verify if job was successful.
+            // Get Job status by polling. This is to verify if job was successful.
             var tagJobStatus = GetJobStatuswithReTry(request, job["JobId"].ToString());
-            // Assert to see if Last try yielded correct status.
+
+            // Assert to see if last try yielded correct status.
             Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, tagJobStatus["Status"].ToObject<int>());
             Assert.Equal<int>(jobType, tagJobStatus["Type"].ToObject<int>());
+        }
+
+        // Assert device ID is not null OR empty and
+        // other required properties are set.
+        internal static void AssertCommonDeviceProperties(string id, JObject createdDevice)
+        {
+            string createdDeviceId = createdDevice["Id"].ToString();
+
+            if (String.IsNullOrEmpty(id))
+            {
+                Assert.False(string.IsNullOrEmpty(createdDeviceId));
+            }
+            else
+            {
+                Assert.Equal(createdDeviceId, id);
+            }
+
+            Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
+            Assert.True(createdDevice["Enabled"].ToObject<bool>());
+        }
+
+        // Assert auth type and credentials for Symmetric auth.
+        internal static void AssertSymmetricAuthentication(string primaryKey, string secondaryKey, JObject createdDevice)
+        {
+            var authentication = createdDevice["Authentication"];
+            string createdPrimaryKey = authentication["PrimaryKey"].ToString();
+            string createdSecondaryKey = authentication["SecondaryKey"].ToString();
+
+            Assert.Equal(Constants.Auth.SYMMETRIC, authentication["AuthenticationType"]);
+
+            if (!(String.IsNullOrEmpty(primaryKey) &&
+                String.IsNullOrEmpty(secondaryKey)))
+            {
+                Assert.Equal(primaryKey, createdPrimaryKey);
+                Assert.Equal(secondaryKey, createdSecondaryKey);
+            }
+            else
+            {
+                Assert.False(string.IsNullOrEmpty(createdPrimaryKey));
+                Assert.False(string.IsNullOrEmpty(createdSecondaryKey));
+            }
+        }
+
+        // Assert auth type and credentials for X509 auth.
+        internal static void AssertX509Authentication(
+            string primaryThumbprint, 
+            string secondaryThumbprint, 
+            JObject createdDevice
+            )
+        {
+            var authentication = createdDevice["Authentication"];
+            string createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString();
+            string createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
+
+            Assert.Equal(Constants.Auth.X509, authentication["AuthenticationType"]);
+            Assert.Equal(primaryThumbprint, createdPrimaryThumbprint);
+            Assert.Equal(secondaryThumbprint, createdSecondaryThumbprint);
         }
     }
 }
