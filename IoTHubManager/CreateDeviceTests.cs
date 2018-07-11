@@ -15,9 +15,9 @@ namespace IoTHubManager
 
         internal HttpRequestWrapper Request;
 
-        private string DEVICE_TEMPLATE_AUTO_GEN_AUTH;
-        private string DEVICE_TEMPLATE_SYMMETRIC_AUTH;
-        private string DEVICE_TEMPLATE_X509_AUTH;
+        private readonly string DEVICE_TEMPLATE_AUTO_GEN_AUTH;
+        private readonly string DEVICE_TEMPLATE_SYMMETRIC_AUTH;
+        private readonly string DEVICE_TEMPLATE_X509_AUTH;
 
         public CreateDeviceTest()
         {

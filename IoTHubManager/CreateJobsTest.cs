@@ -23,8 +23,8 @@ namespace IoTHubManager
 
             Simulation simulation = Simulation.GetSimulation();
 
-            simulatedDeviceId = Constants.SimulatedDevices.SIMULATED_DEVICE + "." + simulation.healthyDeviceNo.ToString();
-            simulatedFaultyDeviceId = Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE + "." + simulation.faultyDeviceNo.ToString();
+            this.simulatedDeviceId = Constants.SimulatedDevices.SIMULATED_DEVICE + "." + simulation.healthyDeviceNo.ToString();
+            this.simulatedFaultyDeviceId = Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE + "." + simulation.faultyDeviceNo.ToString();
         }
 
 
@@ -41,8 +41,8 @@ namespace IoTHubManager
 
             string jobId = Guid.NewGuid().ToString();
             tags = tags.Replace(Constants.Keys.JOB_ID, jobId)
-                       .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId)
-                       .Replace(Constants.Keys.FAULTY_DEVICE_ID, simulatedFaultyDeviceId);
+                       .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId)
+                       .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
 
             // Act
             var response = Request.Post(tags);
@@ -50,9 +50,7 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             // Assert job type and job status for completion.
-            Helpers.AssertJobwasCompletedSuccessfully(response.Content,
-                                                      Constants.Jobs.TAG_JOB,
-                                                      Request);
+            Helpers.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.TAG_JOB, Request);
         }
 
 
@@ -79,7 +77,7 @@ namespace IoTHubManager
             string jobId = Guid.NewGuid().ToString();
 
             methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
-                             .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
+                             .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
             
             // Act
             var response = Request.Post(methods);
@@ -87,9 +85,7 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             // Assert job type and job status for completion.
-            Helpers.AssertJobwasCompletedSuccessfully(response.Content,
-                                                      Constants.Jobs.METHOD_JOB,
-                                                      Request);
+            Helpers.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.METHOD_JOB, Request);
         }
 
 
@@ -108,7 +104,7 @@ namespace IoTHubManager
             string jobId = Guid.NewGuid().ToString();
 
             config = config.Replace(Constants.Keys.JOB_ID, jobId)
-                           .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
+                           .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
 
             // Act
             var response = Request.Post(config);
@@ -116,9 +112,7 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             // Assert job type and job status for completion.
-            Helpers.AssertJobwasCompletedSuccessfully(response.Content,
-                                                      Constants.Jobs.RECONFIGURE_JOB,
-                                                      Request);
+            Helpers.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.RECONFIGURE_JOB, Request);
         }
     }
 }
