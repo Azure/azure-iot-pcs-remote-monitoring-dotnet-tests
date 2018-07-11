@@ -13,6 +13,11 @@ namespace IoTHubManager
         private readonly string simulatedDeviceId;
         private readonly string simulatedFaultyDeviceId;
 
+        /// <summary>
+        /// Integration test using a real HTTP instance.
+        /// Tests for submitting jobs against devices for 
+        /// Tagging, Running methods and Reconfiguring.
+        /// </summary>
 
         /**
          * Initialises simulated devices used for the tests
@@ -26,7 +31,6 @@ namespace IoTHubManager
             this.simulatedDeviceId = Constants.SimulatedDevices.SIMULATED_DEVICE + "." + simulation.healthyDeviceNo.ToString();
             this.simulatedFaultyDeviceId = Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE + "." + simulation.faultyDeviceNo.ToString();
         }
-
 
         /**
          * Creates Job for tagging on devices and 
@@ -50,9 +54,8 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             // Assert job type and job status for completion.
-            Helpers.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.TAG_JOB, Request);
+            Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.TAG_JOB, Request);
         }
-
 
         /*
          * Creates Job for running methods on 
@@ -85,9 +88,8 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             // Assert job type and job status for completion.
-            Helpers.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.METHOD_JOB, Request);
+            Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.METHOD_JOB, Request);
         }
-
 
         /**
          * Creates Job for reconfiguring 
@@ -104,7 +106,7 @@ namespace IoTHubManager
             string jobId = Guid.NewGuid().ToString();
 
             config = config.Replace(Constants.Keys.JOB_ID, jobId)
-                           .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
+                           .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
 
             // Act
             var response = Request.Post(config);
@@ -112,7 +114,7 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             // Assert job type and job status for completion.
-            Helpers.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.RECONFIGURE_JOB, Request);
+            Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.RECONFIGURE_JOB, Request);
         }
     }
 }
