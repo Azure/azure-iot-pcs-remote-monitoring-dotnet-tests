@@ -53,13 +53,13 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-
             var createdDevice = JObject.Parse(response.Content);
             var authentication = createdDevice["Authentication"];
             string createdDeviceId = createdDevice["Id"].ToString(),
                    primaryKey = authentication["PrimaryKey"].ToString(),
                    secondaryKey = authentication["SecondaryKey"].ToString();
 
+        
 
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
@@ -88,12 +88,12 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-
             var createdDevice = JObject.Parse(response.Content);
             var authentication = createdDevice["Authentication"];
             string createdDeviceId = createdDevice["Id"].ToString(),
                    primaryKey = authentication["PrimaryKey"].ToString(),
                    secondaryKey = authentication["SecondaryKey"].ToString();
+
 
 
             // Assert device ID and auth or not null OR empty and
@@ -104,6 +104,7 @@ namespace IoTHubManager
             Assert.False(string.IsNullOrEmpty(secondaryKey));
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
+
         }
 
         /**
@@ -128,12 +129,12 @@ namespace IoTHubManager
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-
             var createdDevice = JObject.Parse(response.Content);
             var authentication = createdDevice["Authentication"];
             string createdDeviceId = createdDevice["Id"].ToString(),
                    createdPrimaryKey = authentication["PrimaryKey"].ToString(),
                    createdSecondaryKey = authentication["SecondaryKey"].ToString();
+
 
 
             // Assert device ID and auth or not null OR empty and
@@ -144,6 +145,7 @@ namespace IoTHubManager
             Assert.Equal(secondaryKey, createdSecondaryKey);
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
+
         }
 
         /**
@@ -163,6 +165,7 @@ namespace IoTHubManager
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
             var response = Request.Post(device);
 
+
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -172,6 +175,8 @@ namespace IoTHubManager
                    createdPrimaryKey = authentication["PrimaryKey"].ToString(),
                    createdSecondaryKey = authentication["SecondaryKey"].ToString();
 
+
+
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
             Assert.False(string.IsNullOrEmpty(createdDeviceId));
@@ -180,6 +185,7 @@ namespace IoTHubManager
             Assert.Equal(secondaryKey, createdSecondaryKey);
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
+
         }
 
         /**
@@ -200,6 +206,7 @@ namespace IoTHubManager
                                                      .Replace(Constants.Keys.SECONDARY_TH, secondaryThumbprint);
             var response = Request.Post(device);
 
+
             // Asserts 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -208,6 +215,8 @@ namespace IoTHubManager
             string createdDeviceId = createdDevice["Id"].ToString(),
                    createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString(),
                    createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
+
+
 
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
@@ -237,6 +246,7 @@ namespace IoTHubManager
                                                      .Replace(Constants.Keys.SECONDARY_TH, secondaryThumbprint);
             var response = Request.Post(device);
             
+
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -246,6 +256,8 @@ namespace IoTHubManager
                    createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString(),
                    createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
 
+
+
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
             Assert.False(string.IsNullOrEmpty(createdDeviceId));
@@ -254,6 +266,7 @@ namespace IoTHubManager
             Assert.Equal(secondaryThumbprint, createdSecondaryThumbprint);
             Assert.False(createdDevice["IsSimulated"].ToObject<bool>());
             Assert.True(createdDevice["Enabled"].ToObject<bool>());
+
         }
 
 
