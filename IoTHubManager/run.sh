@@ -59,5 +59,3 @@ run_tests
 stop_containers
 
 set +e
-
-

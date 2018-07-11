@@ -5,6 +5,7 @@ set -e
 
 APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )/"
 cd $APP_HOME
+source "$APP_HOME/scripts/.functions.sh"
 
 start() {
     ./scripts/pcsconfig.sh start
