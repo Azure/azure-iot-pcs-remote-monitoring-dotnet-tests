@@ -7,5 +7,3 @@ LICENSE             @timlaverty @dluc @ppathan
 .gitattributes      @dluc @timlaverty
 .travis.yml         @dluc @timlaverty
 
-scripts/            @dluc @timlaverty @ppathan
-
