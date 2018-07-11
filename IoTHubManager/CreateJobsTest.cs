@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace IoTHubManager
 {
-    [Collection("IOTHUB-Manager")]
+    [Collection("IoTHub Manager Tests")]
     public class CreateJobsTest
     {
         private readonly HttpRequestWrapper Request;
