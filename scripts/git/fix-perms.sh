@@ -24,6 +24,7 @@ chmod ugo+x ./StorageAdapter/run.sh
 chmod ugo+x ./IoTHubManager/run.sh
 chmod ugo+x ./PcsConfig/run.sh
 chmod ugo+x ./ASAManager/run.sh
+chmod ugo+x ./Telemetry/run.sh
 
 git update-index --chmod=+x ./scripts/build
 git update-index --chmod=+x ./scripts/git/setup
@@ -39,5 +40,6 @@ git update-index --chmod=+x ./StorageAdapter/run.sh
 git update-index --chmod=+x ./IoTHubManager/run.sh
 git update-index --chmod=+x ./PcsConfig/run.sh
 git update-index --chmod=+x ./ASAManager/run.sh
+git update-index --chmod=+x ./Telemetry/run.sh
 
 set +e

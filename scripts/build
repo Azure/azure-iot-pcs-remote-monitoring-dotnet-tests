@@ -14,7 +14,7 @@ fi
 
 echo "The repo name is: " $2
 
-./StorageAdapter/run.sh "Storage Adapter Tests"
+./StorageAdapter/run.sh "Storage Adapter tests"
 
 ./PcsConfig/run.sh "Pcs Config tests"
 
@@ -22,5 +22,6 @@ echo "The repo name is: " $2
 
 ./ASAManager/run.sh "ASA Manager tests"
 
+./Telemetry/run.sh "Telemetry tests"
 
 set +e
