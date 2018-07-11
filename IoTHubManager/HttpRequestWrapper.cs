@@ -51,7 +51,6 @@ namespace IoTHubManager
         {
             var request = new HttpRequest(uri);
             request.SetContent(content);
-            Console.WriteLine("Async started Test");
             return httpClient.PostAsync(request).Result;
            
         }
