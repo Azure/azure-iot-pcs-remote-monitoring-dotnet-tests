@@ -61,7 +61,6 @@ namespace IoTHubManager
             string primaryKey = authentication["PrimaryKey"].ToString();
             string secondaryKey = authentication["SecondaryKey"].ToString();
 
-
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
             Assert.False(string.IsNullOrEmpty(createdDeviceId));
@@ -121,9 +120,9 @@ namespace IoTHubManager
             string device = DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.Keys.DEVICE_ID, id)
                                                           .Replace(Constants.Keys.PRIMARY_KEY, primaryKey)
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
+
             // Act
             var response = Request.Post(device);
-
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -161,9 +160,9 @@ namespace IoTHubManager
                                                           .Replace(Constants.Keys.PRIMARY_KEY, primaryKey)
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
 
+
             //Act
             var response = Request.Post(device);
-
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -173,8 +172,6 @@ namespace IoTHubManager
             string createdDeviceId = createdDevice["Id"].ToString();
             string createdPrimaryKey = authentication["PrimaryKey"].ToString();
             string createdSecondaryKey = authentication["SecondaryKey"].ToString();
-
-
 
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
@@ -211,10 +208,9 @@ namespace IoTHubManager
 
             var createdDevice = JObject.Parse(response.Content);
             var authentication = createdDevice["Authentication"];
-            string createdDeviceId = createdDevice["Id"].ToString(),
-                   createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString(),
-                   createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
-
+            string createdDeviceId = createdDevice["Id"].ToString();
+            string createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString();
+            string createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
 
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
@@ -253,7 +249,6 @@ namespace IoTHubManager
             string createdDeviceId = createdDevice["Id"].ToString();
             string createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString();
             string createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
-
 
             // Assert device ID and auth or not null OR empty and
             // other required properties are set. Also check auth type.
