@@ -93,7 +93,7 @@ namespace IoTHubManager
         public JObject GetSimulatedDevices()
         {
             IHttpResponse response = Request.Get();
-            Console.WriteLine(response);
+
             if (HttpStatusCode.OK != response.StatusCode)
             {
                 throw new Exception("Couldn't fetch simulated devices. Request to device simulation service failed with " + response.StatusCode + " status code.");

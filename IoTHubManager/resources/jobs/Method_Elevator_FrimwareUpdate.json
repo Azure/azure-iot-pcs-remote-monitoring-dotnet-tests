@@ -1,6 +1,6 @@
 ﻿{
 	"JobId": "FirmwareUpdate-{JobId}",
-	"QueryCondition": "deviceId in ['{FaultyDeviceId}']",
+	"QueryCondition": "deviceId in ['{DeviceId}']",
 	"MaxExecutionTimeInSeconds": 0,
 	"MethodParameter": {
 		"Name": "FirmwareUpdate",

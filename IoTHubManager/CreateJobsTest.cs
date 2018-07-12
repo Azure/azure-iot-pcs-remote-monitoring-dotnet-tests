@@ -55,8 +55,6 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.TAG_JOB, Request, job);
             Helper.Job.CheckIfDeviceIsTagged(tagsTemplate, this.simulatedDeviceId);
-            Console.WriteLine(">>>>");
-            Console.WriteLine(job);
             Helper.Job.CheckIfDeviceIsTagged(tagsTemplate, this.simulatedFaultyDeviceId);
         }
 
@@ -83,14 +81,12 @@ namespace IoTHubManager
             string jobId = Guid.NewGuid().ToString();
 
             methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
-                             .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId)
-                             .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
+                             .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
             // Act
             var response = Request.Post(methods);
             var job = JObject.Parse(response.Content);
 
             // Asserts
-            Console.WriteLine(job);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.METHOD_JOB, Request, job);
         }

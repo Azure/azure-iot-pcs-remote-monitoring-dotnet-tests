@@ -51,7 +51,7 @@ namespace IoTHubManager
         {
             var request = new HttpRequest(uri);
             request.SetContent(content);
-            return httpClient.PostAsync(request).Result;
+            return this.httpClient.PostAsync(request).Result;
            
         }
 
@@ -59,7 +59,19 @@ namespace IoTHubManager
         {
             var request = new HttpRequest(uri);
             request.SetContent(content);
-            return httpClient.PutAsync(request).Result;
+            return this.httpClient.PutAsync(request).Result;
+        }
+
+        public IHttpResponse Delete(string path)
+        {
+            string uri = this.uri;
+            if (!String.IsNullOrEmpty(path))
+            {
+                uri += path;
+            }
+
+            var request = new HttpRequest(uri);
+            return this.httpClient.DeleteAsync(request).Result;
         }
     }
 }
