@@ -6,12 +6,12 @@ using Newtonsoft.Json.Linq;
 
 namespace IoTHubManager
 {
-    class HttpRequestWrapper
+    public class HttpRequestWrapper
     {
         private readonly IHttpClient httpClient;
         private string uri;
 
-        internal HttpRequestWrapper(string host, string path)
+        public HttpRequestWrapper(string host, string path)
         {
             httpClient = new HttpClient();
             if (!String.IsNullOrEmpty(host))
@@ -24,14 +24,14 @@ namespace IoTHubManager
             }
         }
 
-        internal IHttpResponse Get()
+        public IHttpResponse Get()
         {
             var request = new HttpRequest(uri);
             return this.httpClient.GetAsync(request).Result;
         }
 
         //TODO: Method should accept Map of query parameters and build the query
-        internal IHttpResponse Get(string path, string query)
+        public IHttpResponse Get(string path, string query)
         {
             string uri = this.uri;
             if (!String.IsNullOrEmpty(path))
@@ -47,7 +47,7 @@ namespace IoTHubManager
             return this.httpClient.GetAsync(request).Result;
         }
 
-        internal IHttpResponse Post(string content)
+        public IHttpResponse Post(string content)
         {
             var request = new HttpRequest(uri);
             request.SetContent(content);
@@ -55,7 +55,7 @@ namespace IoTHubManager
            
         }
 
-        internal IHttpResponse Put(JObject content)
+        public IHttpResponse Put(JObject content)
         {
             var request = new HttpRequest(uri);
             request.SetContent(content);
