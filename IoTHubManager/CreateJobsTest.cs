@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 using System;
 using System.Net;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace IoTHubManager
@@ -23,7 +24,7 @@ namespace IoTHubManager
          */
         public CreateJobsTest()
         {
-            this.Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.JOBS_PATH);
+            this.Request = new HttpRequestWrapper(Constants.IOT_HUB_ADDRESS, Constants.Urls.JOBS_PATH);
 
             Simulation simulation = Simulation.GetSimulation();
 
@@ -48,11 +49,15 @@ namespace IoTHubManager
                                        .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
             // Act
             var response = Request.Post(tagsTemplate);
+            var job = JObject.Parse(response.Content);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helper.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.TAG_JOB, Request);
-            Helper.Job.CheckIfDeviceIsTagged(tagsTemplate, response);
+            Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.TAG_JOB, Request, job);
+            Helper.Job.CheckIfDeviceIsTagged(tagsTemplate, this.simulatedDeviceId);
+            Console.WriteLine(">>>>");
+            Console.WriteLine(job);
+            Helper.Job.CheckIfDeviceIsTagged(tagsTemplate, this.simulatedFaultyDeviceId);
         }
 
         /*
@@ -78,13 +83,16 @@ namespace IoTHubManager
             string jobId = Guid.NewGuid().ToString();
 
             methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
-                             .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
+                             .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId)
+                             .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
             // Act
             var response = Request.Post(methods);
+            var job = JObject.Parse(response.Content);
 
             // Asserts
+            Console.WriteLine(job);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helper.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.METHOD_JOB, Request);
+            Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.METHOD_JOB, Request, job);
         }
 
         /**
@@ -106,10 +114,11 @@ namespace IoTHubManager
 
             // Act
             var response = Request.Post(config);
+            var job = JObject.Parse(response.Content);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helper.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.RECONFIGURE_JOB, Request);
+            Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.RECONFIGURE_JOB, Request, job);
         }
     }
 }

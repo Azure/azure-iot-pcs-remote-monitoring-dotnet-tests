@@ -21,19 +21,17 @@ namespace IoTHubManager
             {
                 simulation = new Simulation();
             }
-
             return new Simulation();
         }
 
         private Simulation()
         {
-            this.Request = new HttpRequestWrapper(Constants.Urls.DEVICE_SIMULATION_ADDRESS, Constants.Urls.SIMULATION_PATH);
+            this.Request = new HttpRequestWrapper(Constants.SIMULATION_ADDRESS, Constants.Urls.SIMULATION_PATH);
 
             if (!CheckSimulationExists())
             {
                 CreateSimulation();
             }
-
             CreateSimulatedDevices();
         }
 
@@ -58,7 +56,6 @@ namespace IoTHubManager
             {
                 return false;
             }
-
             return true;
         }
 
@@ -80,7 +77,6 @@ namespace IoTHubManager
                     device["Count"] = (faultyDeviceNo + 1).ToString();
                 }
             }
-
             PutSimulatedDevices(devices);
         }
 
@@ -97,12 +93,11 @@ namespace IoTHubManager
         public JObject GetSimulatedDevices()
         {
             IHttpResponse response = Request.Get();
-
+            Console.WriteLine(response);
             if (HttpStatusCode.OK != response.StatusCode)
             {
                 throw new Exception("Couldn't fetch simulated devices. Request to device simulation service failed with " + response.StatusCode + " status code.");
             }
-
             return JObject.Parse(response.Content);
         }
     }
