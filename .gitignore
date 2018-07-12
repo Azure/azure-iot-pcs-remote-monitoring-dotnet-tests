@@ -141,6 +141,7 @@ fabric.properties
 *.user
 *.userosscache
 *.sln.docstates
+.env-local
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

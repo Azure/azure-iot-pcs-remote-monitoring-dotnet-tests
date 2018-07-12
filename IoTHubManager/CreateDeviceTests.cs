@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft. All rights reserved.
-
-using System.Net;
 using System;
-using System.Text;
-using Helpers.Device.Http;
+using System.Net;
+using Helpers.Http;
 using Xunit;
-using Newtonsoft.Json.Linq;
 
 namespace IoTHubManager
 {
+    
     [Collection("IoTHub Manager Tests")]
     public class CreateDeviceTest
     {
@@ -20,21 +18,14 @@ namespace IoTHubManager
 
         public CreateDeviceTest()
         {
-        
             //Create request wrapper object for interacting with iothub manager microservices for CRUD on devices
             this.Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.DEVICE_PATH);
 
             //Fetch different device templates
-            DEVICE_TEMPLATE_AUTO_GEN_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_AUTO_GEN_AUTH);
-            DEVICE_TEMPLATE_SYMMETRIC_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_SYMMETRIC_AUTH);
-            DEVICE_TEMPLATE_X509_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_X509_AUTH);                     
+            this.DEVICE_TEMPLATE_AUTO_GEN_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_AUTO_GEN_AUTH);
+            this.DEVICE_TEMPLATE_SYMMETRIC_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_SYMMETRIC_AUTH);
+            this.DEVICE_TEMPLATE_X509_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_X509_AUTH);                     
         }
-
-        /// <summary>
-        /// Integration test using a real HTTP instance.
-        /// Tests for creation of devices with all permutation of AUTH and Id creation
-        /// </summary>
-        
 
         /**
          * Creates a device with auto generated id and symmetric auth.
@@ -46,17 +37,16 @@ namespace IoTHubManager
         {
             // Arrange
             // DeviceId must be empty to be auto generated.
-            var device = DEVICE_TEMPLATE_AUTO_GEN_AUTH.Replace(Constants.Keys.DEVICE_ID, "");
+            var device = this.DEVICE_TEMPLATE_AUTO_GEN_AUTH.Replace(Constants.Keys.DEVICE_ID, "");
 
             // Act
-            var response = Request.Post(device);
+            var response = this.Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var createdDevice = JObject.Parse(response.Content);
-            Helpers.Device.AssertCommonDeviceProperties(null, createdDevice);
-            Helpers.Device.AssertSymmetricAuthentication(null, null, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(null, response);
+            Helpers.Device.AssertSymmetricAuthentication(null, null, response);
+            Helpers.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -69,17 +59,16 @@ namespace IoTHubManager
         {
             // Arrange
             string id = Guid.NewGuid().ToString();
-            var device = DEVICE_TEMPLATE_AUTO_GEN_AUTH.Replace(Constants.Keys.DEVICE_ID, id);
+            var device = this.DEVICE_TEMPLATE_AUTO_GEN_AUTH.Replace(Constants.Keys.DEVICE_ID, id);
 
             // Act
-            var response = Request.Post(device);
+            var response = this.Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var createdDevice = JObject.Parse(response.Content);
-            Helpers.Device.AssertCommonDeviceProperties(id, createdDevice);
-            Helpers.Device.AssertSymmetricAuthentication(null, null, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(id, response);
+            Helpers.Device.AssertSymmetricAuthentication(null, null, response);
+            Helpers.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -94,19 +83,17 @@ namespace IoTHubManager
             string id = Guid.NewGuid().ToString();
             string primaryKey = Guid.NewGuid().ToString("N");
             string secondaryKey = Guid.NewGuid().ToString("N");
-            string device = DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.Keys.DEVICE_ID, id)
+            string device = this.DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.Keys.DEVICE_ID, id)
                                                           .Replace(Constants.Keys.PRIMARY_KEY, primaryKey)
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
-
             // Act
-            var response = Request.Post(device);
+            var response = this.Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var createdDevice = JObject.Parse(response.Content);
-            Helpers.Device.AssertCommonDeviceProperties(id, createdDevice);
-            Helpers.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(id, response);
+            Helpers.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, response);
+            Helpers.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -121,19 +108,17 @@ namespace IoTHubManager
             string primaryKey = Guid.NewGuid().ToString("N");
             string secondaryKey = Guid.NewGuid().ToString("N");
             // DeviceId must be empty to be auto generated.
-            string device = DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.Keys.DEVICE_ID, "")
+            string device = this.DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.Keys.DEVICE_ID, "")
                                                           .Replace(Constants.Keys.PRIMARY_KEY, primaryKey)
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
-
             //Act
-            var response = Request.Post(device);
+            var response = this.Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var createdDevice = JObject.Parse(response.Content);
-            Helpers.Device.AssertCommonDeviceProperties(null, createdDevice);
-            Helpers.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(null, response);
+            Helpers.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, response);
+            Helpers.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -152,16 +137,14 @@ namespace IoTHubManager
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, id)
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
                                                      .Replace(Constants.Keys.SECONDARY_TH, secondaryThumbprint);
-
             // Act
-            var response = Request.Post(device);
+            var response = this.Request.Post(device);
 
             // Asserts 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var createdDevice = JObject.Parse(response.Content);
-            Helpers.Device.AssertCommonDeviceProperties(id, createdDevice);
-            Helpers.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(id, response);
+            Helpers.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, response);
+            Helpers.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -176,19 +159,17 @@ namespace IoTHubManager
             string primaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
             string secondaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
             // DeviceId must be empty to be auto generated.
-            string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, "")
+            string device = this.DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, "")
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
                                                      .Replace(Constants.Keys.SECONDARY_TH, secondaryThumbprint);
-
             // Act
-            var response = Request.Post(device);
+            var response = this.Request.Post(device);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var createdDevice = JObject.Parse(response.Content);
-            Helpers.Device.AssertCommonDeviceProperties(null, createdDevice);
-            Helpers.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, createdDevice);
+            Helpers.Device.AssertCommonDeviceProperties(null, response);
+            Helpers.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, response);
+            Helpers.Device.CheckIfDeviceExists(this.Request, response);
         }
     }
 }

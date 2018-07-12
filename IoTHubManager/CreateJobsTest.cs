@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net;
-using Helpers.Http;
 using Xunit;
-using Newtonsoft.Json.Linq;
 
 namespace IoTHubManager
 {
@@ -41,20 +39,19 @@ namespace IoTHubManager
         public void DeviceDataUpdated_IfTagged()
         {
             // Arrange
-            var tags = System.IO.File.ReadAllText(Constants.Path.TAGS_FILE);
+            var tagsTemplate = System.IO.File.ReadAllText(Constants.Path.TAGS_FILE);
 
             string jobId = Guid.NewGuid().ToString();
-            tags = tags.Replace(Constants.Keys.JOB_ID, jobId)
-                       .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId)
-                       .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
-
+            tagsTemplate = tagsTemplate.Replace(Constants.Keys.JOB_ID, jobId)
+                                       .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId)
+                                       .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
             // Act
-            var response = Request.Post(tags);
+            var response = Request.Post(tagsTemplate);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            // Assert job type and job status for completion.
             Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.TAG_JOB, Request);
+            Helpers.Job.CheckIfDeviceIsTagged(tagsTemplate, response);
         }
 
         /*
@@ -81,13 +78,11 @@ namespace IoTHubManager
 
             methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
                              .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
-            
             // Act
             var response = Request.Post(methods);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            // Assert job type and job status for completion.
             Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.METHOD_JOB, Request);
         }
 
@@ -113,7 +108,6 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            // Assert job type and job status for completion.
             Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.RECONFIGURE_JOB, Request);
         }
     }

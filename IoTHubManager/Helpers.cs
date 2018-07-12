@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.Net;
-using Helpers.Http;
-using Xunit;
-using Newtonsoft.Json.Linq;
-using System.Threading;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using Helpers.Http;
+using Newtonsoft.Json.Linq;
+using Xunit;
+
 
 namespace IoTHubManager
 {
@@ -13,11 +14,12 @@ namespace IoTHubManager
     {
         public class Job
         {
+            //Helper methods for fetching (and retrying) the current Job Status.
+
             /**
              * Monitor job status using polling (re-try) mechanism 
              */
-            internal static JObject GetJobStatuswithReTry(HttpRequestWrapper Request,
-                                                          string jobId)
+            internal static JObject GetJobStatuswithReTry(HttpRequestWrapper Request, string jobId)
             {
                 var jobStatus = GetJobStatus(Request, jobId);
 
@@ -34,12 +36,10 @@ namespace IoTHubManager
                 return jobStatus;
             }
 
-            //Helper methods for fetching (and retrying) the current Job Status.
             /**
              * Gets job status using job id.
              */
-            private static JObject GetJobStatus(HttpRequestWrapper Request,
-                                                string JobId)
+            private static JObject GetJobStatus(HttpRequestWrapper Request, string JobId)
             {
                 IHttpResponse jobStatusResponse = Request.Get(JobId, null);
                 Assert.Equal(HttpStatusCode.OK, jobStatusResponse.StatusCode);
@@ -48,6 +48,9 @@ namespace IoTHubManager
 
 
             //Helper method to verify if job was successful.
+            /**
+             * Assert job type and job status for completion.
+             */
             internal static void AssertJobwasCompletedSuccessfully(string content, int jobType, HttpRequestWrapper request)
             {
                 // Check if job was submitted successfully.
@@ -63,6 +66,49 @@ namespace IoTHubManager
                 Assert.Equal<int>(jobType, tagJobStatus["Type"].ToObject<int>());
 
                 // TODO: Verify Result Statistics from the response JSON.
+            }
+
+            /**
+             * Check if tags on device are updated
+             */ 
+            internal static void CheckIfDeviceIsTagged(string tagsTemplate, IHttpResponse tagCallresponse)
+            {
+                JObject tagCallDevice = JObject.Parse(tagCallresponse.Content);
+                string createdDeviceId = tagCallDevice["Id"].ToString();
+                //initailise Request to call "/devices" endpoint.
+                HttpRequestWrapper Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.DEVICE_PATH);
+
+                //Act
+                var fetchCallResponse = Request.Get(createdDeviceId, null);
+
+                JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
+                var tags = JObject.Parse(tagsTemplate)["Tags"];
+                var deviceTags = fetchCallDevice["Tags"];
+
+                // Asserts --- if device tags are updated correctly.
+                Assert.True(JToken.DeepEquals(tags, deviceTags));
+            }
+
+
+            /**
+             * Check if device is Reconfigured
+             */
+            internal static void CheckIfDeviceIsReconfigured(string configTemplate, IHttpResponse tagCallresponse)
+            {
+                JObject configCallDevice = JObject.Parse(tagCallresponse.Content);
+                string createdDeviceId = configCallDevice["Id"].ToString();
+                //initailise Request to call "/devices" endpoint.
+                HttpRequestWrapper Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.DEVICE_PATH);
+
+                //Act
+                var fetchCallResponse = Request.Get(createdDeviceId, null);
+
+                JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
+                var configTemplateModel = JObject.Parse(configTemplate)["UpdateTwin"]["Properties"]["Model"];
+                var deviceConfigModel = fetchCallDevice["Properties"]["Desired"]["Model"];
+
+                // Asserts --- if device tags are updated correctly.
+                Assert.True(JToken.DeepEquals(configTemplateModel, deviceConfigModel));
             }
         }
 
@@ -90,8 +136,9 @@ namespace IoTHubManager
 
             // Assert device ID is not null OR empty and
             // other required properties are set.
-            internal static void AssertCommonDeviceProperties(string id, JObject createdDevice)
+            internal static void AssertCommonDeviceProperties(string id, IHttpResponse response)
             {
+                var createdDevice = JObject.Parse(response.Content);
                 string createdDeviceId = createdDevice["Id"].ToString();
 
                 if (String.IsNullOrEmpty(id))
@@ -108,16 +155,16 @@ namespace IoTHubManager
             }
 
             // Assert auth type and credentials for Symmetric auth.
-            internal static void AssertSymmetricAuthentication(string primaryKey, string secondaryKey, JObject createdDevice)
+            internal static void AssertSymmetricAuthentication(string primaryKey, string secondaryKey, IHttpResponse response)
             {
+                var createdDevice = JObject.Parse(response.Content);
                 var authentication = createdDevice["Authentication"];
                 string createdPrimaryKey = authentication["PrimaryKey"].ToString();
                 string createdSecondaryKey = authentication["SecondaryKey"].ToString();
 
                 Assert.Equal(Constants.Auth.SYMMETRIC, authentication["AuthenticationType"]);
 
-                if (!(String.IsNullOrEmpty(primaryKey) &&
-                    String.IsNullOrEmpty(secondaryKey)))
+                if (!(String.IsNullOrEmpty(primaryKey) && String.IsNullOrEmpty(secondaryKey)))
                 {
                     Assert.Equal(primaryKey, createdPrimaryKey);
                     Assert.Equal(secondaryKey, createdSecondaryKey);
@@ -133,9 +180,10 @@ namespace IoTHubManager
             internal static void AssertX509Authentication(
                 string primaryThumbprint,
                 string secondaryThumbprint,
-                JObject createdDevice
+                IHttpResponse response
                 )
             {
+                var createdDevice = JObject.Parse(response.Content);
                 var authentication = createdDevice["Authentication"];
                 string createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString();
                 string createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
@@ -143,6 +191,23 @@ namespace IoTHubManager
                 Assert.Equal(Constants.Auth.X509, authentication["AuthenticationType"]);
                 Assert.Equal(primaryThumbprint, createdPrimaryThumbprint);
                 Assert.Equal(secondaryThumbprint, createdSecondaryThumbprint);
+            }
+
+            /**
+             * checks if the device was created by fetching (Get) it from the backend. 
+             * This is to ensure if device was saved and replicated in the DB.
+             */
+            internal static void CheckIfDeviceExists(HttpRequestWrapper Request, IHttpResponse createCallresponse)
+            {
+                JObject createCallDevice = JObject.Parse(createCallresponse.Content);
+                string createdDeviceId = createCallDevice["Id"].ToString();
+
+                var fetchCallResponse = Request.Get(createdDeviceId, null);
+                JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
+
+                // Asserts --- if device is created.
+                Assert.True(fetchCallDevice.HasValues);
+                Assert.True(JToken.DeepEquals(fetchCallDevice, createCallDevice));
             }
         }
     }

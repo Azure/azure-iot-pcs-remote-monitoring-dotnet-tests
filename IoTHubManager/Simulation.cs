@@ -12,13 +12,11 @@ namespace IoTHubManager
 {
     internal class Simulation
     {
+        //Simulation (Device count for Ids)
         private static Simulation simulation;
-        private readonly IHttpClient httpClient;
-        private string ETag;
-
         internal int healthyDeviceNo = 0;
         internal int faultyDeviceNo = 0;
-
+        //Http Request
         private HttpRequestWrapper Request;
 
         internal static Simulation GetSimulation()
@@ -27,6 +25,7 @@ namespace IoTHubManager
             {
                 simulation = new Simulation();
             }
+
             return new Simulation();
         }
 
@@ -51,7 +50,6 @@ namespace IoTHubManager
             {
                 throw new Exception("Error while creating simulated devices. Request to device simulation service failed with " + response.StatusCode + " status code.");
             }
-            
         }
 
         private bool CheckSimulationExists()
@@ -64,6 +62,7 @@ namespace IoTHubManager
             {
                 return false;
             }
+
             return true;
         }
 
@@ -87,12 +86,10 @@ namespace IoTHubManager
             }
 
             PutSimulatedDevices(devices);
-
         }
 
         private void PutSimulatedDevices(JObject devices)
         {
-            
             IHttpResponse response = Request.Put(devices);
 
             if (HttpStatusCode.OK != response.StatusCode)
@@ -101,11 +98,8 @@ namespace IoTHubManager
             }
         }
 
-
-
         public JObject GetSimulatedDevices()
         {
-            
             IHttpResponse response = Request.Get();
 
             if (HttpStatusCode.OK != response.StatusCode)
