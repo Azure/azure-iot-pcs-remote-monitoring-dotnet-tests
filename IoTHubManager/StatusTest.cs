@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 using System.Net;
+// Copyright (c) Microsoft. All rights reserved.
 using Helpers.Http;
 using Xunit;
 

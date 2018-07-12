@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 using System;
 using System.Net;
-using Helpers.Http;
 using Xunit;
 
 namespace IoTHubManager
 {
-    
+
     [Collection("IoTHub Manager Tests")]
     public class CreateDeviceTest
     {
@@ -33,7 +32,7 @@ namespace IoTHubManager
          * id as well as auth credentails.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void DeviceCreated_IfEmptyIDandAuthPassed()
+        public void DeviceCreated_IfEmptyIDAndAuthPassed()
         {
             // Arrange
             // DeviceId must be empty to be auto generated.
@@ -44,9 +43,9 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Device.AssertCommonDeviceProperties(null, response);
-            Helpers.Device.AssertSymmetricAuthentication(null, null, response);
-            Helpers.Device.CheckIfDeviceExists(this.Request, response);
+            Helper.Device.AssertCommonDeviceProperties(null, response);
+            Helper.Device.AssertSymmetricAuthentication(null, null, response);
+            Helper.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -55,7 +54,7 @@ namespace IoTHubManager
          * generated symmetric auth credentails.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void DeviceCreated_IfCustomIDandEmptyAuthPassed()
+        public void DeviceCreated_IfCustomIDAndEmptyAuthPassed()
         {
             // Arrange
             string id = Guid.NewGuid().ToString();
@@ -66,9 +65,9 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Device.AssertCommonDeviceProperties(id, response);
-            Helpers.Device.AssertSymmetricAuthentication(null, null, response);
-            Helpers.Device.CheckIfDeviceExists(this.Request, response);
+            Helper.Device.AssertCommonDeviceProperties(id, response);
+            Helper.Device.AssertSymmetricAuthentication(null, null, response);
+            Helper.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -77,7 +76,7 @@ namespace IoTHubManager
          * correct id and auth credentails.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void DeviceCreated_IfCustomIDandAuthPassed()
+        public void DeviceCreated_IfCustomIDAndAuthPassed()
         {
             // Arrange
             string id = Guid.NewGuid().ToString();
@@ -91,9 +90,9 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Device.AssertCommonDeviceProperties(id, response);
-            Helpers.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, response);
-            Helpers.Device.CheckIfDeviceExists(this.Request, response);
+            Helper.Device.AssertCommonDeviceProperties(id, response);
+            Helper.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, response);
+            Helper.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -102,7 +101,7 @@ namespace IoTHubManager
          * has system-generated id and correct auth credentails.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void DeviceCreated_IfEmptyIdandCustomAuthPassed()
+        public void DeviceCreated_IfEmptyIdAndCustomAuthPassed()
         {
             //Arrange
             string primaryKey = Guid.NewGuid().ToString("N");
@@ -116,9 +115,9 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Device.AssertCommonDeviceProperties(null, response);
-            Helpers.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, response);
-            Helpers.Device.CheckIfDeviceExists(this.Request, response);
+            Helper.Device.AssertCommonDeviceProperties(null, response);
+            Helper.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, response);
+            Helper.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -127,12 +126,12 @@ namespace IoTHubManager
          * and auth credentails.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void DeviceCreated_IfCustomIdandX509AuthPassed()
+        public void DeviceCreated_IfCustomIdAndX509AuthPassed()
         {
             // Arrange
             string id = Guid.NewGuid().ToString();
-            string primaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
-            string secondaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
+            string primaryThumbprint = Helper.Device.GenerateNewThumbPrint();
+            string secondaryThumbprint = Helper.Device.GenerateNewThumbPrint();
 
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, id)
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
@@ -142,9 +141,9 @@ namespace IoTHubManager
 
             // Asserts 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Device.AssertCommonDeviceProperties(id, response);
-            Helpers.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, response);
-            Helpers.Device.CheckIfDeviceExists(this.Request, response);
+            Helper.Device.AssertCommonDeviceProperties(id, response);
+            Helper.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, response);
+            Helper.Device.CheckIfDeviceExists(this.Request, response);
         }
 
         /**
@@ -153,11 +152,11 @@ namespace IoTHubManager
          * has system-generated id and correct auth credentails.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void DeviceCreated_IfEmptyIdandX509AuthPassed()
+        public void DeviceCreated_IfEmptyIdAndX509AuthPassed()
         {
             // Arrange
-            string primaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
-            string secondaryThumbprint = Helpers.Device.GenerateNewThumbPrint();
+            string primaryThumbprint = Helper.Device.GenerateNewThumbPrint();
+            string secondaryThumbprint = Helper.Device.GenerateNewThumbPrint();
             // DeviceId must be empty to be auto generated.
             string device = this.DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, "")
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
@@ -167,9 +166,9 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Device.AssertCommonDeviceProperties(null, response);
-            Helpers.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, response);
-            Helpers.Device.CheckIfDeviceExists(this.Request, response);
+            Helper.Device.AssertCommonDeviceProperties(null, response);
+            Helper.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, response);
+            Helper.Device.CheckIfDeviceExists(this.Request, response);
         }
     }
 }

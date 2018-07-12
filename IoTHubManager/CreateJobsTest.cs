@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Copyright (c) Microsoft. All rights reserved.
+using System;
 using System.Net;
 using Xunit;
 
@@ -50,8 +51,8 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.TAG_JOB, Request);
-            Helpers.Job.CheckIfDeviceIsTagged(tagsTemplate, response);
+            Helper.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.TAG_JOB, Request);
+            Helper.Job.CheckIfDeviceIsTagged(tagsTemplate, response);
         }
 
         /*
@@ -83,7 +84,7 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.METHOD_JOB, Request);
+            Helper.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.METHOD_JOB, Request);
         }
 
         /**
@@ -108,7 +109,7 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Helpers.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.RECONFIGURE_JOB, Request);
+            Helper.Job.AssertJobwasCompletedSuccessfully(response.Content, Constants.Jobs.RECONFIGURE_JOB, Request);
         }
     }
 }

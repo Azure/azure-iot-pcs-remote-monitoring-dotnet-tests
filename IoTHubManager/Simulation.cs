@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// Copyright (c) Microsoft. All rights reserved.
+using System;
 using System.Net;
-using System.Security.Cryptography;
 using Helpers.Http;
-using Xunit;
 using Newtonsoft.Json.Linq;
 
 namespace IoTHubManager
