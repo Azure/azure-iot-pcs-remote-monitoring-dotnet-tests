@@ -52,10 +52,9 @@ namespace IoTHubManager
             /**
              * Assert job type and job status for completion.
              */
-            internal static void AssertJobwasCompletedSuccessfully(string content, int jobType, HttpRequestWrapper request)
+            internal static void AssertJobwasCompletedSuccessfully(int jobType, HttpRequestWrapper request, JObject job)
             {
                 // Check if job was submitted successfully.
-                var job = JObject.Parse(content);
                 Assert.Equal<int>(Constants.Jobs.JOB_IN_PROGRESS, job["Status"].ToObject<int>());
                 Assert.Equal<int>(jobType, job["Type"].ToObject<int>());
 
@@ -72,15 +71,14 @@ namespace IoTHubManager
             /**
              * Check if tags on device are updated
              */ 
-            internal static void CheckIfDeviceIsTagged(string tagsTemplate, IHttpResponse tagCallresponse)
+            internal static void CheckIfDeviceIsTagged(string tagsTemplate, string taggedDeviceId)
             {
-                JObject tagCallDevice = JObject.Parse(tagCallresponse.Content);
-                string createdDeviceId = tagCallDevice["Id"].ToString();
+                Console.WriteLine(taggedDeviceId);
                 //initailise Request to call "/devices" endpoint.
-                HttpRequestWrapper Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.DEVICE_PATH);
+                HttpRequestWrapper Request = new HttpRequestWrapper(Constants.IOT_HUB_ADDRESS, Constants.Urls.DEVICE_PATH);
 
                 //Act
-                var fetchCallResponse = Request.Get(createdDeviceId, null);
+                var fetchCallResponse = Request.Get(taggedDeviceId, null);
 
                 JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
                 var tags = JObject.Parse(tagsTemplate)["Tags"];
@@ -99,7 +97,7 @@ namespace IoTHubManager
                 JObject configCallDevice = JObject.Parse(tagCallresponse.Content);
                 string createdDeviceId = configCallDevice["Id"].ToString();
                 //initailise Request to call "/devices" endpoint.
-                HttpRequestWrapper Request = new HttpRequestWrapper(Constants.Urls.IOTHUB_ADDRESS, Constants.Urls.DEVICE_PATH);
+                HttpRequestWrapper Request = new HttpRequestWrapper(Constants.IOT_HUB_ADDRESS, Constants.Urls.DEVICE_PATH);
 
                 //Act
                 var fetchCallResponse = Request.Get(createdDeviceId, null);
@@ -137,9 +135,8 @@ namespace IoTHubManager
 
             // Assert device ID is not null OR empty and
             // other required properties are set.
-            internal static void AssertCommonDeviceProperties(string id, IHttpResponse response)
+            internal static void AssertCommonDeviceProperties(string id, JObject createdDevice)
             {
-                var createdDevice = JObject.Parse(response.Content);
                 string createdDeviceId = createdDevice["Id"].ToString();
 
                 if (String.IsNullOrEmpty(id))
@@ -156,9 +153,8 @@ namespace IoTHubManager
             }
 
             // Assert auth type and credentials for Symmetric auth.
-            internal static void AssertSymmetricAuthentication(string primaryKey, string secondaryKey, IHttpResponse response)
+            internal static void AssertSymmetricAuthentication(string primaryKey, string secondaryKey, JObject createdDevice)
             {
-                var createdDevice = JObject.Parse(response.Content);
                 var authentication = createdDevice["Authentication"];
                 string createdPrimaryKey = authentication["PrimaryKey"].ToString();
                 string createdSecondaryKey = authentication["SecondaryKey"].ToString();
@@ -181,10 +177,9 @@ namespace IoTHubManager
             internal static void AssertX509Authentication(
                 string primaryThumbprint,
                 string secondaryThumbprint,
-                IHttpResponse response
+                JObject createdDevice
                 )
             {
-                var createdDevice = JObject.Parse(response.Content);
                 var authentication = createdDevice["Authentication"];
                 string createdPrimaryThumbprint = authentication["PrimaryThumbprint"].ToString();
                 string createdSecondaryThumbprint = authentication["SecondaryThumbprint"].ToString();
@@ -198,9 +193,8 @@ namespace IoTHubManager
              * checks if the device was created by fetching (Get) it from the backend. 
              * This is to ensure if device was saved and replicated in the DB.
              */
-            internal static void CheckIfDeviceExists(HttpRequestWrapper Request, IHttpResponse createCallresponse)
+            internal static void CheckIfDeviceExists(HttpRequestWrapper Request, JObject createCallDevice)
             {
-                JObject createCallDevice = JObject.Parse(createCallresponse.Content);
                 string createdDeviceId = createCallDevice["Id"].ToString();
 
                 var fetchCallResponse = Request.Get(createdDeviceId, null);

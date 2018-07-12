@@ -1,9 +1,9 @@
 ﻿{
-	"JobId": "Reboot-{JobId}",
-	"QueryCondition": "deviceId in ['{DeviceId}']",
+	"JobId": "FirmwareUpdate-{JobId}",
+	"QueryCondition": "deviceId in ['{FaultyDeviceId}']",
 	"MaxExecutionTimeInSeconds": 0,
 	"MethodParameter": {
-		"Name": "Reboot",
-		"JsonPayload": "{}"
+		"Name": "FirmwareUpdate",
+		"JsonPayload": "{ \"Firmware\":\"1.0.1\", \"FirmwareUri\":\"http://azure.com\"}"
 	}
 }

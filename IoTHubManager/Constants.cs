@@ -9,12 +9,10 @@ namespace IoTHubManager
         public class Urls
         {
             //IOTHUB Manager
-            public const string IOTHUB_ADDRESS = "http://localhost:9002/v1";
             public const string DEVICE_PATH = "/devices/";
             public const string JOBS_PATH = "/jobs/";
 
             //Device Simulation
-            public const string DEVICE_SIMULATION_ADDRESS = "http://localhost:9003/v1";
             public const string SIMULATION_PATH = "/simulations/1";
         }
 
