@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Copyright (c) Microsoft. All rights reserved.
+using System;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,7 +11,7 @@ using Xunit;
 
 namespace IoTHubManager
 {
-    class Helpers
+    class Helper
     {
         public class Job
         {
@@ -19,7 +20,7 @@ namespace IoTHubManager
             /**
              * Monitor job status using polling (re-try) mechanism 
              */
-            internal static JObject GetJobStatuswithReTry(HttpRequestWrapper Request, string jobId)
+            internal static JObject GetJobStatusWithReTry(HttpRequestWrapper Request, string jobId)
             {
                 var jobStatus = GetJobStatus(Request, jobId);
 
@@ -59,7 +60,7 @@ namespace IoTHubManager
                 Assert.Equal<int>(jobType, job["Type"].ToObject<int>());
 
                 // Get Job status by polling. This is to verify if job was successful.
-                var tagJobStatus = GetJobStatuswithReTry(request, job["JobId"].ToString());
+                var tagJobStatus = GetJobStatusWithReTry(request, job["JobId"].ToString());
 
                 // Assert to see if last try yielded correct status.
                 Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, tagJobStatus["Status"].ToObject<int>());

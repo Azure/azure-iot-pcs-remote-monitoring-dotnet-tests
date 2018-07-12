@@ -2,10 +2,8 @@
 
 namespace IoTHubManager
 {
-    class Constants
+    class Constants : Helpers.Constants
     {
-        public const string TEST = "Type";
-        public const string INTEGRATION_TEST = "IntegrationTest";
 
         //Web Service access URIs 
         public class Urls
