@@ -1,13 +1,10 @@
 ﻿{
     "Enabled": "true",
-    "DeviceModels": [
-        {
+    "DeviceModels": [{
             "Id": "chiller-01",
             "Count": "1"
-        },
-        {
+        },{
             "Id": "elevator-02",
             "Count": "1"
-        }
-    ]
+    }]
 }
