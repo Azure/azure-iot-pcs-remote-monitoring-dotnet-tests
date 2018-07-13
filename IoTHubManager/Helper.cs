@@ -33,7 +33,6 @@ namespace IoTHubManager
                     Thread.Sleep(Constants.Jobs.WAIT);
                     jobStatus = GetJobStatus(Request, jobId);
                 }
-
                 return jobStatus;
             }
 
@@ -124,7 +123,6 @@ namespace IoTHubManager
                 {
                     stringBuilder.Append(hash[i].ToString("X2"));
                 }
-
                 return stringBuilder.ToString();
             }
 
