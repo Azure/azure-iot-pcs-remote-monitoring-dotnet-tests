@@ -1,5 +1,5 @@
 ﻿{
-	"JobId": "LocationTags-{JobId}",
+    "JobId": "LocationTags-{JobId}",
 	"MaxExecutionTimeInSeconds": 0,
 	"QueryCondition": "deviceId in ['{DeviceId}','{FaultyDeviceId}']",
 	"UpdateTwin": 
@@ -8,7 +8,7 @@
 		{
 			"IsSimulated": "Y",
 			"Building": "25",
-			"wing": "North"
+			"wing": "South"
 		}
 	}
 }
