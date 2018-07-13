@@ -4,6 +4,9 @@
     "MaxExecutionTimeInSeconds": 0,
     "MethodParameter": {
         "Name": "FirmwareUpdate",
-             "JsonPayload": "{ \"Firmware\":\"1.0.1\", \"FirmwareUri\":\"http://azure.com\"}"
+        "JsonPayload": { 
+            "Firmware": "1.0.1", 
+            "FirmwareUri": "http://azure.com"
+        }
     }
 }
