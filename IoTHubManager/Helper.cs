@@ -47,7 +47,8 @@ namespace IoTHubManager
             }
 
 
-            //Helper method to verify if job was successful.
+            // Helper method to verify if job was successful.
+
             /**
              * Assert job type and job status for completion.
              */
