@@ -83,7 +83,7 @@ namespace IoTHubManager
             public const int JOB_COMPLETED = 3;
 
             //Retry 
-            public const int WAIT = 6000;
+            public const int WAIT = 30000;
             public const int MAX_TRIALS = 5;
         }
     }
