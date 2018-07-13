@@ -82,7 +82,6 @@ namespace IoTHubManager
 
             methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
                              .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
-
             // Act
             var response = Request.Post(methods);
 
@@ -108,7 +107,6 @@ namespace IoTHubManager
 
             config = config.Replace(Constants.Keys.JOB_ID, jobId)
                            .Replace(Constants.Keys.DEVICE_ID, simulatedDeviceId);
-
             // Act
             var response = Request.Post(config);
 

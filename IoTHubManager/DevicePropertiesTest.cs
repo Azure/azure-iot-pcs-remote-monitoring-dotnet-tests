@@ -56,11 +56,11 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Thread.Sleep(Constants.Jobs.WAIT*5);
 
-            //Asserts
+            // Asserts
             AssertKeyExistsInPropertyList(devicePropertyKey);
-            //DeleteDeviceProperty(devicePropertyKey); Deleting tags NOT working
-            //Thread.Sleep(Constants.Jobs.WAIT * 5);
-            //AssertKeyDoesNotExistsInPropertyList(devicePropertyKey);
+            // DeleteDeviceProperty(devicePropertyKey); Deleting tags NOT working
+            // Thread.Sleep(Constants.Jobs.WAIT * 5);
+            // AssertKeyDoesNotExistsInPropertyList(devicePropertyKey);
             // Deleting tags si currently not updating the device property list.
         }
 
@@ -73,6 +73,7 @@ namespace IoTHubManager
         {
             var response = PropertyRequest.Get();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
             JObject propertyList = JObject.Parse(response.Content);
             JArray properties= (JArray)propertyList["Items"];
             devicePropertyKey = "Tags." + devicePropertyKey;
@@ -88,6 +89,7 @@ namespace IoTHubManager
         {
             var response = PropertyRequest.Get();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
             JObject propertyList = JObject.Parse(response.Content);
             JArray properties = (JArray)propertyList["Items"];
             devicePropertyKey = "Tags." + devicePropertyKey;
