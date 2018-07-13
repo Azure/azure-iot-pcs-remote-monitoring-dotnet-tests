@@ -5,19 +5,19 @@ namespace IoTHubManager
     class Constants : Helpers.Constants
     {
 
-        //Web Service access URIs 
+        // Web Service access URIs 
         public class Urls
         {
-            //IOTHUB Manager
+            // IOTHUB Manager
             public const string DEVICE_PATH = "/devices/";
             public const string JOBS_PATH = "/jobs/";
             public const string DEVICE_PROPERTIES_PATH = "/deviceProperties/";
 
-            //Device Simulation
+            // Device Simulation
             public const string SIMULATION_PATH = "/simulations/1";
         }
 
-        //JSON template file paths. Templates for Devices and Jobs.
+        // JSON template file paths. Templates for Devices and Jobs.
         public class Path
         {
             private const string DEVICES_DIR = "./resources/devices/";
@@ -37,23 +37,23 @@ namespace IoTHubManager
             public const string SIMULATION_FILE = JOBS_DIR + "Simulation.json";
         }
 
-        //keys that should be replaced in the above defined JSON files.
+        // keys that should be replaced in the above defined JSON files.
         public class Keys
         {
-            //Device and Jobs
+            // Device and Jobs
             public const string DEVICE_ID = "{DeviceId}";
             public const string FAULTY_DEVICE_ID = "{FaultyDeviceId}";
             public const string ETAG = "{ETag}";
             public const string PROPERTIES = "{Properties}";
             public const string JOB_ID = "{JobId}";
 
-            //Authentication
+            // Authentication
             public const string PRIMARY_KEY = "{PrimaryKey}";               //Symmetric
             public const string SECONDARY_KEY = "{SecondaryKey}";
             public const string PRIMARY_TH = "{PrimaryThumbprint}";         //X.509
             public const string SECONDARY_TH = "{SecondaryThumbprint}";     //X.509
 
-            //Device Property Tests
+            // Device Property Tests
             public const string PropertyKey = "{PropertyKey}";
             public const string PropertyValue = "{PropertyValue}";
         }
@@ -73,16 +73,16 @@ namespace IoTHubManager
 
         public class Jobs
         {
-            //Job Type
+            // Job Type
             public const int TAG_JOB = 4;
             public const int METHOD_JOB = 3;
             public const int RECONFIGURE_JOB = 4;
 
-            //Job Status
+            // Job Status
             public const int JOB_IN_PROGRESS = 7;
             public const int JOB_COMPLETED = 3;
 
-            //Retry 
+            // Retry 
             public const int WAIT = 30000;
             public const int MAX_TRIALS = 5;
         }

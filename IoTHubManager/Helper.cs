@@ -15,7 +15,7 @@ namespace IoTHubManager
     {
         public class Job
         {
-            //Helper methods for fetching (and retrying) the current Job Status.
+            // Helper methods for fetching (and retrying) the current Job Status.
 
             /**
              * Monitor job status using polling (re-try) mechanism 
@@ -71,10 +71,10 @@ namespace IoTHubManager
              */ 
             internal static void CheckIfDeviceIsTagged(string tagsTemplate, string taggedDeviceId)
             {
-                //initailise Request to call "/devices" endpoint.
+                // Initailise Request to call "/devices" endpoint.
                 HttpRequestWrapper Request = new HttpRequestWrapper(Constants.IOT_HUB_ADDRESS, Constants.Urls.DEVICE_PATH);
 
-                //Act
+                // Act
                 var fetchCallResponse = Request.Get(taggedDeviceId, null);
                 JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
                 var tags = JObject.Parse(tagsTemplate)["Tags"];
@@ -92,10 +92,10 @@ namespace IoTHubManager
             {
                 JObject configCallDevice = JObject.Parse(tagCallresponse.Content);
                 string createdDeviceId = configCallDevice["Id"].ToString();
-                //initailise Request to call "/devices" endpoint.
+                // Initailise Request to call "/devices" endpoint.
                 HttpRequestWrapper Request = new HttpRequestWrapper(Constants.IOT_HUB_ADDRESS, Constants.Urls.DEVICE_PATH);
 
-                //Act
+                // Act
                 var fetchCallResponse = Request.Get(createdDeviceId, null);
                 JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
                 var configTemplateModel = JObject.Parse(configTemplate)["UpdateTwin"]["Properties"]["Model"];

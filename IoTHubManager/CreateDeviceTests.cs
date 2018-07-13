@@ -12,7 +12,7 @@ namespace IoTHubManager
     public class CreateDeviceTest : IDisposable
     {
         private readonly HttpRequestWrapper Request;
-        //Device Templates
+        // Device Templates
         private readonly string DEVICE_TEMPLATE_AUTO_GEN_AUTH;
         private readonly string DEVICE_TEMPLATE_SYMMETRIC_AUTH;
         private readonly string DEVICE_TEMPLATE_X509_AUTH;
@@ -20,10 +20,10 @@ namespace IoTHubManager
 
         public CreateDeviceTest()
         {
-            //Create request wrapper object for interacting with iothub manager microservices for CRUD on devices
+            // Create request wrapper object for interacting with iothub manager microservices for CRUD on devices
             this.Request = new HttpRequestWrapper(Constants.IOT_HUB_ADDRESS, Constants.Urls.DEVICE_PATH);
 
-            //Fetch different device templates
+            // Fetch different device templates
             this.DEVICE_TEMPLATE_AUTO_GEN_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_AUTO_GEN_AUTH);
             this.DEVICE_TEMPLATE_SYMMETRIC_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_SYMMETRIC_AUTH);
             this.DEVICE_TEMPLATE_X509_AUTH = System.IO.File.ReadAllText(Constants.Path.DEVICE_FILE_X509_AUTH);                     
@@ -112,14 +112,14 @@ namespace IoTHubManager
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void DeviceCreated_IfEmptyIdAndCustomAuthPassed()
         {
-            //Arrange
+            // Arrange
             string primaryKey = Guid.NewGuid().ToString("N");
             string secondaryKey = Guid.NewGuid().ToString("N");
             // DeviceId must be empty to be auto generated.
             string device = this.DEVICE_TEMPLATE_SYMMETRIC_AUTH.Replace(Constants.Keys.DEVICE_ID, "")
                                                           .Replace(Constants.Keys.PRIMARY_KEY, primaryKey)
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
-            //Act
+            // Act
             var response = this.Request.Post(device);
 
             // Asserts
