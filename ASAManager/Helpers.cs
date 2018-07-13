@@ -100,7 +100,7 @@ namespace ASAManager
                 searchString,
                 false);
         }
-        
+
         /**
          * Checks if a new file with given file name was
          * written to blob storage between the given start time and the current time.
@@ -137,7 +137,6 @@ namespace ASAManager
 
                 checkTime = checkTime.AddMinutes(1);
             }
-
             return false;
         }
 

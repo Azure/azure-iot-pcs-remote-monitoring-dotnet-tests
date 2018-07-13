@@ -12,6 +12,8 @@ namespace Helpers.Http
     {
         private const int RETRY_COUNT = 10;
         private const int RETRY_PAUSE_MSEC = 10000;
+        private const int TIMEOUT_MSEC = 30000;
+
         /**
          * Send GET request using given httpClient against given requestAddress.
          * Retry up to RETRY_COUNT times on non-OK status code, waiting
@@ -23,20 +25,31 @@ namespace Helpers.Http
             IHttpClient httpClient)
         {
             var request = new HttpRequest(requestAddress);
-            request.AddHeader("X-Foo", "Bar");
+            request.Options.Timeout = TIMEOUT_MSEC;
 
             int retryCount = 0;
             while (retryCount < RETRY_COUNT)
             {
-                var response = httpClient.GetAsync(request).Result;
-                retryCount++;
-                if (response.StatusCode == HttpStatusCode.OK)
+                try
                 {
-                    return response;
+                    retryCount++;
+                    var response = httpClient.GetAsync(request).Result;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return response;
+                    }
+                    else if (retryCount < RETRY_COUNT)
+                    {
+                        Thread.Sleep(RETRY_PAUSE_MSEC);
+                    }
                 }
-                else if (retryCount < RETRY_COUNT)
+                catch (Exception)
                 {
-                    Thread.Sleep(RETRY_PAUSE_MSEC);
+                    if (retryCount < RETRY_COUNT)
+                    {
+                        Thread.Sleep(RETRY_PAUSE_MSEC);
+                    }
+
                 }
             }
 
