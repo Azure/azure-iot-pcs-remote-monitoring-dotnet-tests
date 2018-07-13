@@ -31,8 +31,8 @@ namespace IoTHubManager
             var device = DEVICE_TEMPLATE.Replace(Constants.Keys.DEVICE_ID, "");
 
             var response = this.Request.Post(device);
-
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
             this.device = JObject.Parse(response.Content);
             this.deviceId = this.device["Id"].ToString();
         }

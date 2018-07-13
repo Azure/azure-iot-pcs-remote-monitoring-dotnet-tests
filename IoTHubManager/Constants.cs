@@ -47,7 +47,6 @@ namespace IoTHubManager
             public const string PROPERTIES = "{Properties}";
             public const string JOB_ID = "{JobId}";
 
-
             //Authentication
             public const string PRIMARY_KEY = "{PrimaryKey}";               //Symmetric
             public const string SECONDARY_KEY = "{SecondaryKey}";

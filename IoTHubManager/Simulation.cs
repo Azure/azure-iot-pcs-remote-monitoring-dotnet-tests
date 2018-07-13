@@ -70,24 +70,23 @@ namespace IoTHubManager
                 {
                     healthyDeviceNo = device["Count"].ToObject<int>();
                     //device["Count"] = (healthyDeviceNo + 1).ToString();    Currently, we are using existing
-                    // simulated device . NOT creating new devices for each test run
+                    // simulated device. NOT creating new devices for each test run
                 }
                 if (device["Id"].ToString() == Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE)
                 {
                     faultyDeviceNo = device["Count"].ToObject<int>();
                     //device["Count"] = (faultyDeviceNo + 1).ToString();    Currently, we are using existing
-                    // simulated device . NOT creating new devices for each test run
+                    // simulated device. NOT creating new devices for each test run
                 }
             }
             //PutSimulatedDevices(devices); DONOT create devices if they exists. Simulated devices cannot
             // be deleted, which leads to large number of simulated devices in the DB and slows down the system.
         }
 
-        // This ppiece of code may be required in future. Hence, it is not erased
+        // This piece of code may be required in future. Hence, it is not erased.
         //private void PutSimulatedDevices(JObject devices)
         //{
         //    IHttpResponse response = Request.Put(devices);
-
         //    if (HttpStatusCode.OK != response.StatusCode)
         //    {
         //        throw new Exception("Create simulated device failure. Request to device simulation service failed with " + response.StatusCode + " status code.");
