@@ -1,16 +1,16 @@
 ﻿{
-  "JobId": "ChangeModel-{JobId}",
-  "QueryCondition": "deviceId in ['{DeviceId}']",
-  "MaxExecutionTimeInSeconds": 0,
-  "UpdateTwin": {
-    "Properties": {
-      "Desired": {
-        "Location": "Building 2",
-        "Longitude": -122.126258,
-        "Latitude": 47.640792,
-        "Model": "CH102",
-        "Type": "Chiller"
-      }
+    "JobId": "ChangeModel-{JobId}",
+    "QueryCondition": "deviceId in ['{DeviceId}']",
+    "MaxExecutionTimeInSeconds": 0,
+    "UpdateTwin": {
+        "Properties": {
+            "Desired": {
+                "Location": "Building 2",
+                "Longitude": -122.126258,
+                "Latitude": 47.640792,
+                "Model": "CH102",
+                "Type": "Chiller"
+            }
+        }
     }
-  }
 }
