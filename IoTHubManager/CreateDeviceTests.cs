@@ -143,7 +143,6 @@ namespace IoTHubManager
             string id = Guid.NewGuid().ToString();
             string primaryThumbprint = Helper.Device.GenerateNewThumbPrint();
             string secondaryThumbprint = Helper.Device.GenerateNewThumbPrint();
-
             string device = DEVICE_TEMPLATE_X509_AUTH.Replace(Constants.Keys.DEVICE_ID, id)
                                                      .Replace(Constants.Keys.PRIMARY_TH, primaryThumbprint)
                                                      .Replace(Constants.Keys.SECONDARY_TH, secondaryThumbprint);
