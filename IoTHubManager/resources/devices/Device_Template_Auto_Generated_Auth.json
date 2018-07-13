@@ -1,1 +1,6 @@
-{"Id": "{DeviceId}", "IsSimulated": false, "Enabled": true, "Authentication": {}}
+{
+    "Id": "{DeviceId}", 
+    "IsSimulated": false, 
+    "Enabled": true, 
+    "Authentication": {}
+}
