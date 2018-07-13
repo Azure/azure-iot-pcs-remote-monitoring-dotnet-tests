@@ -1,8 +1,6 @@
 ﻿{
 	"JobId": "Reboot-{JobId}",
-	"QueryCondition": "deviceId in ['{DeviceId}']",
-	]
-	"\",": null,
+	"QueryCondition": "deviceId in ['{DeviceId}','{FaultyDeviceId}']",
 	"MaxExecutionTimeInSeconds": 0,
 	"MethodParameter": {
 		"Name": "Reboot",

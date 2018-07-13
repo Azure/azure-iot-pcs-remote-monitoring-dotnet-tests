@@ -49,6 +49,9 @@
     <None Update="resources\jobs\Reconfigure_Chiller_Update_Model.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="resources\jobs\Properties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
  
 </Project>

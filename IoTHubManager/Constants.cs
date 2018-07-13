@@ -11,6 +11,7 @@ namespace IoTHubManager
             //IOTHUB Manager
             public const string DEVICE_PATH = "/devices/";
             public const string JOBS_PATH = "/jobs/";
+            public const string DEVICE_PROPERTIES_PATH = "/deviceProperties/";
 
             //Device Simulation
             public const string SIMULATION_PATH = "/simulations/1";
@@ -29,6 +30,7 @@ namespace IoTHubManager
 
             //Job Files (JSON object holding job (tag/reconfigure) descriptions.)
             public const string TAGS_FILE = JOBS_DIR + "Tags.json";
+            public const string DEVICE_PROPERTIES_FILE = JOBS_DIR + "Properties.json";
             public const string REBOOT_METHOD_FILE = JOBS_DIR + "Method_Chiller_Reboot.json";
             public const string FIRMWAREUPDATE_METHOD_FILE = JOBS_DIR + "Method_Elevator_FrimwareUpdate.json";
             public const string RECONFIGURE_DEVICE_FILE = JOBS_DIR + "Reconfigure_Chiller_Update_Model.json";
@@ -41,13 +43,20 @@ namespace IoTHubManager
             //Device and Jobs
             public const string DEVICE_ID = "{DeviceId}";
             public const string FAULTY_DEVICE_ID = "{FaultyDeviceId}";
+            public const string ETAG = "{ETag}";
+            public const string PROPERTIES = "{Properties}";
             public const string JOB_ID = "{JobId}";
+
 
             //Authentication
             public const string PRIMARY_KEY = "{PrimaryKey}";               //Symmetric
             public const string SECONDARY_KEY = "{SecondaryKey}";
             public const string PRIMARY_TH = "{PrimaryThumbprint}";         //X.509
             public const string SECONDARY_TH = "{SecondaryThumbprint}";     //X.509
+
+            //Device Property Tests
+            public const string PropertyKey = "{PropertyKey}";
+            public const string PropertyValue = "{PropertyValue}";
         }
 
         public class Auth
@@ -75,7 +84,7 @@ namespace IoTHubManager
             public const int JOB_COMPLETED = 3;
 
             //Retry 
-            public const int WAIT = 500;
+            public const int WAIT = 6000;
             public const int MAX_TRIALS = 5;
         }
     }
