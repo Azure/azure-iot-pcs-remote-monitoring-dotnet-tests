@@ -23,12 +23,12 @@ namespace IoTHubManager
             private const string DEVICES_DIR = "./resources/devices/";
             private const string JOBS_DIR = "./resources/jobs/";
 
-            //Device Files (JSON object holding device descriptions.)
+            // Device Files (JSON object holding device descriptions.)
             public const string DEVICE_FILE_AUTO_GEN_AUTH = DEVICES_DIR + "Device_Template_Auto_Generated_Auth.json";
             public const string DEVICE_FILE_SYMMETRIC_AUTH = DEVICES_DIR + "Device_Template_Symmetric_Auth.json";
             public const string DEVICE_FILE_X509_AUTH = DEVICES_DIR + "Device_Template_X509_Auth.json";
 
-            //Job Files (JSON object holding job (tag/reconfigure) descriptions.)
+            // Job Files (JSON object holding job (tag/reconfigure) descriptions.)
             public const string TAGS_FILE = JOBS_DIR + "Tags.json";
             public const string DEVICE_PROPERTIES_FILE = JOBS_DIR + "Properties.json";
             public const string REBOOT_METHOD_FILE = JOBS_DIR + "Method_Chiller_Reboot.json";
@@ -64,7 +64,7 @@ namespace IoTHubManager
             public const int X509 = 1;
         }
 
-        //Simulated devices on which Job test(s) are run on.
+        // Simulated devices on which Job test(s) are run on.
         public class SimulatedDevices
         {
             public const string SIMULATED_DEVICE = "chiller-01";            //Non faulty

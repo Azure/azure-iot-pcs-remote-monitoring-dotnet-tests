@@ -91,7 +91,7 @@ namespace IoTHubManager
         //    {
         //        throw new Exception("Create simulated device failure. Request to device simulation service failed with " + response.StatusCode + " status code.");
         //    }
-        //}
+        // }
 
         public JObject GetSimulatedDevices()
         {
