@@ -13,12 +13,6 @@ namespace IoTHubManager
         private readonly string simulatedDeviceId;
         private readonly string simulatedFaultyDeviceId;
 
-        /// <summary>
-        /// Integration test using a real HTTP instance.
-        /// Tests for submitting jobs against devices for 
-        /// Tagging, Running methods and Reconfiguring.
-        /// </summary>
-
         /**
          * Initialises simulated devices used for the tests
          */
@@ -35,7 +29,7 @@ namespace IoTHubManager
         /**
          * Creates Job for tagging on devices and 
          * checks the job status using polling 
-         * mechanism to verify job completion.
+         * mechanism to verify completion.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void DeviceDataUpdated_IfTagged()
@@ -62,7 +56,7 @@ namespace IoTHubManager
          * Creates Job for running methods on 
          * devices and checks the job status 
          * using polling mechanism to verify 
-         * job completion.
+         * completion.
          */
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void DeviceActedUpon_IfMethodExecuted()
@@ -100,7 +94,6 @@ namespace IoTHubManager
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void DeviceUpdated_IfReconfigured()
         {
-
             // Arrange
             var config = System.IO.File.ReadAllText(Constants.Path.RECONFIGURE_DEVICE_FILE);
             string jobId = Guid.NewGuid().ToString();

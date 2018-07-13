@@ -64,7 +64,6 @@ namespace IoTHubManager
                 // Assert to see if last try yielded correct status.
                 Assert.Equal<int>(Constants.Jobs.JOB_COMPLETED, tagJobStatus["Status"].ToObject<int>());
                 Assert.Equal<int>(jobType, tagJobStatus["Type"].ToObject<int>());
-
                 // TODO: Verify Result Statistics from the response JSON.
             }
 
@@ -78,7 +77,6 @@ namespace IoTHubManager
 
                 //Act
                 var fetchCallResponse = Request.Get(taggedDeviceId, null);
-
                 JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
                 var tags = JObject.Parse(tagsTemplate)["Tags"];
                 var deviceTags = fetchCallDevice["Tags"];
@@ -100,7 +98,6 @@ namespace IoTHubManager
 
                 //Act
                 var fetchCallResponse = Request.Get(createdDeviceId, null);
-
                 JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
                 var configTemplateModel = JObject.Parse(configTemplate)["UpdateTwin"]["Properties"]["Model"];
                 var deviceConfigModel = fetchCallDevice["Properties"]["Desired"]["Model"];
@@ -120,7 +117,6 @@ namespace IoTHubManager
 
                 string input = Guid.NewGuid().ToString();
                 SHA1Managed sha = new SHA1Managed();
-
                 var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
                 var stringBuilder = new StringBuilder(hash.Length * 2);
 
@@ -195,7 +191,6 @@ namespace IoTHubManager
             internal static void CheckIfDeviceExists(HttpRequestWrapper Request, JObject createCallDevice)
             {
                 string createdDeviceId = createCallDevice["Id"].ToString();
-
                 var fetchCallResponse = Request.Get(createdDeviceId, null);
                 JObject fetchCallDevice = JObject.Parse(fetchCallResponse.Content);
 
