@@ -43,11 +43,11 @@ namespace IoTHubManager
 
             // Act
             var response = this.Request.Post(device);
-            var createdDevice = JObject.Parse(response.Content);
-            deviceId = createdDevice["Id"].ToString();
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var createdDevice = JObject.Parse(response.Content);
+            deviceId = createdDevice["Id"].ToString();
             Helper.Device.AssertCommonDeviceProperties(null, createdDevice);
             Helper.Device.AssertSymmetricAuthentication(null, null, createdDevice);
             Helper.Device.CheckIfDeviceExists(this.Request, createdDevice);
@@ -67,11 +67,11 @@ namespace IoTHubManager
 
             // Act
             var response = this.Request.Post(device);
-            var createdDevice = JObject.Parse(response.Content);
-            deviceId = createdDevice["Id"].ToString();
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var createdDevice = JObject.Parse(response.Content);
+            deviceId = createdDevice["Id"].ToString();
             Helper.Device.AssertCommonDeviceProperties(id, createdDevice);
             Helper.Device.AssertSymmetricAuthentication(null, null, createdDevice);
             Helper.Device.CheckIfDeviceExists(this.Request, createdDevice);
@@ -94,11 +94,11 @@ namespace IoTHubManager
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
             // Act
             var response = this.Request.Post(device);
-            var createdDevice = JObject.Parse(response.Content);
-            deviceId = createdDevice["Id"].ToString();
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var createdDevice = JObject.Parse(response.Content);
+            deviceId = createdDevice["Id"].ToString();
             Helper.Device.AssertCommonDeviceProperties(id, createdDevice);
             Helper.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, createdDevice);
             Helper.Device.CheckIfDeviceExists(this.Request, createdDevice);
@@ -121,11 +121,11 @@ namespace IoTHubManager
                                                           .Replace(Constants.Keys.SECONDARY_KEY, secondaryKey);
             //Act
             var response = this.Request.Post(device);
-            var createdDevice = JObject.Parse(response.Content);
-            deviceId = createdDevice["Id"].ToString();
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var createdDevice = JObject.Parse(response.Content);
+            deviceId = createdDevice["Id"].ToString();
             Helper.Device.AssertCommonDeviceProperties(null, createdDevice);
             Helper.Device.AssertSymmetricAuthentication(primaryKey, secondaryKey, createdDevice);
             Helper.Device.CheckIfDeviceExists(this.Request, createdDevice);
@@ -149,11 +149,11 @@ namespace IoTHubManager
                                                      .Replace(Constants.Keys.SECONDARY_TH, secondaryThumbprint);
             // Act
             var response = this.Request.Post(device);
+
+            // Asserts
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var createdDevice = JObject.Parse(response.Content);
             deviceId = createdDevice["Id"].ToString();
-
-            // Asserts 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Helper.Device.AssertCommonDeviceProperties(id, createdDevice);
             Helper.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, createdDevice);
             Helper.Device.CheckIfDeviceExists(this.Request, createdDevice);
@@ -176,11 +176,11 @@ namespace IoTHubManager
                                                      .Replace(Constants.Keys.SECONDARY_TH, secondaryThumbprint);
             // Act
             var response = this.Request.Post(device);
-            var createdDevice = JObject.Parse(response.Content);
-            deviceId = createdDevice["Id"].ToString();
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var createdDevice = JObject.Parse(response.Content);
+            deviceId = createdDevice["Id"].ToString();
             Helper.Device.AssertCommonDeviceProperties(null, createdDevice);
             Helper.Device.AssertX509Authentication(primaryThumbprint, secondaryThumbprint, createdDevice);
             Helper.Device.CheckIfDeviceExists(this.Request, createdDevice);

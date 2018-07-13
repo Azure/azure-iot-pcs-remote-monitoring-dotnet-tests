@@ -49,10 +49,10 @@ namespace IoTHubManager
                                        .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
             // Act
             var response = Request.Post(tagsTemplate);
-            var job = JObject.Parse(response.Content);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var job = JObject.Parse(response.Content);
             Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.TAG_JOB, Request, job);
             Helper.Job.CheckIfDeviceIsTagged(tagsTemplate, this.simulatedDeviceId);
             Helper.Job.CheckIfDeviceIsTagged(tagsTemplate, this.simulatedFaultyDeviceId);
@@ -82,12 +82,13 @@ namespace IoTHubManager
 
             methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
                              .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
+
             // Act
             var response = Request.Post(methods);
-            var job = JObject.Parse(response.Content);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var job = JObject.Parse(response.Content);
             Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.METHOD_JOB, Request, job);
         }
 
@@ -110,10 +111,10 @@ namespace IoTHubManager
 
             // Act
             var response = Request.Post(config);
-            var job = JObject.Parse(response.Content);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var job = JObject.Parse(response.Content);
             Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.RECONFIGURE_JOB, Request, job);
         }
     }

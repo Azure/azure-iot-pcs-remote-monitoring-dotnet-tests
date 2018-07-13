@@ -73,7 +73,6 @@ namespace IoTHubManager
              */ 
             internal static void CheckIfDeviceIsTagged(string tagsTemplate, string taggedDeviceId)
             {
-                Console.WriteLine(taggedDeviceId);
                 //initailise Request to call "/devices" endpoint.
                 HttpRequestWrapper Request = new HttpRequestWrapper(Constants.IOT_HUB_ADDRESS, Constants.Urls.DEVICE_PATH);
 
