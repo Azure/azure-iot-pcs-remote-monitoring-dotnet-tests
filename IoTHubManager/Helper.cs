@@ -113,7 +113,6 @@ namespace IoTHubManager
              */
             internal static string GenerateNewThumbPrint()
             {
-
                 string input = Guid.NewGuid().ToString();
                 SHA1Managed sha = new SHA1Managed();
                 var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
