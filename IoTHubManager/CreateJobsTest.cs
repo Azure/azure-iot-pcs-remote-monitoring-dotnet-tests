@@ -20,7 +20,7 @@ namespace IoTHubManager
         {
             this.Request = new HttpRequestWrapper(Constants.IOT_HUB_ADDRESS, Constants.Urls.JOBS_PATH);
 
-            //Get simulated devices required for the tests
+            // Get simulated devices required for the tests
             Simulation simulation = Simulation.GetSimulation();
             this.simulatedDeviceId = Constants.SimulatedDevices.SIMULATED_DEVICE + "." + simulation.healthyDeviceNo.ToString();
             this.simulatedFaultyDeviceId = Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE + "." + simulation.faultyDeviceNo.ToString();

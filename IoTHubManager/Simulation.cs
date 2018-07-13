@@ -8,11 +8,11 @@ namespace IoTHubManager
 {
     internal class Simulation
     {
-        //Simulation (Device count for Ids)
+        // Simulation (Device count for Ids)
         private static Simulation simulation;
         internal int healthyDeviceNo = 0;
         internal int faultyDeviceNo = 0;
-        //Http Request
+        // Http Request
         private HttpRequestWrapper Request;
 
         internal static Simulation GetSimulation()
@@ -69,23 +69,23 @@ namespace IoTHubManager
                 if (device["Id"].ToString() == Constants.SimulatedDevices.SIMULATED_DEVICE)
                 {
                     healthyDeviceNo = device["Count"].ToObject<int>();
-                    //device["Count"] = (healthyDeviceNo + 1).ToString();    Currently, we are using existing
+                    // device["Count"] = (healthyDeviceNo + 1).ToString();    Currently, we are using existing
                     // simulated device. NOT creating new devices for each test run
                 }
                 if (device["Id"].ToString() == Constants.SimulatedDevices.SIMULATED_FAULTY_DEVICE)
                 {
                     faultyDeviceNo = device["Count"].ToObject<int>();
-                    //device["Count"] = (faultyDeviceNo + 1).ToString();    Currently, we are using existing
+                    // device["Count"] = (faultyDeviceNo + 1).ToString();    Currently, we are using existing
                     // simulated device. NOT creating new devices for each test run
                 }
             }
-            //PutSimulatedDevices(devices); DONOT create devices if they exists. Simulated devices cannot
+            // PutSimulatedDevices(devices); DONOT create devices if they exists. Simulated devices cannot
             // be deleted, which leads to large number of simulated devices in the DB and slows down the system.
         }
 
         // This piece of code may be required in future. Hence, it is not erased.
-        //private void PutSimulatedDevices(JObject devices)
-        //{
+        // private void PutSimulatedDevices(JObject devices)
+        // {
         //    IHttpResponse response = Request.Put(devices);
         //    if (HttpStatusCode.OK != response.StatusCode)
         //    {

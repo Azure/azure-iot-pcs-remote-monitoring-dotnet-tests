@@ -45,7 +45,7 @@ namespace IoTHubManager
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void DevicePropertiesListUpdated_IfDeviceUpdated()
         {
-            //Arrange
+            // Arrange
             string jobId = Guid.NewGuid().ToString();
             string devicePropertyKey = Guid.NewGuid().ToString();
             string devicePropertyValue = Guid.NewGuid().ToString();
@@ -54,14 +54,16 @@ namespace IoTHubManager
             // Act
             var response = Request.Put(this.deviceId, this.device);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Thread.Sleep(Constants.Jobs.WAIT*5);
+            Thread.Sleep(Constants.Jobs.WAIT * 5);
 
             // Asserts
             AssertKeyExistsInPropertyList(devicePropertyKey);
             // DeleteDeviceProperty(devicePropertyKey); Deleting tags NOT working
             // Thread.Sleep(Constants.Jobs.WAIT * 5);
             // AssertKeyDoesNotExistsInPropertyList(devicePropertyKey);
-            // Deleting tags si currently not updating the device property list.
+            // Deleting tags is currently not updating the device property
+            // list. There is a bug in delete tags where it appends new tags but 
+            // doesn't remove deleted tags. There is a bug open for it.
         }
 
         //Helper methods
