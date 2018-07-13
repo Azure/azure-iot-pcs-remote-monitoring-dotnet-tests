@@ -52,11 +52,16 @@ namespace IoTHubManager
             var request = new HttpRequest(uri);
             request.SetContent(content);
             return this.httpClient.PostAsync(request).Result;
-           
         }
 
-        public IHttpResponse Put(JObject content)
+        public IHttpResponse Put(string path, JObject content)
         {
+            string uri = this.uri;
+            if (!String.IsNullOrEmpty(path))
+            {
+                uri += path;
+            }
+
             var request = new HttpRequest(uri);
             request.SetContent(content);
             return this.httpClient.PutAsync(request).Result;
