@@ -2,12 +2,12 @@
 	"Enabled": "true",
 	"DeviceModels": [
 		{
-			"Id": "chiller-01",
-			"Count": "1"
+		    "Id": "chiller-01",
+		    "Count": "1"
 		},
-		{
-			"Id": "elevator-02",
-			"Count": "1"
-		}
-	]
+        {
+            "Id": "elevator-02",
+            "Count": "1"
+        }
+    ]
 }
