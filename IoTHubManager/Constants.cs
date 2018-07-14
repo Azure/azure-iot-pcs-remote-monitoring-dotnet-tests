@@ -79,11 +79,12 @@ namespace IoTHubManager
             public const int RECONFIGURE_JOB = 4;
 
             // Job Status
-            public const int JOB_IN_PROGRESS = 7;
+            public const int JOB_IN_PROGRESS = 2;
+            public const int JOB_QUEUED = 7;
             public const int JOB_COMPLETED = 3;
 
             // Retry 
-            public const int WAIT = 30000;
+            public const int WAIT= 600;
             public const int MAX_TRIALS = 5;
         }
     }
