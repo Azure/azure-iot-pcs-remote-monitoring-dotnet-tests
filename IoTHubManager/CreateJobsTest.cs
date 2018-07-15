@@ -73,14 +73,12 @@ namespace IoTHubManager
             // Arrange
             var methods = System.IO.File.ReadAllText(methodFile);
             string jobId = Guid.NewGuid().ToString();
-
             methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
                              .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId)
                              .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
             // Act
             var response = Request.Post(methods);
-            Console.WriteLine(methods);
-            Console.WriteLine(response.Content);
+
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var job = JObject.Parse(response.Content);
