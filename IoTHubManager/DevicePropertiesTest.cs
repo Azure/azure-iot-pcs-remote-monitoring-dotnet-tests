@@ -54,7 +54,7 @@ namespace IoTHubManager
             // Act
             var response = Request.Put(this.deviceId, this.device);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Thread.Sleep(Constants.Jobs.WAIT * 5);
+            Thread.Sleep(Constants.Jobs.WAIT);
 
             // Asserts
             AssertKeyExistsInPropertyList(devicePropertyKey);

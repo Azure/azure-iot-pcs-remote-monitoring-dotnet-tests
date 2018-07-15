@@ -1,4 +1,4 @@
-﻿{
+﻿  {
     "JobId": "LocationTags-{JobId}",
     "MaxExecutionTimeInSeconds": 0,
     "QueryCondition": "deviceId in ['{DeviceId}','{FaultyDeviceId}']",
