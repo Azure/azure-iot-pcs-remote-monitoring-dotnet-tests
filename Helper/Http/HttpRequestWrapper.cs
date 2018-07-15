@@ -49,6 +49,7 @@ namespace IoTHubManager
 
         public IHttpResponse Post(string content)
         {
+            Console.WriteLine(uri);
             var request = new HttpRequest(uri);
             request.SetContent(content);
             return this.httpClient.PostAsync(request).Result;
