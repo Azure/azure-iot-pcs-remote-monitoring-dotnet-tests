@@ -79,6 +79,7 @@ namespace IoTHubManager
                              .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
             // Act
             var response = Request.Post(methods);
+            Console.WriteLine(methods);
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
