@@ -54,7 +54,6 @@ namespace IoTHubManager
              */
             internal static void AssertJobwasCompletedSuccessfully(int jobType, HttpRequestWrapper request, JObject job)
             {
-                Console.WriteLine(jobType + " " + job["Status"].ToObject<int>());
                 // Check if job was submitted successfully.
                 Assert.True((Constants.Jobs.JOB_QUEUED == job["Status"].ToObject<int>()) ||
                             (Constants.Jobs.JOB_IN_PROGRESS == job["Status"].ToObject<int>()));

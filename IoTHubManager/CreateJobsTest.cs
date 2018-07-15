@@ -75,7 +75,8 @@ namespace IoTHubManager
             string jobId = Guid.NewGuid().ToString();
 
             methods = methods.Replace(Constants.Keys.JOB_ID, jobId)
-                             .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId);
+                             .Replace(Constants.Keys.DEVICE_ID, this.simulatedDeviceId)
+                             .Replace(Constants.Keys.FAULTY_DEVICE_ID, this.simulatedFaultyDeviceId);
             // Act
             var response = Request.Post(methods);
 
