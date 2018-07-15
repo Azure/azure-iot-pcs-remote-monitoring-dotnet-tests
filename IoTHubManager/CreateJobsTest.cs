@@ -83,6 +83,7 @@ namespace IoTHubManager
 
             // Asserts
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Console.WriteLine(response.Content);
             var job = JObject.Parse(response.Content);
             Helper.Job.AssertJobwasCompletedSuccessfully(Constants.Jobs.METHOD_JOB, Request, job);
         }
