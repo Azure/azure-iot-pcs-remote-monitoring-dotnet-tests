@@ -7,7 +7,7 @@ if [[ "$DOCKER_TAG" == "" ]]; then
     export DOCKER_TAG=testing
 fi
 
-DOCKER_IMAGE="azureiotpcs/telemetry-agent-dotnet:$DOCKER_TAG"
+DOCKER_IMAGE="azureiotpcs/telemetry-agent-$REPO:$DOCKER_TAG"
 DOCKER_PORT=9023
 DOCKER_NAME="telemetry-agent"
 DOCKER_NETWOK="integrationtests"

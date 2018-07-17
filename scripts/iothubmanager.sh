@@ -7,7 +7,7 @@ if [[ "$DOCKER_TAG" == "" ]]; then
     export DOCKER_TAG=testing
 fi
 
-DOCKER_IMAGE="azureiotpcs/iothub-manager-dotnet:$DOCKER_TAG"
+DOCKER_IMAGE="azureiotpcs/iothub-manager-$REPO:$DOCKER_TAG"
 DOCKER_PORT=9002
 DOCKER_NAME="iothub-manager"
 DOCKER_NETWOK="integrationtests"

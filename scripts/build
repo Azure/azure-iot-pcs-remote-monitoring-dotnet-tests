@@ -8,20 +8,48 @@ cd $APP_HOME
 
 source "$APP_HOME/scripts/.functions.sh"
 
-if [[ "$1" != "" ]]; then
-    export DOCKER_TAG=testing
-fi
+#Script Args
+repo=both
+tag="testing"
 
-echo "The repo name is: " $2
+run_tests() {
 
-./StorageAdapter/run.sh "Storage Adapter tests"
+    header2 "Now Running $repo tests"
 
-./Config/run.sh "Config tests"
+    ./StorageAdapter/run.sh -re $repo -t $tag
 
-./IoTHubManager/run.sh "IoT Hub Manager tests"
+    ./Config/run.sh -re $repo -t $tag
 
-./ASAManager/run.sh "ASA Manager tests"
+    ./IoTHubManager/run.sh -re $repo -t $tag
 
-./Telemetry/run.sh "Telemetry tests"
+    ./ASAManager/run.sh -re $repo -t $tag
+
+    ./Telemetry/run.sh -re $repo -t $tag
+}
+
+run_with_options() {
+    if [[ "$repo" == "both" ]]; then
+    	header2 "Running both .Net and Java tests"
+	repo=dotnet
+	run_tests 
+	repo=java
+	#run_tests
+    else
+	run_tests
+    fi
+}
+
+while [[ $# -gt 0 ]] ;
+do
+    opt=$1;
+    shift;	
+    case $opt in
+	-dt|--dockertag) tag=$1; shift;;
+        -re|--repo) repo=$1; shift;;
+        *) shift;
+   esac
+done
+
+run_with_options
 
 set +e
