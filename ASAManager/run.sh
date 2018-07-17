@@ -16,9 +16,9 @@ start_containers() {
     cd $APP_HOME
     ./scripts/storageadapter.sh start
     ./scripts/telemetry.sh start
+    ./scripts/devicesimulation.sh start
     ./scripts/config.sh start
     ./scripts/iothubmanager.sh start
-    ./scripts/devicesimulation.sh start
     ./scripts/asamanager.sh start
     docker ps -a
 }
@@ -30,9 +30,9 @@ stop_containers() {
     docker ps -a
     ./scripts/storageadapter.sh stop
     ./scripts/telemetry.sh stop
+    ./scripts/devicesimulation.sh stop
     ./scripts/config.sh stop
     ./scripts/iothubmanager.sh stop
-    ./scripts/devicesimulation.sh stop
     ./scripts/asamanager.sh stop
 }
 
