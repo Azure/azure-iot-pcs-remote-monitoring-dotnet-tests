@@ -2,8 +2,7 @@
     "Id": "{DeviceId}", 
     "IsSimulated": false, 
     "Enabled": true, 
-    "Authentication": 
-    {
+    "Authentication": {
         "AuthenticationType":1,
         "PrimaryKey":null,
         "PrimaryThumbprint":"{PrimaryThumbprint}",
