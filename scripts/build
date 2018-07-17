@@ -47,7 +47,7 @@ do
 	-dt|--dockertag) tag=$1; shift;;
         -re|--repo) repo=$1; shift;;
         *) shift;
-   esac
+    esac
 done
 
 run_with_options
