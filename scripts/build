@@ -14,7 +14,7 @@ fi
 
 echo "The repo name is: " $2
 
-./StorageAdapter/run.sh "Storage Adapter Tests"
+./StorageAdapter/run.sh "Storage Adapter tests"
 
 ./Config/run.sh "Config tests"
 
