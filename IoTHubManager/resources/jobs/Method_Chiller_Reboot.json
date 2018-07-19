@@ -1,0 +1,9 @@
+﻿{
+    "JobId": "Reboot-{JobId}",
+    "QueryCondition": "deviceId in ['{DeviceId}']",
+    "MaxExecutionTimeInSeconds": 0,
+    "MethodParameter": {
+        "Name": "Reboot",
+        "JsonPayload": "{}"
+     }
+}

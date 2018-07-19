@@ -1,0 +1,12 @@
+{
+    "Id": "{DeviceId}", 
+    "IsSimulated": false, 
+    "Enabled": true, 
+    "Authentication": {
+        "AuthenticationType":1,
+        "PrimaryKey":null,
+        "PrimaryThumbprint":"{PrimaryThumbprint}",
+        "SecondaryKey":null,
+        "SecondaryThumbprint":"{SecondaryThumbprint}"
+    }
+}
