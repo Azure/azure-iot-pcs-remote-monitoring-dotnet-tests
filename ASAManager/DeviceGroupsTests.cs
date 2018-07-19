@@ -69,6 +69,7 @@ namespace ASAManager
             JObject jsonResponse = HttpHelpers.GetJsonResponseIfValid(response);
             string id = jsonResponse["Id"].ToString();
             Assert.NotNull(id);
+            Console.WriteLine("created device group with id " + id);
             // Part 2: Check if new device groups file is written
             // Still delete device group if failed
 
