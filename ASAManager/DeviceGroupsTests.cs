@@ -54,7 +54,7 @@ namespace ASAManager
         /// This test takes 2+ minutes to run.
         /// </summary>
         ///  Temporarily disable flaky test
-        //[Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void ReferenceDataUpdated_IfDeviceGroupAddedAndDeleted()
         {
             // Arrange

@@ -54,7 +54,7 @@ namespace ASAManager
         /// This test takes 30+ seconds to run.
         /// </summary>
         // Todo: Temorarily commenting this test so travis won't block other PRs
-        //[Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
         public void ReferenceDataUpdated_IfRuleAddedAndDeleted()
         {
             // Arrange
