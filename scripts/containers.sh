@@ -29,6 +29,7 @@ stop() {
 repo=""
 tag="testing"
 act="start"
+dockeraccount="azureiotpcs"
 
 set_up_env() {
     if [[ "$repo" == "dotnet" ]]; then
@@ -41,6 +42,12 @@ set_up_env() {
         exit 1
     fi
 	export DOCKER_TAG=$tag
+    export DOCKER_ACCOUNT=$dockeraccount
+}
+
+tear_down() {
+    unset DOCKER_TAG
+    unset DOCKER_ACCOUNT
 }
 
 while [[ $# -gt 0 ]] ;
@@ -51,6 +58,7 @@ do
         -dt|--dockertag) tag=$1; shift;;
         -re|--repo) repo=$1; shift;;
         -act|--action) act=$1; shift;;
+        -da|--docker-account) dockeraccount=$1; shift;; 
         *) shift;
     esac
 done
@@ -66,6 +74,8 @@ if [[ "$act" == "stop" ]]; then
     stop
     exit 0
 fi
+
+tear_down
 
 error "No command specified, pass either 'start' or 'stop'."
 exit 1

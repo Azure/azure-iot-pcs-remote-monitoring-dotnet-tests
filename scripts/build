@@ -11,20 +11,21 @@ source "$APP_HOME/scripts/.functions.sh"
 #Script Args
 repo=both
 tag="testing"
+dockeraccount="azureiotpcs"
 
 run_tests() {
 
     header2 "Now Running $repo tests"
 
-    ./StorageAdapter/run.sh -re $repo -t $tag
+    ./StorageAdapter/run.sh -re $repo -t $tag -da $dockeraccount
 
-    ./Config/run.sh -re $repo -t $tag
+    ./Config/run.sh -re $repo -t $tag -da $dockeraccount
 
-    ./IoTHubManager/run.sh -re $repo -t $tag
+    ./IoTHubManager/run.sh -re $repo -t $tag -da $dockeraccount
 
-    ./ASAManager/run.sh -re $repo -t $tag
+    ./ASAManager/run.sh -re $repo -t $tag -da $dockeraccount
 
-    ./Telemetry/run.sh -re $repo -t $tag
+    ./Telemetry/run.sh -re $repo -t $tag -da $dockeraccount
 }
 
 run_with_options() {
@@ -45,6 +46,7 @@ do
     shift;	
     case $opt in
 	-dt|--dockertag) tag=$1; shift;;
+        -da|--docker-account) dockeraccount=$1; shift;; 
         -re|--repo) repo=$1; shift;;
         *) shift;
     esac

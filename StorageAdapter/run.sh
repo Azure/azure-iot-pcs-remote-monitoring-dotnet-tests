@@ -43,9 +43,11 @@ run_tests() {
 #Script options  
 repo=""
 tag="testing"
+dockeraccount="azureiotpcs"
 
 set_up() {
     export DOCKER_TAG=$tag
+    export DOCKER_ACCOUNT=$dockeraccount
     check_dependency_docker
     check_dependency_dotnet
 }
@@ -58,6 +60,7 @@ run() {
 
 tear_down() {
     unset DOCKER_TAG
+    unset DOCKER_ACCOUNT
 }
 
 #### Parse script arguments
@@ -68,6 +71,7 @@ do
     case $opt in
         -t|--tag) tag=$1; shift;;
         -re|--repo) repo=$1; shift;;
+        -da|--docker-account) dockeraccount=$1; shift;; 
         *)  shift;;
     esac
 done
@@ -89,6 +93,10 @@ elif [[ "$repo" == "dotnet" ]]; then
 elif [[ "$repo" == "java" ]]; then
     export REPO=java
     run
+else 
+    error "No build type specified, pass either 'dotnet' or 'java'."
+    echo "eg:- sh containers.sh -re java"
+    exit 1
 fi
 
 #### Tear down test

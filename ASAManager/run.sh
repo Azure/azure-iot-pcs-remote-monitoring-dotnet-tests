@@ -55,10 +55,12 @@ run_tests() {
 #Script options  
 repo=""
 tag="testing"
+dockeraccount="azureiotpcs"
 
 set_up() {
     export DOCKER_TAG=$tag
     export REPO=dotnet
+    export DOCKER_ACCOUNT=$dockeraccount
     check_dependency_docker
     check_dependency_dotnet
 }
@@ -71,6 +73,7 @@ run() {
 
 tear_down() {
     unset DOCKER_TAG
+    unset DOCKER_ACCOUNT
 }
 
 while [[ $# -gt 0 ]] ;
@@ -79,6 +82,7 @@ do
     shift;
     case $opt in
         -t|--tag) tag=$1; shift;;
+        -da|--docker-account) dockeraccount=$1; shift;; 
         *) shift;;
     esac
 done

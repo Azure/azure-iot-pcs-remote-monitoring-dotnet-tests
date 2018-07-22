@@ -7,7 +7,7 @@ if [[ "$DOCKER_TAG" == "" ]]; then
     export DOCKER_TAG=testing
 fi
 
-DOCKER_IMAGE="azureiotpcs/pcs-config-$REPO:$DOCKER_TAG"
+DOCKER_IMAGE="$DOCKER_ACCOUNT/pcs-config-$REPO:$DOCKER_TAG"
 DOCKER_PORT=9005
 DOCKER_NAME="pcs-config"
 DOCKER_NETWOK="integrationtests"
