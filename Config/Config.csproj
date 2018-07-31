@@ -14,6 +14,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Helper\Helpers.csproj" />
+    <None Update="xunit.runner.json"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </None>
   </ItemGroup>
 
 </Project>
