@@ -11,7 +11,7 @@ namespace IoTHubManager
             // IOTHUB Manager
             public const string DEVICE_PATH = "/devices/";
             public const string JOBS_PATH = "/jobs/";
-            public const string DEVICE_PROPERTIES_PATH = "/deviceProperties/";
+            public const string DEVICE_PROPERTIES_PATH = "/deviceproperties/";
 
             // Device Simulation
             public const string SIMULATION_PATH = "/simulations/1";
