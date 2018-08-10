@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -33,7 +32,10 @@ namespace IoTHubManager
             var response = this.Request.Post(device);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            this.device = JObject.Parse(response.Content);
+            this.device = JsonConvert.DeserializeObject(response.Content, new JsonSerializerSettings
+            {
+                DateParseHandling = DateParseHandling.None
+            }) as JObject;
             this.deviceId = this.device["Id"].ToString();
         }
 
