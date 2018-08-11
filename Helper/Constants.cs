@@ -28,5 +28,12 @@ namespace Helpers
             public const string DEVICE_GROUPS_FILENAME = "devicegroups.csv";
             public const string RULES_FILENAME = "rules.json";
         }
+
+        // Config Specific Constants
+        public class Path
+        {
+            // Test Image for logo test
+            public const string LOGO_FILE = "./resources/" + "TestImage.jpg";
+        }
     }
 }
