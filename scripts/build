@@ -34,7 +34,7 @@ run_with_options() {
 	repo=dotnet
 	run_tests 
 	repo=java
-	#run_tests
+	run_tests
     else
 	run_tests
     fi
