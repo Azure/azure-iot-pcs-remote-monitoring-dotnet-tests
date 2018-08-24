@@ -52,6 +52,8 @@ namespace ASAManager
         /// Then checks if that device group is deleted,
         /// reference data will be updated again.
         /// This test takes 2+ minutes to run.
+        /// Keeping this test disabled because the latency to query device
+        /// groups is too high with too many device groups in storage.
         /// </summary>
         ///  Temporarily disable flaky test
         //[Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
