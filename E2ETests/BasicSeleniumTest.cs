@@ -51,8 +51,5 @@ namespace E2E_Tests
         {
             driver.Quit();
         }
-
-
-
     }
 }
