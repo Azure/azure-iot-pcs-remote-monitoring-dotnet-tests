@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>E2E_Tests</RootNamespace>
+    <RootNamespace>E2ETests</RootNamespace>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
