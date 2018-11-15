@@ -20,7 +20,7 @@ SETX PCS_IOTHUB_CONNSTRING ""
 
 :: -----------------------------------------------------------------------------
 :: IoTHub Info can be found in the Azure portal at:
-:: {Your IoT Hub} > Endpoints > events
+:: {Your IoT Hub} > Built-in Endpoints > events
 ::
 :: Example:
 :: PCS_IOTHUBREACT_HUB_NAME "iothub-test123"
@@ -41,7 +41,8 @@ SETX PCS_IOTHUBREACT_HUB_PARTITIONS ""
 :: -----------------------------------------------------------------------------
 SETX PCS_EVENTHUB_CONNSTRING ""
 SETX PCS_EVENTHUB_NAME ""
-
+SETX PCS_ACTION_EVENTHUB_NAME ""
+SETX PCS_ACTION_EVENTHUB_CONNSTRING ""
 :: -----------------------------------------------------------------------------
 :: Storage Account information:
 :: {Your storage account} > Access keys
@@ -52,10 +53,9 @@ SETX PCS_EVENTHUB_NAME ""
 :: PCS_ASA_DATA_AZUREBLOB_ACCOUNT "storagetest123"
 :: PCS_ASA_DATA_AZUREBLOB_KEY "12345...6789=="
 :: -----------------------------------------------------------------------------
-SETX PCS_IOTHUBREACT_AZUREBLOB_ACCOUNT ""
-SETX PCS_IOTHUBREACT_AZUREBLOB_KEY ""
 SETX PCS_ASA_DATA_AZUREBLOB_ACCOUNT ""
 SETX PCS_ASA_DATA_AZUREBLOB_KEY ""
+SETX PCS_AZUREBLOB_CONNSTRING ""
 
 :: -----------------------------------------------------------------------------
 :: Storage Endpoint Suffix: 
@@ -66,7 +66,6 @@ SETX PCS_ASA_DATA_AZUREBLOB_KEY ""
 :: PCS_IOTHUBREACT_AZUREBLOB_ENDPOINT_SUFFIX "core.windows.net"
 :: PCS_ASA_DATA_AZUREBLOB_ENDPOINT_SUFFIX "core.windows.net"
 :: -----------------------------------------------------------------------------
-SETX PCS_IOTHUBREACT_AZUREBLOB_ENDPOINT_SUFFIX ""
 SETX PCS_ASA_DATA_AZUREBLOB_ENDPOINT_SUFFIX ""
 
 :: -----------------------------------------------------------------------------
@@ -97,6 +96,43 @@ SETX PCS_AZUREMAPS_KEY "static"
 :: https://docs.microsoft.com/aspnet/web-api/overview/security/enabling-cross-origin-requests-in-web-api
 :: -----------------------------------------------------------------------------
 SETX PCS_CORS_WHITELIST ""
+
+:: -----------------------------------------------------------------------------
+:: Endpoint of logic app workflow. 
+:: See Azure Portal => Your resource group => Your Logic App => Logic App Designer => When a Http Request is received => HTTP POST URL
+:: -----------------------------------------------------------------------------
+SETX PCS_LOGICAPP_ENDPOINT_URL ""
+
+:: -----------------------------------------------------------------------------
+:: Solution URL
+:: -----------------------------------------------------------------------------
+SETX PCS_SOLUTION_WEBSITE_URL ""
+
+:: -----------------------------------------------------------------------------
+:: Environment variables for TSI
+:: The FQDN (Fully Qualified Domain Name) for the Time Series endpoint
+:: see: Azure Portal => Your Resource Group => Time Series Insights Environment => Data Access FQDN
+:: -----------------------------------------------------------------------------
+SETX PCS_TELEMETRY_STORAGE_TYPE "tsi"
+SETX PCS_TSI_FQDN ""
+
+:: -----------------------------------------------------------------------------
+:: The tenant for the Azure Active Directory application
+:: see: Azure Portal => Azure Active Directory => Properties => Directory ID
+:: -----------------------------------------------------------------------------
+SETX PCS_AAD_TENANT "{enter the Azure Active Directory Tenant for the application here}"
+
+:: -----------------------------------------------------------------------------
+:: The Application ID registered with Azure Active Directory
+:: see: Azure Portal => Azure Active Directory => App Registrations => Your App => Application ID
+:: -----------------------------------------------------------------------------
+SETX PCS_AAD_APPID "{enter Azure Active Directory application ID here}"
+
+:: -----------------------------------------------------------------------------
+:: The Application Secret for your Azure Active Directory Application
+:: see: Azure Portal => Azure Active Directory => App Registrations => Your App => Settings => Passwords
+:: -----------------------------------------------------------------------------
+SETX PCS_AAD_APPSECRET "{enter your application secret here}"
 
 :: URLs
 SETX PCS_AUTHENTICATION_WEBSERVICE_URL "http://localhost:9001/v1"

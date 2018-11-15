@@ -7,6 +7,7 @@ using Helpers;
 using Helpers.Http;
 using Helpers.Models.TelemetryRules;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -49,137 +50,96 @@ namespace Telemetry
             var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + "/status");
 
             var response = this.httpClient.GetAsync(request).Result;
+            var ruleResponse = JsonConvert.DeserializeObject<RuleApiModel>(response.Content);
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void CreatesRuleWithInstantCalculation()
+        [Theory, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void CreatesRuleWithInstantCalculation(bool includeActions)
         {
             // Arrange  
-            var ruleRequest = this.GetSampleRuleWithCalculation("Instant", "0");
+            var ruleRequest = this.GetSampleRuleWithCalculation("Instant", "0", includeActions);
 
             // Act
-            var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + RULES_ENDPOINT_SUFFIX);
-            request.AddHeader("Content-Type", "application/json");
-            request.SetContent(JsonConvert.SerializeObject(ruleRequest));
-
-            var response = this.httpClient.PostAsync(request).Result;
+            var response = this.GetRuleFromTelemetryService(ruleRequest);
             var ruleResponse = JsonConvert.DeserializeObject<RuleApiModel>(response.Content);
 
             // Dispose after tests run
             this.disposeRulesList.Add(ruleResponse.Id);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(ruleRequest.Name, ruleResponse.Name);
-            Assert.Equal(ruleRequest.Description, ruleResponse.Description);
-            Assert.Equal(ruleRequest.GroupId, ruleResponse.GroupId);
-            Assert.Equal(ruleRequest.Severity, ruleResponse.Severity);
-            Assert.Equal(ruleRequest.Enabled, ruleResponse.Enabled);
-            Assert.Equal(ruleRequest.Calculation, ruleResponse.Calculation);
-            Assert.Equal(ruleRequest.Conditions[0].Field, ruleResponse.Conditions[0].Field);
-            Assert.Equal(ruleRequest.Conditions[0].Operator, ruleResponse.Conditions[0].Operator);
-            Assert.Equal(ruleRequest.Conditions[0].Value, ruleResponse.Conditions[0].Value);
+            this.VerifyRuleContents(ruleRequest, ruleResponse, response, includeActions);
         }
 
-        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void CreatesRuleWithAvg1MinCalculation()
+        [Theory, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void CreatesRuleWithAvg1MinCalculation(bool includeActions)
         {
             // Arrange  
-            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "60000");
+            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "60000", includeActions);
 
             // Act
-            var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + RULES_ENDPOINT_SUFFIX);
-            request.AddHeader("Content-Type", "application/json");
-            request.SetContent(JsonConvert.SerializeObject(ruleRequest));
-
-            var response = this.httpClient.PostAsync(request).Result;
+            var response = this.GetRuleFromTelemetryService(ruleRequest);
             var ruleResponse = JsonConvert.DeserializeObject<RuleApiModel>(response.Content);
 
             // Dispose after tests run
             this.disposeRulesList.Add(ruleResponse.Id);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(ruleRequest.Name, ruleResponse.Name);
-            Assert.Equal(ruleRequest.Description, ruleResponse.Description);
-            Assert.Equal(ruleRequest.GroupId, ruleResponse.GroupId);
-            Assert.Equal(ruleRequest.Severity, ruleResponse.Severity);
-            Assert.Equal(ruleRequest.Enabled, ruleResponse.Enabled);
-            Assert.Equal(ruleRequest.Calculation, ruleResponse.Calculation);
-            Assert.Equal(ruleRequest.Conditions[0].Field, ruleResponse.Conditions[0].Field);
-            Assert.Equal(ruleRequest.Conditions[0].Operator, ruleResponse.Conditions[0].Operator);
-            Assert.Equal(ruleRequest.Conditions[0].Value, ruleResponse.Conditions[0].Value);
+            this.VerifyRuleContents(ruleRequest, ruleResponse, response, includeActions);
         }
 
-        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void CreatesRuleWithAvg5MinCalculation()
+        [Theory, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void CreatesRuleWithAvg5MinCalculation(bool includeActions)
         {
             // Arrange  
-            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "300000");
+            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "300000", includeActions);
 
             // Act
-            var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + RULES_ENDPOINT_SUFFIX);
-            request.AddHeader("Content-Type", "application/json");
-            request.SetContent(JsonConvert.SerializeObject(ruleRequest));
-
-            var response = this.httpClient.PostAsync(request).Result;
+            var response = this.GetRuleFromTelemetryService(ruleRequest);
             var ruleResponse = JsonConvert.DeserializeObject<RuleApiModel>(response.Content);
 
             // Dispose after tests run
             this.disposeRulesList.Add(ruleResponse.Id);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(ruleRequest.Name, ruleResponse.Name);
-            Assert.Equal(ruleRequest.Description, ruleResponse.Description);
-            Assert.Equal(ruleRequest.GroupId, ruleResponse.GroupId);
-            Assert.Equal(ruleRequest.Severity, ruleResponse.Severity);
-            Assert.Equal(ruleRequest.Enabled, ruleResponse.Enabled);
-            Assert.Equal(ruleRequest.Calculation, ruleResponse.Calculation);
-            Assert.Equal(ruleRequest.Conditions[0].Field, ruleResponse.Conditions[0].Field);
-            Assert.Equal(ruleRequest.Conditions[0].Operator, ruleResponse.Conditions[0].Operator);
-            Assert.Equal(ruleRequest.Conditions[0].Value, ruleResponse.Conditions[0].Value);
+            this.VerifyRuleContents(ruleRequest, ruleResponse, response, includeActions);
         }
 
-        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void CreatesRuleWithAvg10MinCalculation()
+        [Theory, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void CreatesRuleWithAvg10MinCalculation(bool includeActions)
         {
             // Arrange  
-            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "600000");
+            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "600000", includeActions);
 
             // Act
-            var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + RULES_ENDPOINT_SUFFIX);
-            request.AddHeader("Content-Type", "application/json");
-            request.SetContent(JsonConvert.SerializeObject(ruleRequest));
-
-            var response = this.httpClient.PostAsync(request).Result;
+            var response = this.GetRuleFromTelemetryService(ruleRequest);
             var ruleResponse = JsonConvert.DeserializeObject<RuleApiModel>(response.Content);
 
             // Dispose after tests run
             this.disposeRulesList.Add(ruleResponse.Id);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(ruleRequest.Name, ruleResponse.Name);
-            Assert.Equal(ruleRequest.Description, ruleResponse.Description);
-            Assert.Equal(ruleRequest.GroupId, ruleResponse.GroupId);
-            Assert.Equal(ruleRequest.Severity, ruleResponse.Severity);
-            Assert.Equal(ruleRequest.Enabled, ruleResponse.Enabled);
-            Assert.Equal(ruleRequest.Calculation, ruleResponse.Calculation);
-            Assert.Equal(ruleRequest.Conditions[0].Field, ruleResponse.Conditions[0].Field);
-            Assert.Equal(ruleRequest.Conditions[0].Operator, ruleResponse.Conditions[0].Operator);
-            Assert.Equal(ruleRequest.Conditions[0].Value, ruleResponse.Conditions[0].Value);
+            this.VerifyRuleContents(ruleRequest, ruleResponse, response, includeActions);
         }
 
-        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void GetRuleById_ReturnsRule()
+        [Theory, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void GetRuleById_ReturnsRule(bool includeActions)
         {
             // Arrange  
             string newRuleId = "TESTRULEID" + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + "-" + Guid.NewGuid();
-            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "600000");
+            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "600000", includeActions);
 
             var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + RULES_ENDPOINT_SUFFIX + "/" + newRuleId);
             request.AddHeader("Content-Type", "application/json");
@@ -198,29 +158,22 @@ namespace Telemetry
             var ruleResponse = JsonConvert.DeserializeObject<RuleApiModel>(response.Content);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(newRule.Id, ruleResponse.Id);
-            Assert.Equal(newRule.Name, ruleResponse.Name);
-            Assert.Equal(newRule.Description, ruleResponse.Description);
-            Assert.Equal(newRule.GroupId, ruleResponse.GroupId);
-            Assert.Equal(newRule.Severity, ruleResponse.Severity);
-            Assert.Equal(newRule.Enabled, ruleResponse.Enabled);
-            Assert.Equal(newRule.Calculation, ruleResponse.Calculation);
-            Assert.Equal(newRule.Conditions[0].Field, ruleResponse.Conditions[0].Field);
-            Assert.Equal(newRule.Conditions[0].Operator, ruleResponse.Conditions[0].Operator);
-            Assert.Equal(newRule.Conditions[0].Value, ruleResponse.Conditions[0].Value);
+            this.VerifyRuleContents(ruleRequest, newRule, response, includeActions);
         }
 
         /// <summary>
         /// Verfies that a PUT with a provided ID will create a new rule with that id.
         /// </summary>
-        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void PutCreatesRuleWithId()
+        [Theory, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void PutCreatesRuleWithId(bool includeActions)
         {
             string newRuleId = "TESTRULEID" + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + "-" + Guid.NewGuid();
 
             // Arrange  
-            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "600000");
+            var ruleRequest = this.GetSampleRuleWithCalculation("Average", "600000", includeActions);
 
             // Act
             var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + RULES_ENDPOINT_SUFFIX + "/" + newRuleId);
@@ -237,17 +190,8 @@ namespace Telemetry
             this.disposeRulesList.Add(ruleResponse.Id);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(newRuleId, ruleResponse.Id);
-            Assert.Equal(ruleRequest.Name, ruleResponse.Name);
-            Assert.Equal(ruleRequest.Description, ruleResponse.Description);
-            Assert.Equal(ruleRequest.GroupId, ruleResponse.GroupId);
-            Assert.Equal(ruleRequest.Severity, ruleResponse.Severity);
-            Assert.Equal(ruleRequest.Enabled, ruleResponse.Enabled);
-            Assert.Equal(ruleRequest.Calculation, ruleResponse.Calculation);
-            Assert.Equal(ruleRequest.Conditions[0].Field, ruleResponse.Conditions[0].Field);
-            Assert.Equal(ruleRequest.Conditions[0].Operator, ruleResponse.Conditions[0].Operator);
-            Assert.Equal(ruleRequest.Conditions[0].Value, ruleResponse.Conditions[0].Value);
+            this.VerifyRuleContents(ruleRequest, ruleResponse, response, includeActions);
         }
 
         [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
@@ -308,6 +252,69 @@ namespace Telemetry
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
+        /// <summary>
+        /// Try to delete all created rules upon completion.
+        /// Each unit test should add the id of any rules created
+        /// to the disposeRuleslist.
+        /// </summary>
+        public void Dispose()
+        {
+            this.logger.WriteLine("Rules test cleanup: Deleting " + this.disposeRulesList.Count + " rules.");
+
+            foreach (var ruleId in this.disposeRulesList)
+            {
+                var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + "/rules/" + ruleId);
+
+                var response = this.httpClient.DeleteAsync(request).Result;
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    this.logger.WriteLine("Unable to delete test rule id:" + ruleId);
+                }
+            }
+        }
+
+        private RuleApiModel GetSampleRuleWithCalculation(string calculation, string timePeriod, bool includeActions = false)
+        {
+            var condition = new ConditionApiModel()
+            {
+                Field = "pressure",
+                Operator = "GreaterThan",
+                Value = "150"
+            };
+
+            var conditions = new List<ConditionApiModel> { condition };
+
+            RuleApiModel result = new RuleApiModel()
+            {
+                Name = calculation + " Test Rule",
+                Description = "Test Description",
+                GroupId = DEFAULT_CHILLERS_GROUP_ID,
+                Severity = "Info",
+                Enabled = true,
+                Calculation = calculation,
+                TimePeriod = timePeriod,
+                Conditions = conditions
+            };
+
+            if (includeActions)
+            {
+                var parameters = new Dictionary<string, object>
+                {
+                    { "Notes", "Fake Note" },
+                    { "Subject", "Fake Subject" }
+                };
+                var emails = new JArray { "fakeEmail@outlook.com" };
+                parameters.Add("Recipients", emails);
+                ActionApiModel action = new ActionApiModel
+                {
+                    Type = "Email",
+                    Parameters = parameters
+                };
+                result.Actions = new List<ActionApiModel> { action };
+            }
+
+            return result;
+        }
         private RuleApiModel GetSampleRuleWithCalculation(string calculation, string timePeriod)
         {
             var condition = new ConditionApiModel()
@@ -357,25 +364,42 @@ namespace Telemetry
             return false;
         }
 
-        /// <summary>
-        /// Try to delete all created rules upon completion.
-        /// Each unit test should add the id of any rules created
-        /// to the disposeRuleslist.
-        /// </summary>
-        public void Dispose()
+        private void VerifyRuleContents(
+            RuleApiModel ruleRequest,
+            RuleApiModel ruleResponse,
+            IHttpResponse response,
+            bool includesActions = false)
         {
-            this.logger.WriteLine("Rules test cleanup: Deleting " + this.disposeRulesList.Count + " rules.");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(ruleRequest.Name, ruleResponse.Name);
+            Assert.Equal(ruleRequest.Description, ruleResponse.Description);
+            Assert.Equal(ruleRequest.GroupId, ruleResponse.GroupId);
+            Assert.Equal(ruleRequest.Severity, ruleResponse.Severity);
+            Assert.Equal(ruleRequest.Enabled, ruleResponse.Enabled);
+            Assert.Equal(ruleRequest.Calculation, ruleResponse.Calculation);
+            Assert.Equal(ruleRequest.Conditions[0].Field, ruleResponse.Conditions[0].Field);
+            Assert.Equal(ruleRequest.Conditions[0].Operator, ruleResponse.Conditions[0].Operator);
+            Assert.Equal(ruleRequest.Conditions[0].Value, ruleResponse.Conditions[0].Value);
 
-            foreach (var ruleId in this.disposeRulesList)
+            if (includesActions)
             {
-                var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + "/rules/" + ruleId);
-
-                var response = this.httpClient.DeleteAsync(request).Result;
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    this.logger.WriteLine("Unable to delete test rule id:" + ruleId);
-                }
+                Assert.NotEmpty(ruleResponse.Actions);
+                Assert.Equal(ruleRequest.Actions[0].Type, ruleResponse.Actions[0].Type);
+                var requestParameters = ruleRequest.Actions[0].Parameters;
+                var responseParameters = ruleResponse.Actions[0].Parameters;
+                Assert.Equal(requestParameters["Subject"], responseParameters["Subject"]);
+                Assert.Equal(requestParameters["Notes"], responseParameters["Notes"]);
+                Assert.Equal(((JArray)requestParameters["Recipients"])[0], ((JArray)responseParameters["Recipients"])[0]);
             }
+        }
+
+        private IHttpResponse GetRuleFromTelemetryService(RuleApiModel ruleRequest)
+        {
+            var request = new HttpRequest(Constants.TELEMETRY_ADDRESS + RULES_ENDPOINT_SUFFIX);
+            request.AddHeader("Content-Type", "application/json");
+            request.SetContent(JsonConvert.SerializeObject(ruleRequest));
+
+            return this.httpClient.PostAsync(request).Result;
         }
     }
 }

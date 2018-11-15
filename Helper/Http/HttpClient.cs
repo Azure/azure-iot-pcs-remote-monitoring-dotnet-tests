@@ -111,7 +111,7 @@ namespace Helpers.Http
 
         private static void SetContent(IHttpRequest request, HttpMethod httpMethod, HttpRequestMessage httpRequest)
         {
-            if (httpMethod != HttpMethod.Post && httpMethod != HttpMethod.Put) return;
+            if (httpMethod != HttpMethod.Post && httpMethod != HttpMethod.Put && httpMethod != new HttpMethod("PATCH")) return;
 
             httpRequest.Content = request.Content;
             if (request.ContentType != null && request.Content != null)

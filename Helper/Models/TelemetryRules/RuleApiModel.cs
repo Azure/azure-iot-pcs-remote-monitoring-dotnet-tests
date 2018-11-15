@@ -48,6 +48,9 @@ namespace Helpers.Models.TelemetryRules
         [JsonProperty(PropertyName = "TimePeriod")]
         public string TimePeriod { get; set; } = "0";
 
+        [JsonProperty(PropertyName = "Actions", NullValueHandling = NullValueHandling.Ignore)]
+        public List<ActionApiModel> Actions { get; set; }
+
         [JsonProperty(PropertyName = "$metadata")]
         public IDictionary<string, string> Metadata => new Dictionary<string, string>
         {

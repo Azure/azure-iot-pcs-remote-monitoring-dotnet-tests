@@ -19,7 +19,7 @@ namespace Telemetry
         private readonly ITestOutputHelper logger;
 
         private const int MESSAGES_WAIT_MSEC = 15000;
-        private const int MESSAGES_CHECK_RETRY_COUNT = 70;
+        private const int MESSAGES_CHECK_RETRY_COUNT = 16;
 
         private const string MESSAGES_ENDPOINT_SUFFIX = "/messages";
 
