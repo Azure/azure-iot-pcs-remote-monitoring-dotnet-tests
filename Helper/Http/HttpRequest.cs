@@ -138,9 +138,16 @@ namespace Helpers.Http
 
         public void SetContent<T>(T sourceObject, Encoding encoding, MediaTypeHeaderValue mediaType)
         {
-            var content = JsonConvert.SerializeObject(sourceObject, Formatting.None);
-            this.requestContent.Content = new StringContent(content, encoding, mediaType.MediaType);
-            this.ContentType = mediaType;
+            if (sourceObject is MultipartFormDataContent)
+            {
+                this.requestContent.Content = sourceObject as MultipartFormDataContent;
+            }
+            else
+            {
+                var content = JsonConvert.SerializeObject(sourceObject, Formatting.None);
+                this.requestContent.Content = new StringContent(content, encoding, mediaType.MediaType);
+                this.ContentType = mediaType;
+            }
         }
     }
 }
