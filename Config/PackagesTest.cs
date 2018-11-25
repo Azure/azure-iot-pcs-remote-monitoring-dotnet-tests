@@ -18,8 +18,9 @@ namespace Config
     {
         private readonly IHttpClient httpClient;
         private const int TIMEOUT_MS = 10000;
-        private const string PKG_TYPE_PARAM_NAME = "type";
-        private const string PACKAGE_PARAMETER_NAME = "package";
+        private const string PKG_TYPE_PARAM_NAME = "PackageType";
+        private const string CONFIG_TYPE_PARAM_NAME = "ConfigType";
+        private const string PACKAGE_PARAMETER_NAME = "Package";
         private List<string> disposeList = new List<string>();
 
         public PackagesTest()
@@ -48,17 +49,33 @@ namespace Config
         /// <summary>
         /// Test that the service can create a new Device Group
         /// </summary>
-        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void ShouldCreatePackage()
+        [Theory, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [InlineData(true, false)]
+        [InlineData(false, false)]
+        [InlineData(false, true)]
+        public void ShouldCreatePackage(bool isEdgePackage, bool isCustomConfigType)
         {
             // Arange
             var packageName = "testPackage";
-            var packageType = PackageType.EdgeManifest;
-            var jsonManifest = Constants.TEST_PACKAGE_JSON;
+            var packageType = isEdgePackage ? PackageType.EdgeManifest : 
+                PackageType.DeviceConfiguration;
+            var configType = isEdgePackage ? string.Empty : ConfigType.FirmwareUpdate.ToString();
+            var jsonManifest = isEdgePackage ? Constants.EDGE_PACKAGE_JSON : 
+                Constants.ADM_PACKAGE_JSON;
+
+            configType = isCustomConfigType ? "CustomConfig" : configType;
 
             // Act
-            var createdPackage = this.CreatePackage(packageName, packageType, jsonManifest);
-            var uploadedPackageResponse = this.RetrieveAndVerifyPackage(createdPackage.Id, packageName, packageType);
+            var createdPackage = this.CreatePackage(
+                packageName, 
+                packageType, 
+                configType, 
+                jsonManifest);
+
+            var uploadedPackageResponse = this.RetrieveAndVerifyPackage(
+                createdPackage.Id,
+                packageName,
+                packageType);
 
             // Assert
             Assert.False(string.IsNullOrEmpty(createdPackage.Id));
@@ -66,6 +83,47 @@ namespace Config
 
             // Dispose
             disposeList.Add(createdPackage.Id);
+        }
+
+        /// <summary>
+        /// Test that the service can create a new config-types doc if NOT present
+        /// </summary>
+        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        public void ShouldCreateNewConfigTypeDoc()
+        {
+            // Arange
+            DeleteConfigTypes();
+
+            // Act
+            // Create package of type device configurations and config type Firmware update
+            var packageName = "testPackage";
+            var packageType = PackageType.DeviceConfiguration;
+            var configType = ConfigType.FirmwareUpdate.ToString();
+            var jsonManifest = Constants.ADM_PACKAGE_JSON;
+
+            var createdPackage = this.CreatePackage(
+                packageName,
+                packageType,
+                configType,
+                jsonManifest);
+
+            var uploadedPackageResponse = this.RetrieveAndVerifyPackage(
+                createdPackage.Id,
+                packageName,
+                packageType);
+
+            // Check if package was created successfully
+            Assert.False(string.IsNullOrEmpty(createdPackage.Id));
+
+            var request = new HttpRequest(Constants.CONFIG_ADDRESS + "/configtypes/");
+            request.Options.Timeout = TIMEOUT_MS;
+
+            var response = this.httpClient.GetAsync(request).Result;
+            var configTypes = JsonConvert.DeserializeObject<ConfigTypeListApiModel>(response.Content);
+
+            // Assert
+            Assert.Single(configTypes.configTypes);
+            Assert.Equal(configTypes.configTypes[0], ConfigType.FirmwareUpdate.ToString());
         }
 
         /// <summary>
@@ -79,12 +137,19 @@ namespace Config
 
             var packageName = "testPackage" + testGuid;
             var packageType = PackageType.EdgeManifest;
-            var jsonManifest = Constants.TEST_PACKAGE_JSON;
+            var configType = string.Empty;
+            var jsonManifest = Constants.EDGE_PACKAGE_JSON;
 
             // Arange
             for (var i = 0; i < numOfPackages; i++)
             {
-                this.CreatePackage(packageName + i, packageType, jsonManifest);
+                if (i == 1 || i == 2)
+                {
+                    packageType = PackageType.DeviceConfiguration;
+                    configType = (i == 1) ? ConfigType.FirmwareUpdate.ToString() : "CustomConfig";
+                }
+
+                this.CreatePackage(packageName + i, packageType, configType, jsonManifest);
             }
 
             // Act
@@ -115,10 +180,11 @@ namespace Config
         {
             var packageName = "testDeletePackage";
             var packageType = PackageType.EdgeManifest;
-            var jsonManifest = Constants.TEST_PACKAGE_JSON;
+            var configType = string.Empty;
+            var jsonManifest = Constants.EDGE_PACKAGE_JSON;
 
             // Arrange
-            var createdPkg = this.CreatePackage(packageName, packageType, jsonManifest);
+            var createdPkg = this.CreatePackage(packageName, packageType, configType, jsonManifest);
             var createdPkgId = createdPkg.Id;
 
             var response = this.RetrievePackage(createdPkgId);
@@ -133,10 +199,18 @@ namespace Config
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        private PackageApiModel CreatePackage(string packageName, PackageType packageType, string content)
+        private PackageApiModel CreatePackage(
+            string packageName,
+            PackageType packageType,
+            string configType,
+            string content)
         {
             // Arange
-            var request = this.CreatePackageRequestWithPackageModel(packageType, content, packageName);
+            var request = this.CreatePackageRequestWithPackageModel(
+                packageType,
+                configType,
+                content,
+                packageName);
 
             // Act
             var response = this.httpClient.PostAsync(request).Result;
@@ -155,7 +229,7 @@ namespace Config
             var response = this.RetrievePackage(packageId);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var uploadedPackage = JsonConvert.DeserializeObject<PackageApiModel>(response.Content);
-            Assert.Equal(type, uploadedPackage.Type);
+            Assert.Equal(type, uploadedPackage.packageType);
             Assert.Equal(packageId, uploadedPackage.Id);
             Assert.Equal(packageName, uploadedPackage.Name);
             return uploadedPackage.Content;
@@ -176,6 +250,19 @@ namespace Config
             Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
         }
 
+        private void DeleteConfigTypes()
+        {
+            // Delete config-types from Document DB.
+            var deleteConfigUrl = Constants.STORAGE_ADAPTER_ADDRESS +
+                "/collections/packages/values/config-types";
+            var request = new HttpRequest(deleteConfigUrl);
+            request.Options.Timeout = TIMEOUT_MS;
+            var response = this.httpClient.DeleteAsync(request).Result;
+
+            // Assert document config-types deleted successfully.
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
         private HttpRequest CreateGetRequest(string packageId)
         {
             var request = new HttpRequest(Constants.CONFIG_ADDRESS + "/packages/" + packageId);
@@ -183,12 +270,17 @@ namespace Config
             return request;
         }
 
-        private HttpRequest CreatePackageRequestWithPackageModel(PackageType packageType, string packageContent, string packageName)
+        private HttpRequest CreatePackageRequestWithPackageModel(
+            PackageType packageType,
+            string configType,
+            string packageContent,
+            string packageName)
         {
             var request = new HttpRequest(Constants.CONFIG_ADDRESS + "/packages");
 
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(packageType.ToString()), PKG_TYPE_PARAM_NAME);
+            content.Add(new StringContent(configType.ToString()), CONFIG_TYPE_PARAM_NAME);
 
             var jsonAsBytes = System.Text.Encoding.UTF8.GetBytes(packageContent);
             ByteArrayContent bytes = new ByteArrayContent(jsonAsBytes);

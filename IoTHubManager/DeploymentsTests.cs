@@ -12,7 +12,8 @@ namespace IoTHubManager
     [Collection("IoTHub Manager Tests")]
     public class DeploymentsTests
     {
-        private readonly string packageContent;
+        private readonly string edgePackageContent;
+        private readonly string admPackageContent;
         private readonly string deviceGroupId;
         private readonly string deviceGroupQuery;
         private readonly int priority;
@@ -20,7 +21,8 @@ namespace IoTHubManager
 
         public DeploymentsTests()
         {
-            this.packageContent = Constants.TEST_PACKAGE_JSON;
+            this.edgePackageContent = Constants.EDGE_PACKAGE_JSON;
+            this.admPackageContent = Constants.ADM_PACKAGE_JSON;
             this.deviceGroupId = "deviceGroupId";
             this.deviceGroupQuery = "[{\"key\":\"Properties.Reported.Type\"," + 
                                     "\"operator\":\"EQ\",\"value\":\"Elevator\"}]";
@@ -29,13 +31,19 @@ namespace IoTHubManager
         }
 
         // Create deployment
-        [Fact, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
-        public void ShouldCreateDeployment()
+        [Theory, Trait(Constants.TEST, Constants.INTEGRATION_TEST)]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ShouldCreateDeployment(bool isEdgeDeployment)
         {
             var deploymentName = "depName";
             var deviceGroupName = "dvcGroupName";
             var packageName = "packageName";
-            var response = this.CreateDeployment(deploymentName, deviceGroupName, packageName);
+            var response = this.CreateDeployment(
+                deploymentName,
+                deviceGroupName,
+                isEdgeDeployment,
+                packageName);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var deployment = JsonConvert.DeserializeObject<DeploymentApiModel>(response.Content);
@@ -85,7 +93,11 @@ namespace IoTHubManager
             var numDeployments = 3;
             for(int i = 0; i < numDeployments; i++) 
             {
-                var response = this.CreateDeployment(deploymentName + i, dvcGroup + i, packageName + i);
+                var response = this.CreateDeployment(
+                    deploymentName + i,
+                    dvcGroup + i,
+                    false,
+                    packageName + i);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             }
 
@@ -135,7 +147,11 @@ namespace IoTHubManager
             Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
         }
 
-        private IHttpResponse CreateDeployment(string name, string deviceGroupName = "", string packageName = "")
+        private IHttpResponse CreateDeployment(
+            string name,
+            string deviceGroupName = "",
+            bool isEdgeDeployment = false,
+            string packageName = "")
         {
             var input = new DeploymentApiModel
             {
@@ -143,10 +159,12 @@ namespace IoTHubManager
                 DeviceGroupId = this.deviceGroupId,
                 DeviceGroupName = deviceGroupName,
                 DeviceGroupQuery = this.deviceGroupQuery,
-                PackageContent = this.packageContent,
+                PackageContent = isEdgeDeployment ? this.edgePackageContent : this.admPackageContent,
                 PackageName = packageName,
                 Priority = this.priority,
-                Type = DeploymentType.EdgeManifest
+                PackageType = isEdgeDeployment ? PackageType.EdgeManifest : 
+                                    PackageType.DeviceConfiguration,
+                ConfigType = isEdgeDeployment ? null : ConfigType.FirmwareUpdate.ToString()
             };
 
             return this.Request.Post(JsonConvert.SerializeObject(input, Formatting.None));

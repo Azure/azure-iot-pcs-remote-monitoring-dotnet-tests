@@ -14,23 +14,20 @@ namespace IoTHubManager
 
     public class DeploymentMetricsApiModel
     {
-        [JsonProperty(PropertyName = "AppliedCount")]
-        public long AppliedCount { get; set; }
-        
-        [JsonProperty(PropertyName = "FailedCount")]
-        public long FailedCount { get; set; }
+        private const string APPLIED_METRICS_KEY = "appliedCount";
+        private const string TARGETED_METRICS_KEY = "targetedCount";
+        private const string SUCCESSFUL_METRICS_KEY = "successfullCount";
+        private const string FAILED_METRICS_KEY = "failedCount";
+        private const string PENDING_METRICS_KEY = "pendingCount";
 
-        [JsonProperty(PropertyName = "SucceededCount")]
-        public long SucceededCount { get; set; }
+        [JsonProperty(PropertyName = "SystemMetrics")]
+        public IDictionary<string, long> SystemMetrics { get; set; }
 
-        [JsonProperty(PropertyName = "TargetedCount")]
-        public long TargetedCount { get; set; }
+        [JsonProperty(PropertyName = "CustomMetrics")]
+        public IDictionary<string, long> CustomMetrics { get; set; }
 
         [JsonProperty(PropertyName = "DeviceStatuses")]
         public IDictionary<string, DeploymentStatus> DeviceStatuses { get; set; }
 
-        public DeploymentMetricsApiModel()
-        {
-        }
     }
 }

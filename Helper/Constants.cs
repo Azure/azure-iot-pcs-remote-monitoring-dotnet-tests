@@ -37,7 +37,7 @@ namespace Helpers
         }
 
         // Edge Manifest Constants
-        public const string TEST_PACKAGE_JSON =
+        public const string EDGE_PACKAGE_JSON =
             @"{
                 ""id"": ""tempid"",
                 ""schemaVersion"": ""1.0"",
@@ -99,6 +99,51 @@ namespace Helpers
                     ""results"": {},
                     ""queries"": {}
                 }
+                }";
+
+        public const string ADM_PACKAGE_JSON =
+            @"{
+                  ""id"": ""de0c1b27-caac-44e8-9a9e-c0a2b3e03907"",
+                  ""schemaVersion"": ""1.0"",
+                  ""labels"": {
+                    ""Type"": ""DeviceConfiguration"",
+                    ""DeviceGroupName"": ""Chillers"",
+                    ""DeviceGroupId"": ""default_Chillers"",
+                    ""PackageName"": ""sushil.json"",
+                    ""ConfigType"": ""Custom - new fmw"",
+                    ""RMDeployment"": ""true"",
+                    ""Name"": ""Sushil-java""
+                  },
+                  ""content"": {
+                    ""deviceContent"": {
+                      ""properties.desired"": {
+                        ""firmware"": ""5.0.0""
+                      }
+                    }
+                  },
+                  ""targetCondition"": ""Properties.Reported.Type = 'Chiller'"",
+                  ""createdTimeUtc"": ""2018-11-21T08:11:06.178Z"",
+                  ""lastUpdatedTimeUtc"": ""2018-11-21T08:11:06.178Z"",
+                  ""priority"": 75,
+                  ""systemMetrics"": {
+                    ""results"": {
+                      ""targetedCount"": 2,
+                      ""appliedCount"": 2
+                    },
+                    ""queries"": {
+                      ""targetedCount"": ""select deviceId from devices where Properties.Reported.Type = 'Chiller'"",
+                      ""appliedCount"": ""select deviceId from devices where configurations.[[de0c1b27-caac-44e8-9a9e-c0a2b3e03907]].status = 'Applied'""
+                    }
+                  },
+                  ""metrics"": {
+                    ""results"": {
+                      ""Succesful"": 2
+                    },
+                    ""queries"": {
+                      ""Succesful"": ""SELECT deviceId FROM devices WHERE properties.reported.firmware='5.0.0'""
+                    }
+                  },
+                  ""etag"": ""MQ==""
                 }";
     }
 }

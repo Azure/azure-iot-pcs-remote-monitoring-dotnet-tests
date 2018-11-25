@@ -1,17 +1,15 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace IoTHubManager.Models
 {
-    public enum DeploymentType {
-        EdgeManifest
-    }
-
     public class DeploymentApiModel
     {
+
         [JsonProperty(PropertyName = "Id")]
         public string DeploymentId { get; set; }
 
@@ -40,10 +38,27 @@ namespace IoTHubManager.Models
         public int Priority { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty(PropertyName = "Type")]
-        public DeploymentType Type { get; set; }
+        [JsonProperty(PropertyName = "PackageType")]
+        public PackageType PackageType { get; set; }
+
+        [JsonProperty(PropertyName = "ConfigType")]
+        public string ConfigType { get; set; }
 
         [JsonProperty(PropertyName = "Metrics", NullValueHandling = NullValueHandling.Ignore)]
         public DeploymentMetricsApiModel Metrics { get; set; }
+
+        [JsonProperty(PropertyName = "$metadata")]
+        public Dictionary<string, string> Metadata { get; set; }
+    }
+
+    public enum PackageType
+    {
+        EdgeManifest,
+        DeviceConfiguration
+    }
+
+    public enum ConfigType
+    {
+        FirmwareUpdate
     }
 }

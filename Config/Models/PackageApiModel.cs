@@ -11,17 +11,20 @@ namespace Config.Models
         private const string DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:sszzz";
 
         [JsonProperty("Id")]
-        public string Id { get; set; }
+        public string Id;
 
         [JsonProperty("Name")]
         public string Name { get; set; }
 
-        [JsonProperty("Type")]
+        [JsonProperty("PackageType")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public PackageType Type { get; set; }
+        public PackageType packageType { get; set; }
+
+        [JsonProperty("ConfigType")]
+        public string ConfigType { get; set; }
 
         [JsonProperty(PropertyName = "DateCreated")]
-        public string DateCreated { get; set; } = DateTimeOffset.UtcNow.ToString(DATE_FORMAT);
+        public string DateCreated { get; set; }
 
         [JsonProperty("Content")]
         public string Content { get; set; }
@@ -30,6 +33,12 @@ namespace Config.Models
 
     public enum PackageType
     {
-        EdgeManifest
+        EdgeManifest,
+        DeviceConfiguration
+    }
+
+    public enum ConfigType
+    {
+        FirmwareUpdate
     }
 }
