@@ -149,7 +149,7 @@ namespace IoTHubManager
 
         private IHttpResponse CreateDeployment(
             string name,
-            string deviceGroupName = "",
+            string deviceGroupName = "dvcGroup",
             bool isEdgeDeployment = false,
             string packageName = "")
         {

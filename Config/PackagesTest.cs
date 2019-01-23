@@ -147,6 +147,7 @@ namespace Config
                 {
                     packageType = PackageType.DeviceConfiguration;
                     configType = (i == 1) ? ConfigType.FirmwareUpdate.ToString() : "CustomConfig";
+                    jsonManifest = Constants.ADM_PACKAGE_JSON;
                 }
 
                 this.CreatePackage(packageName + i, packageType, configType, jsonManifest);

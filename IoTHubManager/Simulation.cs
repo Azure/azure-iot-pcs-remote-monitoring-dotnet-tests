@@ -62,7 +62,7 @@ namespace IoTHubManager
         private void CreateSimulatedDevices()
         {
             var devices = GetSimulatedDevices();
-            var deviceModels = devices["DeviceModels"];
+            var deviceModels = devices["Items"][0]["DeviceModels"];
  
             foreach (JObject device in deviceModels)
             {

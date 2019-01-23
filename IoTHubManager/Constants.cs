@@ -15,7 +15,7 @@ namespace IoTHubManager
             public const string DEPLOYMENTS_PATH = "/deployments/";
 
             // Device Simulation
-            public const string SIMULATION_PATH = "/simulations/1";
+            public const string SIMULATION_PATH = "/simulations";
         }
 
         // JSON template file paths. Templates for Devices and Jobs.

@@ -3,11 +3,10 @@
 # Note: Windows Bash doesn't support shebang extra params
 set -e
 
-if [[ "$DOCKER_TAG" == "" ]]; then
-    export DOCKER_TAG=testing
-fi
+DOCKER_ACCOUNT=azureiotpcs
 
-DOCKER_IMAGE="$DOCKER_ACCOUNT/device-simulation-dotnet:$DOCKER_TAG"
+
+DOCKER_IMAGE="$DOCKER_ACCOUNT/device-simulation-dotnet:DS-1.0.2"
 DOCKER_PORT=9003
 DOCKER_NAME="device-simulation"
 DOCKER_NETWOK="integrationtests"
