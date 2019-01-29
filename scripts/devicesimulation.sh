@@ -5,8 +5,7 @@ set -e
 
 DOCKER_ACCOUNT=azureiotpcs
 
-
-DOCKER_IMAGE="$DOCKER_ACCOUNT/device-simulation-dotnet:DS-1.0.2"
+DOCKER_IMAGE="$DOCKER_ACCOUNT/device-simulation-dotnet:DS-1.0.3"
 DOCKER_PORT=9003
 DOCKER_NAME="device-simulation"
 DOCKER_NETWOK="integrationtests"
