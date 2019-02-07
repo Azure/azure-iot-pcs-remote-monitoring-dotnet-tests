@@ -3,9 +3,7 @@
 # Note: Windows Bash doesn't support shebang extra params
 set -e
 
-if [[ "$DOCKER_TAG" == "" ]]; then
-    export DOCKER_TAG=testing
-fi
+export DOCKER_TAG=DS-1.0.3
 
 DOCKER_IMAGE="$DOCKER_ACCOUNT/device-simulation-dotnet:$DOCKER_TAG"
 DOCKER_PORT=9003

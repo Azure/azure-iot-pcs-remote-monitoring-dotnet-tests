@@ -18,6 +18,7 @@ start_containers() {
     ./scripts/telemetry.sh start
     ./scripts/devicesimulation.sh start
     ./scripts/config.sh start
+    ./scripts/asamanager.sh start
     docker ps -a
 }
 
@@ -30,6 +31,7 @@ stop_containers() {
     ./scripts/telemetry.sh stop
     ./scripts/devicesimulation.sh stop
     ./scripts/config.sh stop
+    ./scripts/asamanager.sh stop
 }
 
 run_tests() {
