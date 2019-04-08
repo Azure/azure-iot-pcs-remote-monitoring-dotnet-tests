@@ -19,10 +19,27 @@ source "$APP_HOME/scripts/.functions.sh"
 
 check_env_variables()
 {
-    if [[ ! -n "${PCS_STORAGEADAPTER_DOCUMENTDB_CONNSTRING}" ]]; then
-        error "PCS_STORAGEADAPTER_DOCUMENTDB_CONNSTRING is not set"
+    variables_not_found=0
+    if [[ -z "$PCS_KEYVAULT_NAME" ]]; then
+        error "PCS_KEYVAULT_NAME environment variable is not defined."
+        variables_not_found=1
+    fi
+
+    if [[ -z "$PCS_AAD_APPID" ]]; then
+        error "PCS_AAD_APPID environment variable is not defined."
+        variables_not_found=1
+    fi
+
+    if [[ -z "$PCS_AAD_APPSECRET" ]]; then
+        echo "PCS_AAD_APPSECRET environment variable is not defined."
+        variables_not_found=1
+    fi
+
+    if [ "$variables_not_found" == 1 ]; then
+        error "Environment variable(s) not found, exiting"
         exit -1
     fi
+
 
     header3 "Connection strings set in environment variables"
 }

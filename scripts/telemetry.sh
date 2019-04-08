@@ -19,56 +19,24 @@ source "$APP_HOME/scripts/.functions.sh"
 
 check_env_variables()
 {
-    if [[ ! -n "${PCS_TELEMETRY_DOCUMENTDB_CONNSTRING}" ]]; then
-        error "PCS_TELEMETRY_DOCUMENTDB_CONNSTRING is not set"
-        exit -1
-    fi
-    if [[ -z "$PCS_AUTH_ISSUER" ]]; then
-    echo "Error: the PCS_AUTH_ISSUER environment variable is not defined."
-    exit -1
+    variables_not_found=0
+    if [[ -z "$PCS_KEYVAULT_NAME" ]]; then
+        error "PCS_KEYVAULT_NAME environment variable is not defined."
+        variables_not_found=1
     fi
 
-    if [[ -z "$PCS_AUTH_AUDIENCE" ]]; then
-        echo "Error: the PCS_AUTH_AUDIENCE environment variable is not defined."
-        exit -1
+    if [[ -z "$PCS_AAD_APPID" ]]; then
+        error "PCS_AAD_APPID environment variable is not defined."
+        variables_not_found=1
     fi
 
-    if [[ -z "$PCS_TELEMETRY_STORAGE_TYPE" ]]; then
-        echo "Error: the PCS_TELEMETRY_STORAGE_TYPE environment variable is not defined."
-        exit -1
+    if [[ -z "$PCS_AAD_APPSECRET" ]]; then
+        echo "PCS_AAD_APPSECRET environment variable is not defined."
+        variables_not_found=1
     fi
 
-    # The settings below are for Time Series Insights. If your deployment does not use
-    # Time Series Insights they are safe to remove.
-
-    if [[ -z "$PCS_TSI_FQDN" ]]; then
-        echo "Error: the PCS_TSI_FQDN environment variable is not defined."
-        exit -1
-    fi
-
-    # Settings for actions
-    if [[ -z "$PCS_ACTION_EVENTHUB_NAME" ]]; then
-        echo "Error: the PCS_ACTION_EVENTHUB_NAME environment variable is not defined."
-        exit -1
-    fi
-
-    if [[ -z "$PCS_ACTION_EVENTHUB_CONNSTRING" ]]; then
-        echo "Error: the PCS_ACTION_EVENTHUB_CONNSTRING environment variable is not defined."
-        exit -1
-    fi
-
-    if [[ -z "$PCS_LOGICAPP_ENDPOINT_URL" ]]; then
-        echo "Error: the PCS_LOGICAPP_ENDPOINT_URL environment variable is not defined."
-        exit -1
-    fi
-
-    if [[ -z "$PCS_AZUREBLOB_CONNSTRING" ]]; then
-        echo "Error: the PCS_AZUREBLOB_CONNSTRING environment variable is not defined."
-        exit -1
-    fi
-
-    if [[ -z "$PCS_SOLUTION_WEBSITE_URL" ]]; then
-        echo "Error: the PCS_SOLUTION_WEBSITE_URL environment variable is not defined."
+    if [ "$variables_not_found" == 1 ]; then
+        error "Environment variable(s) not found, exiting"
         exit -1
     fi
 

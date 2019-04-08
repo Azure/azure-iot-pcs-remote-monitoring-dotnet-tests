@@ -20,29 +20,18 @@ source "$APP_HOME/scripts/.functions.sh"
 check_env_variables()
 {
     variables_not_found=0
-    if [[ ! -n "${PCS_ASA_DATA_AZUREBLOB_ACCOUNT}" ]]; then
-        error "PCS_ASA_DATA_AZUREBLOB_ACCOUNT is not set"
+    if [[ -z "$PCS_KEYVAULT_NAME" ]]; then
+        error "PCS_KEYVAULT_NAME environment variable is not defined."
         variables_not_found=1
     fi
-    if [[ ! -n "${PCS_ASA_DATA_AZUREBLOB_KEY}" ]]; then
-        error "PCS_ASA_DATA_AZUREBLOB_KEY is not set"
-        variables_not_found=1
-    fi
-    if [[ ! -n "${PCS_ASA_DATA_AZUREBLOB_ENDPOINT_SUFFIX}" ]]; then
-        error "PCS_ASA_DATA_AZUREBLOB_ENDPOINT_SUFFIX is not set"
-        variables_not_found=1
-    fi
-    if [[ ! -n "${PCS_EVENTHUB_CONNSTRING}" ]]; then
-        error "PCS_EVENTHUB_CONNSTRING is not set"
-        variables_not_found=1
-    fi
-    if [[ ! -n "${PCS_EVENTHUB_NAME}" ]]; then
-        error "PCS_EVENTHUB_NAME is not set"
-        variables_not_found=1
-	fi
 
-    if [[ ! -n "${PCS_TELEMETRY_DOCUMENTDB_CONNSTRING}" ]]; then
-        error "PCS_TELEMETRY_DOCUMENTDB_CONNSTRING is not set"
+    if [[ -z "$PCS_AAD_APPID" ]]; then
+        error "PCS_AAD_APPID environment variable is not defined."
+        variables_not_found=1
+    fi
+
+    if [[ -z "$PCS_AAD_APPSECRET" ]]; then
+        echo "PCS_AAD_APPSECRET environment variable is not defined."
         variables_not_found=1
     fi
 
